@@ -15,10 +15,6 @@ public class UserDAO {
     JdbcTemplate jdbcTemplate;
 
 
-    //public UserDAO(JdbcTemplate jdbcTemplate){
-    //    this.jdbcTemplate = jdbcTemplate;
-    //}
-
     public boolean checkUserNameExist(String userName){
       try {
           return jdbcTemplate.queryForObject("SELECT 1 FROM user WHERE User_Name = ?", Integer.class, userName) != null;
