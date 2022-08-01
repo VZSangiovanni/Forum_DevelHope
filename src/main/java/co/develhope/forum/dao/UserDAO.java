@@ -19,9 +19,9 @@ public class UserDAO {
     //    this.jdbcTemplate = jdbcTemplate;
     //}
 
-    public boolean checkUserNameExist(String userName){
+    public boolean checkUserEmailExist(String userEmail){
       try {
-          return jdbcTemplate.queryForObject("SELECT 1 FROM user WHERE User_Name = ?", Integer.class, userName) != null;
+          return jdbcTemplate.queryForObject("SELECT 1 FROM user_data WHERE User_Email = ?", Integer.class, userEmail) != null;
       }catch (Exception e){
          return false;
       }

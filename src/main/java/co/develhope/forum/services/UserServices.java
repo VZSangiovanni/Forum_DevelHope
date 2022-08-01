@@ -14,8 +14,8 @@ public class UserServices {
     @Autowired
     UserDAO userDAO;
 
-    public boolean checkedUserName(String userName){
-        return userDAO.checkUserNameExist(userName);
+    public boolean checkedUserEmail(String userEmail){
+        return userDAO.checkUserEmailExist(userEmail);
 
     }
 
