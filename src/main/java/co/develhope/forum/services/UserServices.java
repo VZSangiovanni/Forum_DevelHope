@@ -16,12 +16,8 @@ public class UserServices {
     @Autowired
     UserDAO userDAO;
 
-    public BaseResponse checkedUserName(String userName){
-        if(userDAO.checkUserNameExist(userName)){
-            throw new UserNameAlreadyExistException(userName);
-        }else {
-            return new BaseResponse("User Name available");
-        }
+    public boolean checkedUserEmail(String userEmail){
+        return userDAO.checkUserEmailExist(userEmail);
 
     }
 
