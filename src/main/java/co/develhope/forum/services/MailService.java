@@ -26,7 +26,7 @@ public class MailService {
         Content content = new Content("text/plain", "This is a test email");
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sg = new SendGrid("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");
+        SendGrid sg = new SendGrid("APIKEY");
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
