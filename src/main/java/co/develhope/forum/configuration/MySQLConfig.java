@@ -16,18 +16,25 @@ public class MySQLConfig {
 
     //i factory method servono a creare costruttori personalizzabili
 
-    @Value("${db.url}")
+    @Value("${spring.datasource.url}")
     private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClass;
 
-    //JdbcTemplate da inittare nei DAO
+    //JdbcTemplate da iniettare nei DAO
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.h2.Driver");
+        dataSourceBuilder.driverClassName(driverClass);
         dataSourceBuilder.url(url);
-        dataSourceBuilder.username("sa");
-        dataSourceBuilder.password("");
+        dataSourceBuilder.username(username);
+        dataSourceBuilder.password(password);
         return dataSourceBuilder.build();
     }
 
 }
+
