@@ -1,7 +1,7 @@
 package co.develhope.forum.controllers;
 
 
-import co.develhope.forum.dao.UserDAO;
+import co.develhope.forum.controllers.dto.response.BaseResponse;
 import co.develhope.forum.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +19,7 @@ public class UserController {
     UserServices userServices;
 
    @GetMapping("/getEmail")
-    public boolean getUserEmail(@RequestParam String userEmail){
-
+    public BaseResponse getUserEmail(@RequestParam String userEmail){
        return userServices.checkedUserEmail(userEmail);
    }
-
-
-
 }
