@@ -18,6 +18,9 @@ public class UserController {
     @Autowired
     UserServices userServices;
 
+
+
+
    @GetMapping("/getUserName")
     public BaseResponse getUserName(@RequestParam String userName){
       return userServices.checkedUserName(userName);
