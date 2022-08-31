@@ -19,11 +19,7 @@ public class UserController {
     UserServices userServices;
 
    @GetMapping("/getEmail")
-    public boolean getUserEmail(@RequestParam String userEmail){
-
+    public BaseResponse getUserEmail(@RequestParam String userEmail){
        return userServices.checkedUserEmail(userEmail);
    }
-
-
-
 }
