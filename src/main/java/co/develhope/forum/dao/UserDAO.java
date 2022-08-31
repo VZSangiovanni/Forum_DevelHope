@@ -23,6 +23,14 @@ public class UserDAO {
       }
 
     }
+    public boolean checkUserEmailExist(String userEmail){
+        try {
+            return jdbcTemplate.queryForObject("SELECT 1 FROM user_data WHERE User_Email = ?", Integer.class, userEmail) != null;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
 
 
 }
