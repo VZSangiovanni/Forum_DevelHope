@@ -21,11 +21,9 @@ public class UserController {
 
 
 
+
    @GetMapping("/getUserName")
     public BaseResponse getUserName(@RequestParam String userName){
       return userServices.checkedUserName(userName);
    }
-
-
-
 }

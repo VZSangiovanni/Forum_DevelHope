@@ -9,6 +9,8 @@ public class UserModel {
     private String userName;
     private String userPassword;
     private Long userCreation;
+    private String userEmail;
+
 
 
 
