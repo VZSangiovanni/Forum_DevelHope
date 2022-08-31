@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     UserServices userServices;
 
-   @GetMapping("/getEmail")
+   @GetMapping("/getUserEmail")
     public BaseResponse getUserEmail(@RequestParam String userEmail){
        return userServices.checkedUserEmail(userEmail);
    }
