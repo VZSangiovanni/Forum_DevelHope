@@ -5,6 +5,7 @@ import co.develhope.forum.controllers.dto.response.BaseResponse;
 import co.develhope.forum.dao.UserDAO;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
 import co.develhope.forum.exception.UserNameAlreadyExistException;
+import co.develhope.forum.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,13 @@ public class UserServices {
 
     }
 
-
+    public boolean createUser(UserModel userModel){
+        try {
+            return userDAO.createUser(userModel);
+        } catch (Exception e){
+            return false;
+        }
+    }
 
 
 }
