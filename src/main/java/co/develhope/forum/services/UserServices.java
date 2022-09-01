@@ -38,6 +38,8 @@ public class UserServices {
 
     public boolean createUser(UserModel userModel){
         try {
+            //TODO add checkedUserName and checkedUserEmail
+            //TODO integrate mail service
             return userDAO.createUser(userModel);
         } catch (Exception e){
             return false;

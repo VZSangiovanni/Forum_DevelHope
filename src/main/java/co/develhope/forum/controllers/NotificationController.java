@@ -3,9 +3,11 @@ package co.develhope.forum.controllers;
 import java.io.IOException;
 
 
-import co.develhope.forum.services.MailService;
+import co.develhope.forum.model.UserModel;
+import co.develhope.forum.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api")
-public class MailController {
+public class NotificationController {
 
     @Autowired
-    MailService mailService;
+    NotificationService notificationService;
 
     @PostMapping("/send-text")
-    public String send() throws IOException {
-        return mailService.sendTextEmail();
+    public void send(@RequestBody UserModel userModel) {
+        notificationService.sendActivationEmail(userModel);
     }
 
 
