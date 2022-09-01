@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
-
+/**
+ * NB controller only for testing purposes
+ */
 @RestController
 @RequestMapping(value = "/api")
 public class NotificationController {
