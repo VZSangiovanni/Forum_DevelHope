@@ -2,12 +2,10 @@ package co.develhope.forum.controllers;
 
 
 import co.develhope.forum.controllers.dto.response.BaseResponse;
+import co.develhope.forum.model.UserModel;
 import co.develhope.forum.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -28,5 +26,9 @@ public class UserController {
         return userServices.checkedUserEmail(userEmail);
     }
 
+    @PostMapping("/signup")
+    public void createUser (@RequestBody UserModel userModel) {
+        userServices.createUser(userModel);
+    }
 
 }
