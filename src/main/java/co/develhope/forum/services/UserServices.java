@@ -16,7 +16,10 @@ public class UserServices {
     //Logica Applicativa
 
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public BaseResponse checkedUserName(String userName){
         if(userDAO.checkUserNameExist(userName)){
@@ -36,14 +39,17 @@ public class UserServices {
 
     }
 
-    public boolean createUser(UserModel userModel){
-        try {
-            //TODO add checkedUserName and checkedUserEmail
-            //TODO integrate mail service
-            return userDAO.createUser(userModel);
-        } catch (Exception e){
-            return false;
+    public BaseResponse createUser(UserModel userModel){
+        if(userDAO.checkUserNameExist(userModel.getUserName())){
+            throw new UserNameAlreadyExistException(userModel.getUserName());
+        } else if (userDAO.checkUserEmailExist(userModel.getUserEmail())) {
+            throw new UserEmailAlreadyExistException(userModel.getUserEmail());
+        }else {
+            notificationService.sendActivationEmail(userModel);
+            userDAO.createUser(userModel);
+            return new BaseResponse("User Created");
         }
+
     }
 
 

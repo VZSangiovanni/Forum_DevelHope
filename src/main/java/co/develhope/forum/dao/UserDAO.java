@@ -43,7 +43,8 @@ public class UserDAO {
             count+= jdbcTemplate.update("insert into user_data (User_First_Name, User_Last_Name, User_Email) values (?, ?, ?)",
                     new Object[]{userModel.getUserFirstName(),userModel.getUserLastName(), userModel.getUserEmail()});
             if (count==1){
-                Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",Integer.class, new Object[]{userModel.getUserEmail()});
+                Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",
+                        Integer.class, new Object[]{userModel.getUserEmail()});
 
                 count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_Data_id_User_Data) values (?, ?, ?, ?)",
                         new Object[]{userModel.getUserName(), userModel.getUserPassword(), System.currentTimeMillis(), idUserData});

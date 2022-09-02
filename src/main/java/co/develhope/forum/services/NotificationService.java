@@ -19,8 +19,8 @@ public class NotificationService {
     public void sendActivationEmail(UserModel userModel) {
         SimpleMailMessage sms = new SimpleMailMessage();
         sms.setTo(userModel.getUserEmail());
-        sms.setFrom("develhopetest87@gmail.com");
-        sms.setReplyTo("develhopetest87@gmail.com");
+        sms.setFrom("alessiograssia2019@gmail.com");
+        sms.setReplyTo("alessiograssia2019@gmail.com");
         sms.setSubject("Benvenuto " + userModel.getUserFirstName());
         sms.setText("Benvenuto nel Forum DevelHope");
         javaMailSender.send(sms);
