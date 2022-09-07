@@ -1,8 +1,9 @@
 package co.develhope.forum.services;
 
 
-import co.develhope.forum.controllers.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dao.UserDAO;
+import co.develhope.forum.dto.response.UserDTO;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
 import co.develhope.forum.exception.UserNameAlreadyExistException;
 import co.develhope.forum.model.UserModel;
@@ -47,7 +48,7 @@ public class UserServices {
         }else {
             notificationService.sendActivationEmail(userModel);
             userDAO.createUser(userModel);
-            return new BaseResponse("User Created");
+            return new UserDTO(userModel.getId(), userModel.getUserName());
         }
 
     }

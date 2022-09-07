@@ -48,6 +48,11 @@ public class UserDAO {
 
                 count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_Data_id_User_Data) values (?, ?, ?, ?)",
                         new Object[]{userModel.getUserName(), userModel.getUserPassword(), System.currentTimeMillis(), idUserData});
+
+                int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
+                        Integer.class, new Object[]{userModel.getUserName()});
+
+                userModel.setId(userModelID);
             }
 
             return count == 2;

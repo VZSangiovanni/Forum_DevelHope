@@ -1,7 +1,7 @@
 package co.develhope.forum.advice;
 
 
-import co.develhope.forum.controllers.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
 import co.develhope.forum.exception.UserNameAlreadyExistException;
 import org.springframework.http.HttpStatus;
