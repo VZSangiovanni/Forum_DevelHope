@@ -46,7 +46,7 @@ public class UserServices {
         } else if (userDAO.checkUserEmailExist(userModel.getUserEmail())) {
             throw new UserEmailAlreadyExistException(userModel.getUserEmail());
         }else {
-            notificationService.sendActivationEmail(userModel);
+            //notificationService.sendActivationEmail(userModel); Disable for Test
             userDAO.createUser(userModel);
             return new UserDTO(userModel.getId(), userModel.getUserName());
         }

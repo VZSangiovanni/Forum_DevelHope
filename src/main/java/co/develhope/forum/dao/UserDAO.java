@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 //All'interno dei DAO vanno i metodi che fanno le query
@@ -16,6 +17,9 @@ public class UserDAO {
     //questo serve a fare le query
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
@@ -47,7 +51,7 @@ public class UserDAO {
                         Integer.class, new Object[]{userModel.getUserEmail()});
 
                 count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_Data_id_User_Data) values (?, ?, ?, ?)",
-                        new Object[]{userModel.getUserName(), userModel.getUserPassword(), System.currentTimeMillis(), idUserData});
+                        new Object[]{userModel.getUserName(), passwordEncoder.encode(userModel.getUserPassword()), System.currentTimeMillis(), idUserData});
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                         Integer.class, new Object[]{userModel.getUserName()});
