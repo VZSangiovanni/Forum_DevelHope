@@ -1,6 +1,6 @@
 package co.develhope.forum.services;
 
-import co.develhope.forum.model.UserModel;
+import co.develhope.forum.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,12 @@ public class NotificationService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendActivationEmail(UserModel userModel) {
+    public void sendActivationEmail(User user) {
         SimpleMailMessage sms = new SimpleMailMessage();
-        sms.setTo(userModel.getUserEmail());
+        sms.setTo(user.getUserEmail());
         sms.setFrom("develhopetest87@gmail.com");
         sms.setReplyTo("develhopetest87@gmail.com");
-        sms.setSubject("Benvenuto " + userModel.getUserFirstName());
+        sms.setSubject("Benvenuto " + user.getUserFirstName());
         sms.setText("Benvenuto nel Forum DevelHope");
         javaMailSender.send(sms);
 

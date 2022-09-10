@@ -1,10 +1,13 @@
 package co.develhope.forum.model;
 
-import lombok.Data;
-import lombok.ToString;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class UserModel {
+import java.util.ArrayList;
+import java.util.List;
+
+public class User {
 
     private int id;
     private String userName;
@@ -13,6 +16,8 @@ public class UserModel {
     private String userEmail;
     private String userFirstName;
     private String userLastName;
+
+    private List<String> userRoles;
 
 
     public int getId() {
@@ -69,5 +74,33 @@ public class UserModel {
 
     public void setUserLastName(String userLastName) {
         this.userLastName = userLastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", userCreation=" + userCreation +
+                ", userEmail='" + userEmail + '\'' +
+                ", userFirstName='" + userFirstName + '\'' +
+                ", userLastName='" + userLastName + '\'' +
+                '}';
+    }
+
+    public void grantAuthority(String role){
+        if (userRoles == null) userRoles = new ArrayList<>();
+        this.userRoles.add(role);
+    }
+
+    public void grantAuthorities(List<String> roles) {
+        this.userRoles = roles;
+    }
+
+    public List<GrantedAuthority> getAuthorities(){
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        this.userRoles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+        return authorities;
     }
 }

@@ -1,9 +1,7 @@
 package co.develhope.forum.controllers;
 
-import java.io.IOException;
 
-
-import co.develhope.forum.model.UserModel;
+import co.develhope.forum.model.User;
 import co.develhope.forum.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +23,8 @@ public class NotificationController {
     NotificationService notificationService;
 
     @PostMapping("/send-text")
-    public void send(@RequestBody UserModel userModel) {
-        notificationService.sendActivationEmail(userModel);
+    public void send(@RequestBody User user) {
+        notificationService.sendActivationEmail(user);
     }
 
 

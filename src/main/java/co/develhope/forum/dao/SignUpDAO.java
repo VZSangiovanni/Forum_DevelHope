@@ -1,7 +1,7 @@
 package co.develhope.forum.dao;
 
 
-import co.develhope.forum.model.UserModel;
+import co.develhope.forum.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 //All'interno dei DAO vanno i metodi che fanno le query
 
 @Repository
-public class UserDAO {
+public class SignUpDAO {
 
     //questo serve a fare le query
     @Autowired
@@ -21,7 +21,7 @@ public class UserDAO {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
+    private static final Logger log = LoggerFactory.getLogger(SignUpDAO.class);
 
 
     public boolean checkUserNameExist(String userName){
@@ -41,22 +41,22 @@ public class UserDAO {
 
     }
 
-    public boolean createUser(UserModel userModel){
+    public boolean createUser(User user){
         int count = 0;
         try {
             count+= jdbcTemplate.update("insert into user_data (User_First_Name, User_Last_Name, User_Email) values (?, ?, ?)",
-                    new Object[]{userModel.getUserFirstName(),userModel.getUserLastName(), userModel.getUserEmail()});
+                    new Object[]{user.getUserFirstName(), user.getUserLastName(), user.getUserEmail()});
             if (count==1){
                 Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",
-                        Integer.class, new Object[]{userModel.getUserEmail()});
+                        Integer.class, new Object[]{user.getUserEmail()});
 
                 count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_Data_id_User_Data) values (?, ?, ?, ?)",
-                        new Object[]{userModel.getUserName(), passwordEncoder.encode(userModel.getUserPassword()), System.currentTimeMillis(), idUserData});
+                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(), idUserData});
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
-                        Integer.class, new Object[]{userModel.getUserName()});
+                        Integer.class, new Object[]{user.getUserName()});
 
-                userModel.setId(userModelID);
+                user.setId(userModelID);
             }
 
             return count == 2;

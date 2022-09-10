@@ -2,28 +2,28 @@ package co.develhope.forum.services;
 
 
 import co.develhope.forum.dto.response.BaseResponse;
-import co.develhope.forum.dao.UserDAO;
+import co.develhope.forum.dao.SignUpDAO;
 import co.develhope.forum.dto.response.UserDTO;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
 import co.develhope.forum.exception.UserNameAlreadyExistException;
-import co.develhope.forum.model.UserModel;
+import co.develhope.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserServices {
+public class SignUpService {
 
     //Logica Applicativa
 
     @Autowired
-    private UserDAO userDAO;
+    private SignUpDAO signUpDAO;
 
     @Autowired
     private NotificationService notificationService;
 
     public BaseResponse checkedUserName(String userName){
-        if(userDAO.checkUserNameExist(userName)){
+        if(signUpDAO.checkUserNameExist(userName)){
             throw new UserNameAlreadyExistException(userName);
         }else {
             return new BaseResponse("User Name available");
@@ -32,7 +32,7 @@ public class UserServices {
     }
 
     public BaseResponse checkedUserEmail(String userEmail){
-        if(userDAO.checkUserEmailExist(userEmail)){
+        if(signUpDAO.checkUserEmailExist(userEmail)){
             throw new UserEmailAlreadyExistException(userEmail);
         }else {
             return new BaseResponse("User Email available");
@@ -40,15 +40,15 @@ public class UserServices {
 
     }
 
-    public BaseResponse createUser(UserModel userModel){
-        if(userDAO.checkUserNameExist(userModel.getUserName())){
-            throw new UserNameAlreadyExistException(userModel.getUserName());
-        } else if (userDAO.checkUserEmailExist(userModel.getUserEmail())) {
-            throw new UserEmailAlreadyExistException(userModel.getUserEmail());
+    public BaseResponse createUser(User user){
+        if(signUpDAO.checkUserNameExist(user.getUserName())){
+            throw new UserNameAlreadyExistException(user.getUserName());
+        } else if (signUpDAO.checkUserEmailExist(user.getUserEmail())) {
+            throw new UserEmailAlreadyExistException(user.getUserEmail());
         }else {
             //notificationService.sendActivationEmail(userModel); Disable for Test
-            userDAO.createUser(userModel);
-            return new UserDTO(userModel.getId(), userModel.getUserName());
+            signUpDAO.createUser(user);
+            return new UserDTO(user.getId(), user.getUserName());
         }
 
     }
