@@ -34,6 +34,7 @@ public class LoginController {
 
         User userFromDB = userRepository.findByName(loginDTO.getUserName());
         if (userFromDB != null && passwordEncoder.matches(loginDTO.getUserPassword(), userFromDB.getUserPassword())) {
+            System.out.println(userFromDB.toString());
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

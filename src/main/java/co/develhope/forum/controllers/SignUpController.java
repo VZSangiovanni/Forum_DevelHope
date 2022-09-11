@@ -2,6 +2,7 @@ package co.develhope.forum.controllers;
 
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.SignUpActivationDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class SignUpController {
     @ResponseStatus(HttpStatus.CREATED)
     public BaseResponse createUser (@RequestBody User user) {
         return signUpService.createUser(user);
+    }
+
+    @PostMapping("/activation")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public BaseResponse activationUser(@RequestBody SignUpActivationDTO signUpActivationDTO){
+       return signUpService.activeUser(signUpActivationDTO);
     }
 
 }

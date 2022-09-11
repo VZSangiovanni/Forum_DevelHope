@@ -52,16 +52,13 @@ public class SignUpDAO {
                 Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",
                         Integer.class, new Object[]{user.getUserEmail()});
 
-                count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, User_Data_id_User_Data) values (?, ?, ?, ?, ?)",
-                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(),user.getUserActivationCode(), idUserData});
-
+                count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, isActive, User_Data_id_User_Data) values (?, ?, ?, ?, ?, ?)",
+                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(),user.getUserActivationCode(), user.getActive(), idUserData});
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                         Integer.class, new Object[]{user.getUserName()});
-
                 user.setId(userModelID);
             }
-
             return count == 2;
         } catch (Exception e){
             log.error("ERROR", e);
@@ -69,5 +66,16 @@ public class SignUpDAO {
         }
     }
 
+        public void activate(Integer id, String code, boolean active) {
+        String SQL1 = "UPDATE user SET User_ActivationCode = ? WHERE id_User = ?";
+        jdbcTemplate.update(SQL1, code, id);
+        String SQL2 = "UPDATE user SET isActive = ? WHERE id_User = ?";
+        jdbcTemplate.update(SQL2, active, id);
+        }
+
+        public void getRole(Integer id) {
+        String SQL = "Update user SET User_Roles_id_User_Roles = 1 WHERE id_User = ?";
+        jdbcTemplate.update(SQL, id);
+        }
 
 }

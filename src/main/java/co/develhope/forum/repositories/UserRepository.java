@@ -1,5 +1,6 @@
 package co.develhope.forum.repositories;
 
+import co.develhope.forum.dto.response.UserDTO;
 import co.develhope.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -31,7 +32,7 @@ public class UserRepository {
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE User_Name=?",
                     BeanPropertyRowMapper.newInstance(User.class), username);
-           // user.grantAuthorities(this.getUserRoles(user.getUserName()));
+            user.grantAuthorities(this.getUserRoles(user.getUserName()));
             return user;
 
         } catch (IncorrectResultSizeDataAccessException e) {
@@ -40,11 +41,29 @@ public class UserRepository {
         }
     }
 
+    public User findByActivationCode(String activationCode) {
+        try {
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE User_ActivationCode=?",
+                    BeanPropertyRowMapper.newInstance(User.class), activationCode);
+
+            int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
+                    Integer.class, new Object[]{user.getUserName()});
+            user.setId(userModelID);
+            return user;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+
+
+
+
     private List<String> getUserRoles(String userName) {
 
-        String querySQL = "";
+        String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.
-        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class);
+        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, userName);
         return userRoles;
     }
 

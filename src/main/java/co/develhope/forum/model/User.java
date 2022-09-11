@@ -14,7 +14,8 @@ public class User {
     private String userName;
     private String userPassword;
     private Long userCreation;
-    private String userActivationCode = UUID.randomUUID().toString();
+    private String userActivationCode; //= UUID.randomUUID().toString();
+    private Boolean isActive;// = false;
     private String userEmail;
     private String userFirstName;
     private String userLastName;
@@ -62,6 +63,14 @@ public class User {
         this.userActivationCode = userActivationCode;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     public String getUserEmail() {
         return userEmail;
     }
@@ -93,11 +102,16 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
                 ", userCreation=" + userCreation +
+                ", userActivationCode='" + userActivationCode + '\'' +
+                ", isActive=" + isActive +
                 ", userEmail='" + userEmail + '\'' +
                 ", userFirstName='" + userFirstName + '\'' +
                 ", userLastName='" + userLastName + '\'' +
+                ", userRoles=" + userRoles +
                 '}';
     }
+
+
 
     public void grantAuthority(String role){
         if (userRoles == null) userRoles = new ArrayList<>();
