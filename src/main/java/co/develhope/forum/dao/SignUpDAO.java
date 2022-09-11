@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 //All'interno dei DAO vanno i metodi che fanno le query
 
 @Repository
@@ -50,8 +52,9 @@ public class SignUpDAO {
                 Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",
                         Integer.class, new Object[]{user.getUserEmail()});
 
-                count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_Data_id_User_Data) values (?, ?, ?, ?)",
-                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(), idUserData});
+                count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, User_Data_id_User_Data) values (?, ?, ?, ?, ?)",
+                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(),user.getUserActivationCode(), idUserData});
+
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                         Integer.class, new Object[]{user.getUserName()});

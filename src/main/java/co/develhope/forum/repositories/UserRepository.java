@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+// inspired by https://www.devxperiences.com/pzwp1/2022/05/19/spring-boot-security-configuration-practically-explained-part2-jdbc-authentication/
 @Repository
 public class UserRepository {
 

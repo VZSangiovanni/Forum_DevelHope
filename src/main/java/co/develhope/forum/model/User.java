@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class User {
 
@@ -13,6 +14,7 @@ public class User {
     private String userName;
     private String userPassword;
     private Long userCreation;
+    private String userActivationCode = UUID.randomUUID().toString();
     private String userEmail;
     private String userFirstName;
     private String userLastName;
@@ -50,6 +52,14 @@ public class User {
 
     public void setUserCreation(Long userCreation) {
         this.userCreation = userCreation;
+    }
+
+    public String getUserActivationCode() {
+        return userActivationCode;
+    }
+
+    public void setUserActivationCode(String userActivationCode) {
+        this.userActivationCode = userActivationCode;
     }
 
     public String getUserEmail() {

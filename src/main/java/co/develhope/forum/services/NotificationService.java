@@ -22,7 +22,7 @@ public class NotificationService {
         sms.setFrom("develhopetest87@gmail.com");
         sms.setReplyTo("develhopetest87@gmail.com");
         sms.setSubject("Benvenuto " + user.getUserFirstName());
-        sms.setText("Benvenuto nel Forum DevelHope");
+        sms.setText("Benvenuto nel Forum DevelHope, il tuo codice di attivazione è: " + user.getUserActivationCode());
         javaMailSender.send(sms);
 
     }

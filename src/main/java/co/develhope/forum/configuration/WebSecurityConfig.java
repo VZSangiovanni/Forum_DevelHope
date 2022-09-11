@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 
 // inspired by https://www.codejava.net/frameworks/spring-boot/form-authentication-with-jdbc-and-mysql
 // inspired by https://www.baeldung.com/spring-security-jdbc-authentication
+// inspired by https://www.devxperiences.com/pzwp1/2022/05/19/spring-boot-security-configuration-practically-explained-part2-jdbc-authentication/
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
