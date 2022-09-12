@@ -111,7 +111,13 @@ public class User {
                 '}';
     }
 
+    public List<String> getUserRoles() {
+        return userRoles;
+    }
 
+    public void setUserRoles(List<String> userRoles) {
+        this.userRoles = userRoles;
+    }
 
     public void grantAuthority(String role){
         if (userRoles == null) userRoles = new ArrayList<>();

@@ -28,6 +28,7 @@ public class WebSecurityConfig {
     private MySQLConfig mySQLConfig;
 
 
+
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(mySQLConfig.dataSource());
@@ -44,9 +45,11 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.authorizeRequests()
                 .antMatchers("/clean").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/test/**").permitAll()
                 .antMatchers("/user/**")
                 .permitAll().anyRequest().authenticated();
 
