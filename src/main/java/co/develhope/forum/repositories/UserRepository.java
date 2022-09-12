@@ -30,9 +30,15 @@ public class UserRepository {
     public User findByName(String username) {
 
         try {
-            User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE User_Name=?",
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_Name=? AND user.User_Data_id_User_Data=id_User_Data",
                     BeanPropertyRowMapper.newInstance(User.class), username);
             user.grantAuthorities(this.getUserRoles(user.getUserName()));
+            int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
+                    Integer.class, new Object[]{user.getUserName()});
+            user.setId(userModelID);
+            boolean isActive= jdbcTemplate.queryForObject("SELECT isActive FROM user WHERE User_Name = ?",
+                    boolean.class, username);
+            user.setActive(isActive);
             return user;
 
         } catch (IncorrectResultSizeDataAccessException e) {
