@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 // inspired by https://www.devxperiences.com/pzwp1/2022/05/19/spring-boot-security-configuration-practically-explained-part2-jdbc-authentication/
@@ -32,13 +33,14 @@ public class UserRepository {
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_Name=? AND user.User_Data_id_User_Data=id_User_Data",
                     BeanPropertyRowMapper.newInstance(User.class), username);
-            user.grantAuthorities(this.getUserRoles(user.getUserName()));
             int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                     Integer.class, new Object[]{user.getUserName()});
             user.setId(userModelID);
             boolean isActive= jdbcTemplate.queryForObject("SELECT isActive FROM user WHERE User_Name = ?",
                     boolean.class, username);
             user.setActive(isActive);
+            List<String> userRoles = jdbcTemplate.queryForObject("SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?", List.class, username);
+            user.setUserRoles(userRoles);
             return user;
 
         } catch (IncorrectResultSizeDataAccessException e) {
@@ -61,11 +63,7 @@ public class UserRepository {
         }
     }
 
-
-
-
-
-    private List<String> getUserRoles(String userName) {
+    public List<String> getUserRoles(String userName) {
 
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.

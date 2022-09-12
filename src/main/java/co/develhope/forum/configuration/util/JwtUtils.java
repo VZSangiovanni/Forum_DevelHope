@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class JwtTokenUtil {
+public class JwtUtils {
 
     @Value("${authframework.hskey}")
     private String hsKey;

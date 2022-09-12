@@ -2,7 +2,7 @@ package co.develhope.forum.configuration.filter;
 
 import co.develhope.forum.configuration.security.PublicEndpoint;
 import co.develhope.forum.configuration.util.Constants;
-import co.develhope.forum.configuration.util.JwtTokenUtil;
+import co.develhope.forum.configuration.util.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtTokenUtil jwtUtils;
+	private JwtUtils jwtUtils;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -41,10 +41,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 				String[] tokens = authenticationHeader.split(" ");
 				if (tokens[0].equals("Bearer")) {
 					Jws<Claims> claims = jwtUtils.decodeJwt(tokens[1]);
-					Principal principal = new Principal(claims.getBody().getSubject(),
-							(List<String>) claims.getBody().get(Constants.CLAIM_USER_ROLES, List.class));
-					AuthenticationContext.set(principal);
-					filterChain.doFilter(request, response);
+					if (claims != null) {
+						Principal principal = new Principal(claims.getBody().getSubject(),
+								(List<String>) claims.getBody().get(Constants.CLAIM_USER_ROLES, List.class));
+						AuthenticationContext.set(principal);
+						filterChain.doFilter(request, response);
+					} else {
+						response.sendError(HttpStatus.FORBIDDEN.value());
+					}
 				}
 			} else {
 				response.sendError(HttpStatus.FORBIDDEN.value());

@@ -1,12 +1,10 @@
 package co.develhope.forum.model;
 
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 public class User {
 
@@ -14,8 +12,8 @@ public class User {
     private String userName;
     private String userPassword;
     private Long userCreation;
-    private String userActivationCode; //= UUID.randomUUID().toString();
-    private Boolean isActive;// = false;
+    private String userActivationCode;
+    private Boolean isActive;
     private String userEmail;
     private String userFirstName;
     private String userLastName;
@@ -119,18 +117,6 @@ public class User {
         this.userRoles = userRoles;
     }
 
-    public void grantAuthority(String role){
-        if (userRoles == null) userRoles = new ArrayList<>();
-        this.userRoles.add(role);
-    }
 
-    public void grantAuthorities(List<String> roles) {
-        this.userRoles = roles;
-    }
 
-    public List<GrantedAuthority> getAuthorities(){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        this.userRoles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-        return authorities;
-    }
 }

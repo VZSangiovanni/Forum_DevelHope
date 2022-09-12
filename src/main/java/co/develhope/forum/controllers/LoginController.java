@@ -1,65 +1,47 @@
 package co.develhope.forum.controllers;
 
+import co.develhope.forum.configuration.security.HierarchicalSecurity;
 import co.develhope.forum.configuration.security.PublicEndpoint;
 import co.develhope.forum.configuration.util.Constants;
-import co.develhope.forum.dto.response.LoginDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.UserRepository;
-import co.develhope.forum.services.CustomUserDetailsService;
-import co.develhope.forum.services.UserServices;
+import co.develhope.forum.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class LoginController {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserServices userServices;
+    private UserService userService;
 
-
-    @PostMapping
     @PublicEndpoint
-    @RequestMapping("/login")
-    public ResponseEntity<Void> login (@RequestBody LoginDTO loginDTO) {
-        if (loginDTO == null) return null;
-        String jwt = userServices.checkUserCredentials(loginDTO.getUserName(), loginDTO.getUserPassword());
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Void> login (@RequestParam MultiValueMap<String, String> params) {
+        String jwt = userService.checkUserCredentials(params.getFirst("username"), params.getFirst("password"));
+        User user = userRepository.findByName(params.getFirst("username"));// for test only
+
         if (jwt != null){
             MultiValueMap<String, String> headers = new HttpHeaders();
             headers.put(Constants.X_AUTHENTICATION_HEADER, Arrays.asList("Bearer " + jwt));
-            User user = userRepository.findByName(loginDTO.getUserName());// only for test
-            System.out.println(user); // only for test
+            System.out.println(user.toString());//for test only
             return new ResponseEntity<>(headers, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        /*User userFromDB = userRepository.findByName(loginDTO.getUserName());
-        if (userFromDB != null && passwordEncoder.matches(loginDTO.getUserPassword(), userFromDB.getUserPassword())
-                && userFromDB.getActive()) {
-            System.out.println(userFromDB.toString());
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else {
-            System.out.println(userFromDB.toString());
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }*/
     }
 
 

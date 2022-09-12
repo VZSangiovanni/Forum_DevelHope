@@ -5,20 +5,18 @@ import co.develhope.forum.configuration.filter.AuthenticationContext;
 import co.develhope.forum.configuration.security.PublicEndpoint;
 import co.develhope.forum.configuration.security.RoleSecurity;
 import co.develhope.forum.configuration.security.ZeroSecurity;
-import co.develhope.forum.model.User;
-import co.develhope.forum.services.TestService;
+import co.develhope.forum.configuration.util.Constants;
+import co.develhope.forum.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
 public class TestController {
 
-	@Autowired
-	private TestService testService;
 
 	@GetMapping("/default-deny")
 	public void defaultDenyEndpoint() {
