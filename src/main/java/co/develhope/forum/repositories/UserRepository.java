@@ -39,7 +39,7 @@ public class UserRepository {
             boolean isActive= jdbcTemplate.queryForObject("SELECT isActive FROM user WHERE User_Name = ?",
                     boolean.class, username);
             user.setActive(isActive);
-            List<String> userRoles = jdbcTemplate.queryForObject("SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?", List.class, username);
+            List<String> userRoles = jdbcTemplate.queryForObject("SELECT Roles_Type FROM user,user_roles WHERE User_Name=? AND user.User_Roles_id_User_Roles = id_User_Roles", List.class, username);
             user.setUserRoles(userRoles);
             return user;
 

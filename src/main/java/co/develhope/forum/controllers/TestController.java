@@ -35,10 +35,10 @@ public class TestController {
 		System.out.println("This endpoint can be reached with any role, but require authentication. Authenticated user is " + AuthenticationContext.get().getUsername());
 	}
 
-	@RoleSecurity(value = { "ROLE_USER", "ROLE_PUBLISHER" })
+	@RoleSecurity(value = { "ROLE_USER", "ROLE_ADMIN"})
 	@GetMapping("/role-evaluated-endpoint")
 	public void roleCheckEndpoint() {
-		System.out.println("This endpoint can be reached only by authenticated users with ROLE_ADMIN or ROLE_PUBLISHER. Authenticated user is " + AuthenticationContext.get().getUsername());
+		System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
 	}
 
 }
