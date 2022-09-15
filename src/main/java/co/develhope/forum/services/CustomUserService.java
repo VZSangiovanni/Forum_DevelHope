@@ -31,7 +31,7 @@ public class CustomUserService implements UserService{
         User userFromBD = userRepository.findByName(username);
         if (userFromBD != null && passwordEncoder.matches(password, userFromBD.getPassword())
                 && userFromBD.getActive()) {
-            System.out.println(userFromBD);
+            System.out.println(userFromBD);// Only for test
             return userFromBD;
         }
         return null;

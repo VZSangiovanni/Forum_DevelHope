@@ -11,8 +11,7 @@ import java.util.List;
 public class User extends UserDetails {
 
     private int id;
-    //private String userName;
-    //private String userPassword;
+
     private Long userCreation;
     private String userActivationCode;
     private Boolean isActive;
@@ -20,7 +19,7 @@ public class User extends UserDetails {
     private String userFirstName;
     private String userLastName;
 
-    //private List<String> userRoles;
+
 
 
     public int getId() {
@@ -31,21 +30,7 @@ public class User extends UserDetails {
         this.id = id;
     }
 
-    //public String getUserName() {
-    //    return userName;
-    //}
 
-   // public void setUserName(String userName) {
-       // this.userName = userName;
-    //}
-
-   // public String getUserPassword() {
-        //return userPassword;
-    //}
-
-   // public void setUserPassword(String userPassword) {
-       // this.userPassword = userPassword;
-    //}
 
     public Long getUserCreation() {
         return userCreation;
@@ -111,13 +96,7 @@ public class User extends UserDetails {
                 '}';
     }
 
-    /*public List<String> getUserRoles() {
-        return userRoles;
-    }*/
 
-    /*public void setUserRoles(List<String> userRoles) {
-        this.userRoles = userRoles;
-    }*/
 
 
 
