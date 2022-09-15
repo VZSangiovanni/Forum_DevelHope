@@ -1,15 +1,18 @@
 package co.develhope.forum.services;
 
-import co.develhope.forum.configuration.util.BCryptPasswordEncoder;
-import co.develhope.forum.configuration.util.JwtUtils;
+
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.UserRepository;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserService;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptPasswordEncoder;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
-public class UserService {
+public class CustomUserService implements UserService{
 
     @Autowired
     private UserRepository userRepository;
@@ -21,14 +24,15 @@ public class UserService {
     private JwtUtils jwtUtils;
 
 
-    public String checkUserCredentials(String username, String password) {
+    public UserDetails checkUserCredentials(String username, String password) {
         if (userRepository == null) {
             Assert.notNull(userRepository, "userRepository is null. Define a UserRepository implementation as a Spring Bean");
         }
         User userFromBD = userRepository.findByName(username);
-        if (userFromBD != null && passwordEncoder.matches(password, userFromBD.getUserPassword())
+        if (userFromBD != null && passwordEncoder.matches(password, userFromBD.getPassword())
                 && userFromBD.getActive()) {
-            return jwtUtils.generateAccessToken(userFromBD.getUserName(), userFromBD.getUserRoles());
+            System.out.println(userFromBD);
+            return userFromBD;
         }
         return null;
     }

@@ -48,8 +48,8 @@ public class SignUpService {
     }
 
     public BaseResponse createUser(User user){
-        if(signUpDAO.checkUserNameExist(user.getUserName())){
-            throw new UserNameAlreadyExistException(user.getUserName());
+        if(signUpDAO.checkUserNameExist(user.getUsername())){
+            throw new UserNameAlreadyExistException(user.getUsername());
         } else if (signUpDAO.checkUserEmailExist(user.getUserEmail())) {
             throw new UserEmailAlreadyExistException(user.getUserEmail());
         }else {
@@ -58,7 +58,7 @@ public class SignUpService {
             user.setUserActivationCode(UUID.randomUUID().toString());
             signUpDAO.createUser(user);
             System.out.println(user.toString());
-            return new UserDTO(user.getId(), user.getUserName());
+            return new UserDTO(user.getId(), user.getUsername());
         }
 
     }
@@ -70,7 +70,7 @@ public class SignUpService {
         user.setActive(true);
         signUpDAO.activate(user.getId(), user.getUserActivationCode(), user.getActive());
         signUpDAO.getRole(user.getId());
-        return new UserDTO(user.getId(), user.getUserName());
+        return new UserDTO(user.getId(), user.getUsername());
     }
 
 

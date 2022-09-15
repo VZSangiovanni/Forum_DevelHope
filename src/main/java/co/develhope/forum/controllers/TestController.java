@@ -1,17 +1,12 @@
 package co.develhope.forum.controllers;
 
 
-import co.develhope.forum.configuration.filter.AuthenticationContext;
-import co.develhope.forum.configuration.security.PublicEndpoint;
-import co.develhope.forum.configuration.security.RoleSecurity;
-import co.develhope.forum.configuration.security.ZeroSecurity;
-import co.develhope.forum.configuration.util.Constants;
-import co.develhope.forum.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")

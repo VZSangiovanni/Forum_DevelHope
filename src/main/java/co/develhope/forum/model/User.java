@@ -2,15 +2,17 @@ package co.develhope.forum.model;
 
 
 
-import java.util.ArrayList;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
+
+
 import java.util.List;
 
 
-public class User {
+public class User extends UserDetails {
 
     private int id;
-    private String userName;
-    private String userPassword;
+    //private String userName;
+    //private String userPassword;
     private Long userCreation;
     private String userActivationCode;
     private Boolean isActive;
@@ -18,7 +20,7 @@ public class User {
     private String userFirstName;
     private String userLastName;
 
-    private List<String> userRoles;
+    //private List<String> userRoles;
 
 
     public int getId() {
@@ -29,21 +31,21 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    //public String getUserName() {
+    //    return userName;
+    //}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+   // public void setUserName(String userName) {
+       // this.userName = userName;
+    //}
 
-    public String getUserPassword() {
-        return userPassword;
-    }
+   // public String getUserPassword() {
+        //return userPassword;
+    //}
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
+   // public void setUserPassword(String userPassword) {
+       // this.userPassword = userPassword;
+    //}
 
     public Long getUserCreation() {
         return userCreation;
@@ -97,25 +99,25 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", userPassword='" + userPassword + '\'' +
+                ", userName='" + super.getUsername() + '\'' +
+                ", userPassword='" + super.getPassword() + '\'' +
                 ", userCreation=" + userCreation +
                 ", userActivationCode='" + userActivationCode + '\'' +
                 ", isActive=" + isActive +
                 ", userEmail='" + userEmail + '\'' +
                 ", userFirstName='" + userFirstName + '\'' +
                 ", userLastName='" + userLastName + '\'' +
-                ", userRoles=" + userRoles +
+                ", userRoles=" + super.getRoles() +
                 '}';
     }
 
-    public List<String> getUserRoles() {
+    /*public List<String> getUserRoles() {
         return userRoles;
-    }
+    }*/
 
-    public void setUserRoles(List<String> userRoles) {
+    /*public void setUserRoles(List<String> userRoles) {
         this.userRoles = userRoles;
-    }
+    }*/
 
 
 

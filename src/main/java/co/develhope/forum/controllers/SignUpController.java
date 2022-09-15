@@ -1,11 +1,12 @@
 package co.develhope.forum.controllers;
 
 
-import co.develhope.forum.configuration.security.PublicEndpoint;
+
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dto.response.SignUpActivationDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.services.SignUpService;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,11 @@
 package co.develhope.forum.dao;
 
 
-import co.develhope.forum.configuration.util.BCryptPasswordEncoder;
+
 import co.develhope.forum.model.User;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.dao.UserDao;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptPasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +56,10 @@ public class SignUpDAO {
                         Integer.class, new Object[]{user.getUserEmail()});
 
                 count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, isActive, User_Data_id_User_Data) values (?, ?, ?, ?, ?, ?)",
-                        new Object[]{user.getUserName(), passwordEncoder.encode(user.getUserPassword()), System.currentTimeMillis(),user.getUserActivationCode(), user.getActive(), idUserData});
+                        new Object[]{user.getUsername(), passwordEncoder.encode(user.getPassword()), System.currentTimeMillis(),user.getUserActivationCode(), user.getActive(), idUserData});
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
-                        Integer.class, new Object[]{user.getUserName()});
+                        Integer.class, new Object[]{user.getUsername()});
                 user.setId(userModelID);
             }
             return count == 2;
