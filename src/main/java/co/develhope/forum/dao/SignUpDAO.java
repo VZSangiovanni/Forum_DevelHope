@@ -49,14 +49,16 @@ public class SignUpDAO {
     public boolean createUser(User user){
         int count = 0;
         try {
-            count+= jdbcTemplate.update("insert into user_data (User_First_Name, User_Last_Name, User_Email) values (?, ?, ?)",
-                    new Object[]{user.getUserFirstName(), user.getUserLastName(), user.getUserEmail()});
-            if (count==1){
-                Integer idUserData = jdbcTemplate.queryForObject("SELECT id_User_Data FROM user_data WHERE User_Email = ?",
-                        Integer.class, new Object[]{user.getUserEmail()});
 
-                count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, isActive, User_Data_id_User_Data) values (?, ?, ?, ?, ?, ?)",
-                        new Object[]{user.getUsername(), passwordEncoder.encode(user.getPassword()), System.currentTimeMillis(),user.getUserActivationCode(), user.getActive(), idUserData});
+            count+= jdbcTemplate.update("insert into `user` (User_Name, User_Password, User_Creation, User_ActivationCode, isActive) values (?, ?, ?, ?, ?)",
+                    new Object[]{user.getUsername(), passwordEncoder.encode(user.getPassword()), System.currentTimeMillis(),user.getUserActivationCode(), user.getActive()});
+
+            if (count==1){
+                Integer idUser = jdbcTemplate.queryForObject("SELECT id_User FROM user WHERE User_Name = ?",
+                        Integer.class, new Object[]{user.getUsername()});
+
+                count+= jdbcTemplate.update("insert into user_data (User_First_Name, User_Last_Name, User_Email, User_id_User) values (?, ?, ?, ?)",
+                        new Object[]{user.getUserFirstName(), user.getUserLastName(), user.getUserEmail(), idUser});
 
                 int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                         Integer.class, new Object[]{user.getUsername()});

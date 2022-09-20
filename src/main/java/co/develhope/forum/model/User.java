@@ -12,6 +12,7 @@ public class User extends UserDetails {
 
     private int id;
 
+    private String resetPasswordCode;
     private Long userCreation;
     private String userActivationCode;
     private Boolean isActive;
@@ -30,7 +31,13 @@ public class User extends UserDetails {
         this.id = id;
     }
 
+    public String getResetPasswordCode() {
+        return resetPasswordCode;
+    }
 
+    public void setResetPasswordCode(String resetPasswordCode) {
+        this.resetPasswordCode = resetPasswordCode;
+    }
 
     public Long getUserCreation() {
         return userCreation;
