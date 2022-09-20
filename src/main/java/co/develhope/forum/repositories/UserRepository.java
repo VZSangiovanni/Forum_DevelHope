@@ -37,7 +37,7 @@ public class UserRepository {
     public User findByName(String username) {
 
         try {
-            User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_Name=? AND user_data.User_id_User=id_User_Data",
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_Name=? AND user_data.User_id_User=id_User_Data LIMIT 1",
                     new UserRowMapper(), username);
             int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                     Integer.class, new Object[]{user.getUsername()});
@@ -57,7 +57,7 @@ public class UserRepository {
 
     public User findByActivationCode(String activationCode) {
         try {
-            User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_ActivationCode=?",
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user,user_data WHERE User_ActivationCode=? LIMIT 1",
                     new UserRowMapper(), activationCode);
 
             int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
