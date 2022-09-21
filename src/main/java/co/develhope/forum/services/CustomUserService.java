@@ -1,7 +1,9 @@
 package co.develhope.forum.services;
 
 
+import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.model.User;
+import co.develhope.forum.repositories.RoleRepository;
 import co.develhope.forum.repositories.UserRepository;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserService;
@@ -16,6 +18,9 @@ public class CustomUserService implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -35,6 +40,30 @@ public class CustomUserService implements UserService{
             return userFromBD;
         }
         return null;
+    }
+
+    public BaseResponse updateModerator(String username) {
+        User user = userRepository.findByName(username);
+        if (user == null) return new BaseResponse("User Not Found");
+        if (user.getRoles().contains("ROLE_MOD")) return new BaseResponse("User already has this role");
+        roleRepository.updateModerator(user.getUsername());
+        return new BaseResponse(BaseResponse.StatusEnum.OK,"User " + user.getUsername() + " is now a Moderator");
+    }
+
+    public BaseResponse updateAdmin(String username) {
+        User user = userRepository.findByName(username);
+        if (user == null) return new BaseResponse("User Not Found");
+        if (user.getRoles().contains("ROLE_ADMIN")) return new BaseResponse("User already has this role");
+        roleRepository.updateAdmin(user.getUsername());
+        return new BaseResponse(BaseResponse.StatusEnum.OK,"User " + user.getUsername() + " is now an Admin");
+    }
+
+    public BaseResponse updateUser(String username) {
+        User user = userRepository.findByName(username);
+        if (user == null) return new BaseResponse("User Not Found");
+        if (user.getRoles().contains("ROLE_USER")) return new BaseResponse("User already has this role");
+        roleRepository.updateUser(user.getUsername());
+        return new BaseResponse(BaseResponse.StatusEnum.OK,"User " + user.getUsername() + " is now a User");
     }
 
 }
