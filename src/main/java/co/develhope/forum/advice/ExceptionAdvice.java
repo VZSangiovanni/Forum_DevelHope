@@ -2,6 +2,7 @@ package co.develhope.forum.advice;
 
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
 import co.develhope.forum.exception.UserNameAlreadyExistException;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(value ={UserEmailAlreadyExistException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse userEmailError(UserEmailAlreadyExistException e){
+        return new BaseResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {ForumCategoryTitleAlreadyExistException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public BaseResponse categoryTitleError(ForumCategoryTitleAlreadyExistException e){
         return new BaseResponse(e.getMessage());
     }
 
