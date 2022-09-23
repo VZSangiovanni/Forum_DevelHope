@@ -8,8 +8,12 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserS
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptPasswordEncoder;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class CustomUserService implements UserService{
@@ -37,4 +41,12 @@ public class CustomUserService implements UserService{
         return null;
     }
 
+    public User readUser(String userName) {
+        return userRepository.findByName((userName));
+    }
+
+    public List<User> findAll(UserDetails userDetails) {
+
+        return userRepository.users(userDetails.getUsername());
+    }
 }

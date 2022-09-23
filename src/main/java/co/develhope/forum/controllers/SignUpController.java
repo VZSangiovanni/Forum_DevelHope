@@ -44,5 +44,5 @@ public class SignUpController {
     public BaseResponse activationUser(@RequestBody SignUpActivationDTO signUpActivationDTO){
        return signUpService.activeUser(signUpActivationDTO);
     }
-
+    
 }

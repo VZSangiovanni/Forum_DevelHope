@@ -24,12 +24,12 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private User findById(int id){
+    private User findById(int id) {
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE id_user = ?",
                     BeanPropertyRowMapper.newInstance(User.class), id);
             return user;
-        }catch (IncorrectResultSizeDataAccessException e){
+        } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
     }
@@ -42,7 +42,7 @@ public class UserRepository {
             int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
                     Integer.class, new Object[]{user.getUsername()});
             user.setId(userModelID);
-            boolean isActive= jdbcTemplate.queryForObject("SELECT isActive FROM user WHERE User_Name = ?",
+            boolean isActive = jdbcTemplate.queryForObject("SELECT isActive FROM user WHERE User_Name = ?",
                     boolean.class, username);
             user.setActive(isActive);
             List<String> userRoles = jdbcTemplate.queryForObject("SELECT Roles_Type FROM user,user_roles WHERE User_Name=? AND user.User_Roles_id_User_Roles = id_User_Roles", List.class, username);
@@ -64,7 +64,7 @@ public class UserRepository {
                     Integer.class, new Object[]{user.getUsername()});
             user.setId(userModelID);
             return user;
-        }catch (IncorrectResultSizeDataAccessException e){
+        } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
     }
@@ -77,5 +77,9 @@ public class UserRepository {
         return userRoles;
     }
 
-
+    public List<User> users(String userName) {
+        String query = "SELECT * FROM user AS u WHERE u.user_name = ?", username;
+        List<User> usersList = jdbcTemplate.queryForList(query, User.class, userName);
+        return usersList;
+    }
 }
