@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class CustomUserService implements UserService {
 
@@ -44,8 +47,16 @@ public class CustomUserService implements UserService {
 
         return deleteCount == 1;
 
-
     }
 
+
+    public User readUser(String userName) {
+        return userRepository.findByName((userName));
+    }
+
+    public List<Map<String, Object>> findAll() {
+
+        return userRepository.users();
+    }
 
 }
