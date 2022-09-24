@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class ForumRepository {
 
@@ -46,10 +49,24 @@ public class ForumRepository {
         }
     }
 
+    public List<Map<String, Object>> readAllCategory() {
+        List<Map<String, Object>> forumCategoryList = jdbcTemplate.queryForList("SELECT * FROM forum_category");
+        return forumCategoryList;
+    }
+
+    //NEED FIX
+    public ForumCategory findCategoryByTitle(String categoryTitle){
+        ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?", ForumCategory.class, categoryTitle);
+        return forumCategory;
+    }
+
     public void deleteAllCategory() {
-        //"TRUNCATE TABLE forum_category"
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
+    }
+
+    public void deleteCategoryByName(String categoryTitle) {
+        jdbcTemplate.update("DELETE FROM forum_category WHERE Category_Title = ?", categoryTitle);
     }
 
 

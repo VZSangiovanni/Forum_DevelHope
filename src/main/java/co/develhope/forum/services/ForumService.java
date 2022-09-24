@@ -8,6 +8,9 @@ import co.develhope.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class ForumService {
 
@@ -35,8 +38,21 @@ public class ForumService {
         }
     }
 
+    public List<Map<String, Object>> readAllCategory() {
+        return forumRepository.readAllCategory();
+    }
+
+    //NEED FIX
+    public ForumCategory findCategoryByTitle(String categoryTitle){
+        return forumRepository.findCategoryByTitle(categoryTitle);
+    }
+
     public void deleteAllCategory(){
         forumRepository.deleteAllCategory();
+    }
+
+    public void deleteOneCategory(String categoryTitle){
+        forumRepository.deleteCategoryByName(categoryTitle);
     }
 
 
