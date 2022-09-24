@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
-public class CustomUserService implements UserService{
+public class CustomUserService implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -36,5 +36,16 @@ public class CustomUserService implements UserService{
         }
         return null;
     }
+
+
+    public boolean deleteUser(String username) {
+
+        int deleteCount = userRepository.deleteUser(username);
+
+        return deleteCount == 1;
+
+
+    }
+
 
 }

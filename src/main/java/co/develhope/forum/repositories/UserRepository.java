@@ -78,4 +78,12 @@ public class UserRepository {
     }
 
 
+    public int deleteUser(String username) {
+
+        int count = jdbcTemplate.update("DELETE FROM `user` WHERE User_Name = ? ",username);
+
+        return count;
+
+
+    }
 }
