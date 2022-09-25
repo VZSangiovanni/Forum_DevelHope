@@ -43,7 +43,6 @@ public class SignUpDAO {
         }catch (Exception e){
             return false;
         }
-
     }
 
     public boolean createUser(User user){
@@ -82,5 +81,4 @@ public class SignUpDAO {
         String SQL = "Update user SET User_Roles_id_User_Roles = 1 WHERE id_User = ?";
         jdbcTemplate.update(SQL, id);
         }
-
 }

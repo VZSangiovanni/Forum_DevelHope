@@ -1,8 +1,12 @@
 package co.develhope.forum.services;
 
 
+import co.develhope.forum.dao.SignUpDAO;
+import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.UserDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.UserRepository;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptPasswordEncoder;
@@ -16,6 +20,9 @@ public class CustomUserService implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SignUpDAO signUpDAO;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -37,4 +44,16 @@ public class CustomUserService implements UserService{
         return null;
     }
 
+    /**
+     * sistema invalidazione token, auto loggato, rieffetuare autenticazione con il token nuovo
+     */
+
+    public BaseResponse updateEmail(String username, String newEmail) {
+        if (!signUpDAO.checkUserEmailExist(newEmail)){
+            userRepository.updateUserEmailQuery(username,newEmail);
+            return new BaseResponse("The email has been modified");
+        } else {
+            return new BaseResponse("This email is already in use");
+        }
+    }
 }

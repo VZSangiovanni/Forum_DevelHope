@@ -70,12 +70,20 @@ public class UserRepository {
     }
 
     public List<String> getUserRoles(String userName) {
-
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.
         List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, userName);
         return userRoles;
     }
 
+    /**
+     * REPLACE INTO `IDM_USER_MEASURE`(`USER_ID`, `MEASURE_ID`, `MEASURE_DATE`, `MEASURE_STATUS`) VALUES(1, 1, "bla", "status updated");
+     */
 
+    public void updateUserEmailQuery(String username, String currentEmail) {
+        String querySql = "INSERT OR REPLACE INTO (user_data) VALUES (?) FROM user WHERE 'User_Name' = ?";
+        jdbcTemplate.update(querySql, currentEmail, username);
+    }
 }
+//INSERT INTO user_data ('User_Email') VALUES (?) ON DUPLICATE KEY UPDATE 'User_Email' = VALUES ('User_Email'), FROM user WHERE 'User_Name' = ?
+//UPDATE user_data,user SET User_Email = ? WHERE User_Name = ?

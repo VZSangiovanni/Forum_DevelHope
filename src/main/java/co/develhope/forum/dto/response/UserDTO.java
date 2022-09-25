@@ -3,16 +3,14 @@ package co.develhope.forum.dto.response;
 public class UserDTO extends BaseResponse{
 
     private int id;
-    private String userName;
-
-
+    private String username;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String userName) {
+    public UserDTO(int id, String username) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
     }
 
     public int getId() {
@@ -24,10 +22,10 @@ public class UserDTO extends BaseResponse{
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 }
