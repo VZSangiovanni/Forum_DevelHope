@@ -30,12 +30,13 @@ public class ForumController {
         return forumService.readAllCategory();
     }
 
-    //NEED FIX
+
     @ZeroSecurity
     @GetMapping("/category/read/{categoryTitle}")
     public ForumCategory findCategoryByTitle(@PathVariable String categoryTitle){
         return forumService.findCategoryByTitle(categoryTitle);
     }
+
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/all")

@@ -42,10 +42,11 @@ public class ForumService {
         return forumRepository.readAllCategory();
     }
 
-    //NEED FIX
+
     public ForumCategory findCategoryByTitle(String categoryTitle){
         return forumRepository.findCategoryByTitle(categoryTitle);
     }
+
 
     public void deleteAllCategory(){
         forumRepository.deleteAllCategory();

@@ -1,5 +1,6 @@
 package co.develhope.forum.repositories;
 
+import co.develhope.forum.dao.rowmapper.CategoryRowMapper;
 import co.develhope.forum.model.ForumCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,11 +55,13 @@ public class ForumRepository {
         return forumCategoryList;
     }
 
-    //NEED FIX
+
     public ForumCategory findCategoryByTitle(String categoryTitle){
-        ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?", ForumCategory.class, categoryTitle);
+        ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
+                new CategoryRowMapper(), categoryTitle.toLowerCase().trim());
         return forumCategory;
     }
+
 
     public void deleteAllCategory() {
         jdbcTemplate.update("DELETE FROM forum_category");
