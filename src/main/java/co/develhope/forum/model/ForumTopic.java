@@ -58,4 +58,16 @@ public class ForumTopic extends BaseResponse {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    @Override
+    public String toString() {
+        return "ForumTopic{" +
+                "id=" + id +
+                ", topicTitle='" + topicTitle + '\'' +
+                ", topicText='" + topicText + '\'' +
+                ", topicCreation=" + topicCreation +
+                ", topicCategory='" + topicCategory + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

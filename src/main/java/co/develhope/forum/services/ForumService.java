@@ -3,6 +3,8 @@ package co.develhope.forum.services;
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
+import co.develhope.forum.model.ForumPost;
+import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,24 @@ public class ForumService {
 
     public void deleteOneCategory(String categoryTitle){
         forumRepository.deleteCategoryByName(categoryTitle);
+    }
+
+    // Under this comment place the Topic Services
+    public BaseResponse createTopic(ForumTopic forumTopic, String categoryTitle) {
+
+        forumRepository.createTopic(forumTopic, categoryTitle);
+
+        System.out.println(forumTopic.toString());
+
+        return forumTopic;
+    }
+
+    // Under this comment place the Post Services
+
+    public BaseResponse createPost(ForumPost forumPost, int topicID) {
+        forumRepository.createPost(forumPost, topicID);
+        System.out.println(forumPost.toString());
+        return forumPost;
     }
 
 

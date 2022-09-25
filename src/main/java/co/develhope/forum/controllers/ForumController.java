@@ -2,6 +2,8 @@ package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.model.ForumCategory;
+import co.develhope.forum.model.ForumPost;
+import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.services.ForumService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
@@ -48,6 +50,21 @@ public class ForumController {
     @DeleteMapping("/category/delete/{categoryTitle}")
     public void deleteOneCategory(@PathVariable String categoryTitle){
         forumService.deleteOneCategory(categoryTitle);
+    }
+
+    // Under this comment place the Topic Controller
+    @ZeroSecurity
+    @PostMapping("/topic/create/{categoryTitle}")
+    public BaseResponse createTopic(@RequestBody ForumTopic forumTopic, @PathVariable String categoryTitle) {
+        return forumService.createTopic(forumTopic, categoryTitle);
+    }
+
+    // Under this comment place the Post Controller
+
+    @ZeroSecurity
+    @PostMapping("/post/create/{topicID}")
+    public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
+        return forumService.createPost(forumPost, topicID);
     }
 
 }
