@@ -59,6 +59,24 @@ public class ForumController {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
 
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @GetMapping("/topic/read-all-by-user/{userName}")
+    public List<Map<String, Object>> readAllTopicByUser(@PathVariable String userName) {
+        return forumService.findAllTopicByUser(userName);
+    }
+
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @GetMapping("/topic/read-all")
+    public List<Map<String, Object>> readAllTopic() {
+        return forumService.findAllTopic();
+    }
+
+    @ZeroSecurity
+    @GetMapping("/topic/read-my")
+    public List<Map<String, Object>> readAllMyTopic(){
+        return forumService.readAllMyTopic();
+    }
+
     // Under this comment place the Post Controller
 
     @ZeroSecurity

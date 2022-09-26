@@ -24,7 +24,7 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private User findById(int id){
+    public User findById(int id){
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE id_user = ?",
                     BeanPropertyRowMapper.newInstance(User.class), id);

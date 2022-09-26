@@ -5,6 +5,7 @@ import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
+import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,18 @@ public class ForumService {
         System.out.println(forumTopic.toString());
 
         return forumTopic;
+    }
+
+    public List<Map<String, Object>> findAllTopic() {
+        return forumRepository.findAllTopic();
+    }
+
+    public List<Map<String, Object>> findAllTopicByUser(String userName) {
+       return forumRepository.findAllTopicByUser(userName);
+    }
+
+    public List<Map<String, Object>> readAllMyTopic(){
+        return forumRepository.readAllMyTopic();
     }
 
     // Under this comment place the Post Services

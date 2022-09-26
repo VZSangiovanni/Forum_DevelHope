@@ -134,6 +134,42 @@ public class ForumRepository {
         }
     }
 
+    public List<Map<String, Object>> findAllTopic() {
+        String SQL = "SELECT * From forum_topic";
+        try {
+            List<Map<String, Object>> topicList = jdbcTemplate.queryForList(SQL);
+            return topicList;
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> readAllMyTopic(){
+        String SQL = "SELECT * FROM forum_topic WHERE User_id_User = ?";
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        User user = userRepository.findByName(principal.getUsername());
+        int userID = user.getId();
+        try {
+            List<Map<String, Object>> myTopic = jdbcTemplate.queryForList(SQL, userID);
+            return myTopic;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllTopicByUser(String userName) {
+        String SQL = "SELECT * FROM forum_topic WHERE User_id_User = ?";
+        User user = userRepository.findByName(userName);
+        int userID = user.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, userID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
     // Under this comment place the Post Repository
 
     public boolean createPost(ForumPost forumPost, int topicID) {
