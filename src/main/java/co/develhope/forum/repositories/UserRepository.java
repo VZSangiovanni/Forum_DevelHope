@@ -89,9 +89,7 @@ public class UserRepository {
 
     public List<Map<String, Object>> users() {
         String query = "SELECT * FROM user";
-        List<Map<String,Object>> usersList = new ArrayList<>(); //cancella
-        jdbcTemplate.queryForList(query); //cancella
-        // Scrivi: List<Map<String,Object>> usersList = jdbcTemplate.queryForList(query);
+        List<Map<String,Object>> usersList = jdbcTemplate.queryForList(query);
         return usersList;
     }
 }
