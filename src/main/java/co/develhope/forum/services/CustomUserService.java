@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
-public class CustomUserService implements UserService{
+public class CustomUserService implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -42,6 +42,8 @@ public class CustomUserService implements UserService{
         return null;
     }
 
+ //Role Management
+ 
     public BaseResponse updateModerator(String username) {
         User user = userRepository.findByName(username);
         if (user == null) return new BaseResponse("User Not Found");
@@ -65,5 +67,17 @@ public class CustomUserService implements UserService{
         roleRepository.updateUser(user.getUsername());
         return new BaseResponse(BaseResponse.StatusEnum.OK,"User " + user.getUsername() + " is now a User");
     }
+
+
+// User CRUD
+
+    public boolean deleteUser(String username) {
+
+        int deleteCount = userRepository.deleteUser(username);
+
+        return deleteCount == 1;
+
+    }
+
 
 }
