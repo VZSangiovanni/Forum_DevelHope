@@ -71,6 +71,10 @@ public class CustomUserService implements UserService {
 
 // User CRUD
 
+    public User findByID (int userID) {
+        return userRepository.findById(userID);
+    }
+
     public boolean deleteUser(String username) {
 
         int deleteCount = userRepository.deleteUser(username);

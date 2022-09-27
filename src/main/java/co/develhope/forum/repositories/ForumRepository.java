@@ -170,6 +170,19 @@ public class ForumRepository {
         }
     }
 
+    public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
+        String SQL = "SELECT * FROM forum_topic WHERE Forum_Category_id_Forum_Category = ?";
+        ForumCategory forumCategory = findCategoryByTitle(categoryTitle);
+        int categoryID = forumCategory.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, categoryID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
     // Under this comment place the Post Repository
 
     public boolean createPost(ForumPost forumPost, int topicID) {
@@ -199,5 +212,53 @@ public class ForumRepository {
             return false;
         }
     }
+
+    public List<Map<String, Object>> findAllPost() {
+        String SQL = "SELECT * From forum_post";
+        try {
+            List<Map<String, Object>> topicList = jdbcTemplate.queryForList(SQL);
+            return topicList;
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> readAllMyPost(){
+        String SQL = "SELECT * FROM forum_post WHERE User_id_User = ?";
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        User user = userRepository.findByName(principal.getUsername());
+        int userID = user.getId();
+        try {
+            List<Map<String, Object>> myTopic = jdbcTemplate.queryForList(SQL, userID);
+            return myTopic;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllPostByUser(String userName) {
+        String SQL = "SELECT * FROM forum_post WHERE User_id_User = ?";
+        User user = userRepository.findByName(userName);
+        int userID = user.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, userID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllPostByTopicID(int topicID) {
+        String SQL = "SELECT * FROM forum_post WHERE Forum_Topic_id_Forum_Topic = ?";
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, topicID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+
 
 }

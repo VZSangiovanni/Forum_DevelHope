@@ -81,6 +81,10 @@ public class ForumService {
         return forumRepository.readAllMyTopic();
     }
 
+    public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
+        return forumRepository.findAllTopicByCategoryTitle(categoryTitle);
+    }
+
     // Under this comment place the Post Services
 
     public BaseResponse createPost(ForumPost forumPost, int topicID) {
@@ -88,6 +92,23 @@ public class ForumService {
         System.out.println(forumPost.toString());
         return forumPost;
     }
+
+    public List<Map<String, Object>> findAllPost() {
+        return forumRepository.findAllPost();
+    }
+
+    public List<Map<String, Object>> readAllMyPost(){
+        return forumRepository.readAllMyPost();
+    }
+
+    public List<Map<String, Object>> findAllPostByUser(String userName){
+        return forumRepository.findAllPostByUser(userName);
+    }
+
+    public List<Map<String, Object>> findAllPosyByTopicID(int topicID) {
+        return forumRepository.findAllPostByTopicID(topicID);
+    }
+
 
 
 }

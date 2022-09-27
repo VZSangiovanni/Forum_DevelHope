@@ -3,6 +3,7 @@ package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dto.response.DeleteUserDTO;
+import co.develhope.forum.model.User;
 import co.develhope.forum.services.CustomUserService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
@@ -42,6 +43,12 @@ public class TestController {
         System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
     }
 
+
+    @ZeroSecurity
+    @GetMapping("/find-user-by-id/{userID}")
+    public User findById (@PathVariable int userID){
+        return customUserService.findByID(userID);
+    }
 
     @ZeroSecurity
     @DeleteMapping("delete-self")
