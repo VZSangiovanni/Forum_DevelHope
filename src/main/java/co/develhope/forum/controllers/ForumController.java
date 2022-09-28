@@ -1,6 +1,7 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
@@ -81,6 +82,24 @@ public class ForumController {
     @GetMapping("/topic/read-by-category/{categoryTitle}")
     public List<Map<String, Object>> findAllTopicByCategoryTitle(@PathVariable String categoryTitle) {
         return forumService.findAllTopicByCategoryTitle(categoryTitle);
+    }
+
+    @ZeroSecurity
+    @PutMapping("/topic/update-topic-title/{topicID}")
+    public BaseResponse updateTopicTitle(@RequestBody UpdateTopicDTO updateTopicDTO, @PathVariable int topicID){
+        return forumService.updateTopicTitle(updateTopicDTO, topicID);
+    }
+
+    @ZeroSecurity
+    @PutMapping("/topic/update-topic-text/{topicID}")
+    public BaseResponse updateTopicText(@RequestBody UpdateTopicDTO updateTopicDTO, @PathVariable int topicID){
+        return forumService.updateTopicText(updateTopicDTO, topicID);
+    }
+
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @PutMapping("/topic/update-topic-category/{topicID}")
+    public BaseResponse changeTopicCategory(@RequestBody UpdateTopicDTO updateTopicDTO, @PathVariable int topicID){
+        return forumService.changeTopicCategory(updateTopicDTO, topicID);
     }
 
     // Under this comment place the Post Controller

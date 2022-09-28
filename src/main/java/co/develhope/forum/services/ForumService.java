@@ -1,13 +1,14 @@
 package co.develhope.forum.services;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
-import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +84,43 @@ public class ForumService {
 
     public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
         return forumRepository.findAllTopicByCategoryTitle(categoryTitle);
+    }
+
+    public BaseResponse updateTopicTitle(UpdateTopicDTO updateTopicDTO, int topicID) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")||principal.getRoles().contains("ROLE_FOUNDER")||principal.getUsername().equals(forumTopic.getUserName())) {
+            forumTopic.setTopicTitle(updateTopicDTO.getTopicTitle());
+            forumRepository.updateTopicTitle(forumTopic.getTopicTitle(), forumTopic.getId());
+            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
+        }else {
+            return new BaseResponse("Not your Topic");
+        }
+    }
+
+    public BaseResponse updateTopicText(UpdateTopicDTO updateTopicDTO, int topicID) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")||principal.getRoles().contains("ROLE_FOUNDER")||principal.getUsername().equals(forumTopic.getUserName())) {
+            forumTopic.setTopicText(updateTopicDTO.getTopicText());
+            forumRepository.updateTopicText(forumTopic.getTopicText(), forumTopic.getId());
+            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
+        }else {
+            return new BaseResponse("Not your Topic");
+        }
+    }
+
+    public BaseResponse changeTopicCategory(UpdateTopicDTO updateTopicDTO, int topicID){
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        ForumCategory forumCategory = forumRepository.findCategoryByTitle(updateTopicDTO.getTopicCategory());
+        int categoryID = forumCategory.getId();
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (forumCategory == null) return new BaseResponse("Category not Found");
+        forumTopic.setTopicCategory(updateTopicDTO.getTopicCategory());
+        forumRepository.changeTopicCategory(categoryID, topicID);
+        return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
     }
 
     // Under this comment place the Post Services
