@@ -133,6 +133,12 @@ public class ForumRepository {
             return null;
         }
     }
+    public int deleteTopic(int topicId) {
+
+        int count = jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
+
+        return count;
+    }
 
     // Under this comment place the Post Repository
 
@@ -163,5 +169,13 @@ public class ForumRepository {
             return false;
         }
     }
+
+    public int deletePost(int postId){
+
+        int count = jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
+
+        return count;
+    }
+
 
 }

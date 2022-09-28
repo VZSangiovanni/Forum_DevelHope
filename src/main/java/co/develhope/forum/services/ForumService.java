@@ -6,7 +6,6 @@ import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.repositories.ForumRepository;
-import co.develhope.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +17,6 @@ public class ForumService {
 
     @Autowired
     private ForumRepository forumRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public BaseResponse checkedCategoryTitle(String categoryTitle) {
         if (forumRepository.checkCategoryTitleExist(categoryTitle)){
@@ -77,4 +73,13 @@ public class ForumService {
     }
 
 
+    public boolean deleteTopic(int topicID) {
+        int deleteCount = forumRepository.deleteTopic(topicID);
+        return deleteCount == 1;
+    }
+
+    public boolean deletePost(int postID) {
+        int deleteCount = forumRepository.deletePost(postID);
+        return deleteCount == 1;
+    }
 }
