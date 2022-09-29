@@ -90,10 +90,13 @@ public class ForumService {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")||principal.getRoles().contains("ROLE_FOUNDER")||principal.getUsername().equals(forumTopic.getUserName())) {
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumTopic.getUserName())) {
             forumTopic.setTopicTitle(updateTopicDTO.getTopicTitle());
             forumRepository.updateTopicTitle(forumTopic.getTopicTitle(), forumTopic.getId());
-            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
+            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(),
+                    forumTopic.getTopicText(), forumTopic.getTopicCategory());
         }else {
             return new BaseResponse("Not your Topic");
         }
@@ -103,10 +106,13 @@ public class ForumService {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")||principal.getRoles().contains("ROLE_FOUNDER")||principal.getUsername().equals(forumTopic.getUserName())) {
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumTopic.getUserName())) {
             forumTopic.setTopicText(updateTopicDTO.getTopicText());
             forumRepository.updateTopicText(forumTopic.getTopicText(), forumTopic.getId());
-            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
+            return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(),
+                    forumTopic.getTopicText(), forumTopic.getTopicCategory());
         }else {
             return new BaseResponse("Not your Topic");
         }
@@ -120,7 +126,27 @@ public class ForumService {
         if (forumCategory == null) return new BaseResponse("Category not Found");
         forumTopic.setTopicCategory(updateTopicDTO.getTopicCategory());
         forumRepository.changeTopicCategory(categoryID, topicID);
-        return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(), forumTopic.getTopicCategory());
+        return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(),
+                forumTopic.getTopicCategory());
+    }
+
+    public BaseResponse deleteTopicByID (int topicID) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumTopic.getUserName())){
+            forumRepository.deleteTopicByID(topicID);
+            return new BaseResponse(BaseResponse.StatusEnum.OK,"Topic Deleted");
+        }else {
+            return new BaseResponse("You cannot delete this Topic");
+        }
+    }
+
+    public BaseResponse deleteAllTopic() {
+        forumRepository.deleteAllTopic();
+        return new BaseResponse(BaseResponse.StatusEnum.OK, "All topic Deleted");
     }
 
     // Under this comment place the Post Services

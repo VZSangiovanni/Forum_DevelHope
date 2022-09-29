@@ -82,6 +82,8 @@ public class ForumRepository {
     public void deleteAllCategory() {
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     public void deleteCategoryByName(String categoryTitle) {
@@ -204,6 +206,17 @@ public class ForumRepository {
     public void changeTopicCategory(int categoryID, int topicID) {
         String SQLChangeCategory = "UPDATE forum_topic SET Forum_Category_id_Forum_Category = ? WHERE id_Forum_Topic = ?";
         jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
+    }
+
+    public void deleteTopicByID (int topicID) {
+        String SQLDelete = "DELETE FROM forum_topic WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLDelete, topicID);
+    }
+
+    public void deleteAllTopic() {
+        jdbcTemplate.update("DELETE FROM forum_topic");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     // Under this comment place the Post Repository

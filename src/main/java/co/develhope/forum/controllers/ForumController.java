@@ -102,6 +102,18 @@ public class ForumController {
         return forumService.changeTopicCategory(updateTopicDTO, topicID);
     }
 
+    @ZeroSecurity
+    @DeleteMapping("/topic/delete/{topicID}")
+    public BaseResponse deleteTopicByID(@PathVariable int topicID){
+        return forumService.deleteTopicByID(topicID);
+    }
+
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/topic/delete-all")
+    public BaseResponse deleteAllTopic(){
+        return forumService.deleteAllTopic();
+    }
+
     // Under this comment place the Post Controller
 
     @ZeroSecurity
