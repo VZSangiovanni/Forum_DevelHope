@@ -1,6 +1,7 @@
 package co.develhope.forum.services;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.UpdatePostDTO;
 import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
@@ -173,6 +174,51 @@ public class ForumService {
         return forumRepository.findAllPostByTopicID(topicID);
     }
 
+    public BaseResponse updatePostText(UpdatePostDTO updatePostDTO, int postID) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumPost forumPost = forumRepository.findPostByID(postID);
+        if (forumPost == null) return new BaseResponse("Post not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumPost.getUserName())){
+            forumPost.setPostText(updatePostDTO.getPostText());
+            forumRepository.updatePostText(forumPost.getPostText(), forumPost.getId());
+            return new UpdatePostDTO(forumPost.getId(),forumPost.getPostText(), forumPost.getPostTopic());
+        }else {
+            return new BaseResponse("Not your Post");
+        }
+    }
+
+    public BaseResponse changePostTopic(int topicID, int postID) {
+        ForumPost forumPost = forumRepository.findPostByID(postID);
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (forumPost == null) return new BaseResponse("Post not Found");
+        forumRepository.findTopicTitleByID(topicID);
+        String topicTitle = forumRepository.findTopicTitleByID(topicID);
+        forumPost.setPostTopic(topicTitle);
+        forumRepository.changePostTopic(topicID, postID);
+        return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
+    }
+
+    public BaseResponse deletePostByID (int postID) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumPost forumPost = forumRepository.findPostByID(postID);
+        if (forumPost == null) return new BaseResponse("Post not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumPost.getUserName())){
+            forumRepository.deletePostByID(postID);
+            return new BaseResponse(BaseResponse.StatusEnum.OK,"Post Deleted");
+        }else {
+            return new BaseResponse("You cannot delete this Post");
+        }
+    }
+
+    public BaseResponse deleteAllPost(){
+        forumRepository.deleteAllPost();
+        return new BaseResponse(BaseResponse.StatusEnum.OK, "All Post Deleted");
+    }
 
 
 }

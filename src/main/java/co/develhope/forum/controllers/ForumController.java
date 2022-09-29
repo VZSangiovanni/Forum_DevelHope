@@ -1,6 +1,7 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.UpdatePostDTO;
 import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
@@ -97,7 +98,7 @@ public class ForumController {
     }
 
     @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
-    @PutMapping("/topic/update-topic-category/{topicID}")
+    @PutMapping("/topic/change-topic-category/{topicID}")
     public BaseResponse changeTopicCategory(@RequestBody UpdateTopicDTO updateTopicDTO, @PathVariable int topicID){
         return forumService.changeTopicCategory(updateTopicDTO, topicID);
     }
@@ -144,6 +145,30 @@ public class ForumController {
     @GetMapping("/post/read-by-topic/{topicID}")
     public List<Map<String, Object>> readAllPostByTopicID(@PathVariable int topicID) {
         return forumService.findAllPosyByTopicID(topicID);
+    }
+
+    @ZeroSecurity
+    @PutMapping("/post/update-post-text/{postID}")
+    public BaseResponse updatePostText(@RequestBody UpdatePostDTO updatePostDTO, @PathVariable int postID) {
+        return forumService.updatePostText(updatePostDTO, postID);
+    }
+
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @PutMapping("/post/change-post-topic/{postID}")
+    public BaseResponse changePostTopic(@RequestParam int topicID, @PathVariable int postID) {
+        return forumService.changePostTopic(topicID, postID);
+    }
+
+    @ZeroSecurity
+    @DeleteMapping("/post/delete/{postID}")
+    public BaseResponse deletePostByID(@PathVariable int postID){
+        return forumService.deletePostByID(postID);
+    }
+
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/post/delete-all")
+    public BaseResponse deleteAllPost(){
+        return forumService.deleteAllPost();
     }
 
 }

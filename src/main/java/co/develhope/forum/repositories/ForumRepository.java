@@ -1,6 +1,7 @@
 package co.develhope.forum.repositories;
 
 import co.develhope.forum.dao.rowmapper.CategoryRowMapper;
+import co.develhope.forum.dao.rowmapper.PostRowMapper;
 import co.develhope.forum.dao.rowmapper.TopicRowMapper;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
@@ -125,7 +126,8 @@ public class ForumRepository {
 
     public ForumTopic findTopicByID(int id) {
         try {
-            ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic INNER JOIN forum_category ON id_Forum_Category=Forum_Category_id_Forum_Category INNER JOIN user ON id_User=User_id_User WHERE id_Forum_Topic = ?",
+            ForumTopic forumTopic = jdbcTemplate.queryForObject(
+                    "SELECT * FROM forum_topic INNER JOIN forum_category ON id_Forum_Category=Forum_Category_id_Forum_Category INNER JOIN user ON id_User=User_id_User WHERE id_Forum_Topic = ?",
                     new TopicRowMapper(), id);
             return forumTopic;
         }catch (IncorrectResultSizeDataAccessException e){
@@ -249,6 +251,18 @@ public class ForumRepository {
         }
     }
 
+    public ForumPost findPostByID(int id){
+        try {
+            ForumPost forumPost = jdbcTemplate.queryForObject(
+                    "SELECT * FROM forum_post AS fp INNER JOIN forum_topic AS ft ON ft.id_Forum_Topic=fp.Forum_Topic_id_Forum_Topic INNER JOIN user AS u ON u.id_User=fp.User_id_User WHERE id_Forum_Post = ?",
+                    new PostRowMapper(), id);
+            return forumPost;
+        }catch (IncorrectResultSizeDataAccessException e){
+            log.error("ERROR", e);
+            return null;
+        }
+    }
+
     public List<Map<String, Object>> findAllPost() {
         String SQL = "SELECT * From forum_post";
         try {
@@ -295,6 +309,24 @@ public class ForumRepository {
         }
     }
 
+    public void updatePostText(String postText, int postID) {
+        String SQLUpdateText = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLUpdateText,postText, postID);
+    }
 
+    public void changePostTopic(int topicID, int postID) {
+        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLChangeCategory,topicID,postID);
+    }
+
+    public void deletePostByID (int postID) {
+        String SQLDelete = "DELETE FROM forum_post WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLDelete, postID);
+    }
+
+    public void deleteAllPost() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    }
 
 }
