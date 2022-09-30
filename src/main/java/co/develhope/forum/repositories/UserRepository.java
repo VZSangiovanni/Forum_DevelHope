@@ -1,7 +1,9 @@
 package co.develhope.forum.repositories;
 
+import co.develhope.forum.dao.rowmapper.TopicRow;
 import co.develhope.forum.dao.rowmapper.UserRowMapper;
 import co.develhope.forum.dto.response.UserDTO;
+import co.develhope.forum.model.Topic;
 import co.develhope.forum.model.User;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.dao.UserDao;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
@@ -16,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 // inspired by https://www.devxperiences.com/pzwp1/2022/05/19/spring-boot-security-configuration-practically-explained-part2-jdbc-authentication/
 @Repository
@@ -24,7 +27,7 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private User findById(int id) {
+    public User findById(int id) {
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE id_user = ?",
                     BeanPropertyRowMapper.newInstance(User.class), id);
@@ -82,16 +85,17 @@ public class UserRepository {
         List<User> usersList = jdbcTemplate.queryForList(query, User.class, userName);
         return usersList;
     }
+
     public List<Map<String, Object>> getUserTopics(String userId) {
         String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
-        List<Map<String, Object>> userTopics= jdbcTemplate.queryForList(querySQL,new TopicRowMapper(),userId);
+        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRow(), userId);
         return userTopics;
     }
 
     public Topic findByCategory() {
         try {
             Topic topic = jdbcTemplate.queryForObject("SELECT * FROM forum_category f INNER JOIN forum_topic ft ON t.id_Forum_Category=fc.Forum_Category_id_Forum_Category WHERE t.forum_category_id_Forum_Category=?",
-                    new TopicRowMapper() );
+                    new TopicRow());
             int topicModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Category FROM `forum_category` WHERE id_Forum_Category =?",
                     Integer.class, new Object[]{topic});
             topic.setIdCategory(topicModelID);
@@ -99,4 +103,5 @@ public class UserRepository {
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
-
+    }
+}

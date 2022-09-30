@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -49,4 +50,15 @@ public class CustomUserService implements UserService{
 
         return userRepository.users(userDetails.getUsername());
     }
-}
+    public List<Map<String, Object>> findAllTopics() {
+        return userRepository.getUserTopics(toString());
+    }
+
+    public User readMyTopic(int userId) {
+        return userRepository.findById(userId);
+    }
+    public List<Map<String, Object>> findAllTopicsByCategory() {
+        return (List<Map<String, Object>>) userRepository.findByCategory();
+    }
+
+    }

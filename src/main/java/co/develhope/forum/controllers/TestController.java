@@ -63,7 +63,7 @@ public class TestController {
 
 	@RoleSecurity(value = {"ROLE_FOUNDER, ROLE_ADMIN"})
 	@GetMapping("/read-users")
-		public User readUsers() {
+	public User readUsers() {
 
 		List<User> users = customUserService.findAll(UserDetails.builder().build());
 
@@ -71,14 +71,23 @@ public class TestController {
 
 		return (User) users;
 	}
-	public List<Map<String, Object>> findAllTopics() {
-		return userRepository.getUserTopics(toString());
+	@ZeroSecurity
+	@GetMapping("/read-my-topics")
+	public User readMyTopics() {
+		AuthenticationContext.Principal principal = AuthenticationContext.get();
+		return customUserService.readMyTopic(principal.getUserId().intValue());
 	}
 
-	public User readMyTopic(int userId) {
-		return userRepository.findById(userId);
+	@ZeroSecurity
+	@GetMapping("/read-all-topics")
+	public List<Map<String, Object>> readTopics(){
+		return customUserService.findAllTopics();
 	}
-	public List<Map<String, Object>> findAllTopicsByCategory() {
-		return (List<Map<String, Object>>) userRepository.findByCategory();
+
+	@ZeroSecurity
+	@GetMapping("/read-topics_by_category")
+	public List<Map<String, Object>> readTopicsByCategory(){
+		return customUserService.findAllTopicsByCategory();
 	}
-}
+
+	}
