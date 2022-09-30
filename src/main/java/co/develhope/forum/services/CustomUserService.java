@@ -1,6 +1,5 @@
 package co.develhope.forum.services;
 
-
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.RoleRepository;
@@ -79,9 +78,7 @@ public class CustomUserService implements UserService {
         int deleteCount = userRepository.deleteUser(username);
 
         return deleteCount == 1;
-
     }
-
 
     public User readUser(String userName) {
         return userRepository.findByName((userName));

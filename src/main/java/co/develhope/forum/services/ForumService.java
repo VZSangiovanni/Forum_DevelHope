@@ -40,14 +40,20 @@ public class ForumService {
         return forumRepository.readAllCategory();
     }
 
-
     public ForumCategory findCategoryByTitle(String categoryTitle){
         return forumRepository.findCategoryByTitle(categoryTitle);
     }
 
-
     public void deleteAllCategory(){
         forumRepository.deleteAllCategory();
+    }
+    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    public void deleteAllPost(){
+        forumRepository.deleteAllPost();
+    }
+    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    public void deleteAllTopics() {
+        forumRepository.deleteAllTopics();
     }
 
     public void deleteOneCategory(String categoryTitle){
@@ -63,6 +69,10 @@ public class ForumService {
 
         return forumTopic;
     }
+    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    public void deleteTopic(int topicID) {
+        forumRepository.deleteTopic(topicID);
+    }
 
     // Under this comment place the Post Services
 
@@ -71,15 +81,12 @@ public class ForumService {
         System.out.println(forumPost.toString());
         return forumPost;
     }
-
-
-    public boolean deleteTopic(int topicID) {
-        int deleteCount = forumRepository.deleteTopic(topicID);
-        return deleteCount == 1;
+    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    public void deletePost(int postID) {
+        forumRepository.deletePost(postID);
     }
-
-    public boolean deletePost(int postID) {
-        int deleteCount = forumRepository.deletePost(postID);
-        return deleteCount == 1;
+    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    public void deleteMyPost(int postID) {
+        forumRepository.deleteThisPost(postID);
     }
 }

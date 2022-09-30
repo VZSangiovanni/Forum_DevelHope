@@ -64,17 +64,20 @@ public class ForumRepository {
         return forumCategoryList;
     }
 
-
     public ForumCategory findCategoryByTitle(String categoryTitle){
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
                 new CategoryRowMapper(), categoryTitle.toLowerCase().trim());
         return forumCategory;
     }
 
-
     public void deleteAllCategory() {
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
+    }
+    //QQQQQQQQQQQQQQ
+    public void deleteAllPost() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     public void deleteCategoryByName(String categoryTitle) {
@@ -133,11 +136,14 @@ public class ForumRepository {
             return null;
         }
     }
-    public int deleteTopic(int topicId) {
 
-        int count = jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
-
-        return count;
+    public void deleteTopic(int topicId) {
+        jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
+    }
+    //QQQQQQQQQQQQQQ
+    public void deleteAllTopics() {
+        jdbcTemplate.update("DELETE FROM forum_topic");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
     }
 
     // Under this comment place the Post Repository
@@ -169,13 +175,12 @@ public class ForumRepository {
             return false;
         }
     }
-
-    public int deletePost(int postId){
-
-        int count = jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
-
-        return count;
+    //QQQQQQQQQQQQQQ
+    public void deletePost(int postId){
+        jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
     }
-
-
+    //QQQQQQQQQQQQQQ
+    public void deleteThisPost(int postID) {
+        jdbcTemplate.update("DELETE FROM forum_post WHERE id_Forum_Post = ?", postID);
+    }
 }

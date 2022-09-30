@@ -26,7 +26,7 @@ public class ForumController {
     @Autowired
     private CustomUserService customUserService;
 
-    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @RoleSecurity(value = {"ROLE_USER"})
     @PostMapping("/category/create")
     public BaseResponse createCategory(@RequestBody ForumCategory forumCategory) {
         return forumService.createCategory(forumCategory);
@@ -38,13 +38,11 @@ public class ForumController {
         return forumService.readAllCategory();
     }
 
-
     @ZeroSecurity
     @GetMapping("/category/read/{categoryTitle}")
     public ForumCategory findCategoryByTitle(@PathVariable String categoryTitle){
         return forumService.findCategoryByTitle(categoryTitle);
     }
-
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/all")
@@ -59,10 +57,22 @@ public class ForumController {
     }
 
     // Under this comment place the Topic Controller
+
     @ZeroSecurity
     @PostMapping("/topic/create/{categoryTitle}")
     public BaseResponse createTopic(@RequestBody ForumTopic forumTopic, @PathVariable String categoryTitle) {
         return forumService.createTopic(forumTopic, categoryTitle);
+    }
+
+    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @DeleteMapping("/topic/delete/{topicID}")
+    public void deleteTopic (@PathVariable int topicID) {
+        forumService.deleteTopic(topicID);
+    }
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/topic/delete/allTopic")
+    public void deleteAllTopics(){
+        forumService.deleteAllTopics();
     }
 
     // Under this comment place the Post Controller
@@ -73,27 +83,19 @@ public class ForumController {
         return forumService.createPost(forumPost, topicID);
     }
 
-    @RoleSecurity(value = {"ROLE_USER"})
-    @DeleteMapping("/post/delete/{categoryTitle}")
-    public BaseResponse deleteTopicUser (@PathVariable int topicID) {
-        return forumService.deleteTopic(topicID);
-        }
-
-        //Un utente può cancellare i suoi topic
-        //Dall'Moderator in su possono essere cancellati i Topic degli utenti singolarmente
-        //Il Founder può cancellare tutti i topic presenti in una categoria (attenzione al C
-
-    @RoleSecurity(value = {"ROLE_FOUNDER"})
-
     //Un utente può cancellare i suoi post
     //Dall'Moderator in su possono essere cancellati i post degli utenti singolarmente
     //Il Founder può cancellare tutti i post presenti in una categoria
 
-    @ZeroSecurity
-    @DeleteMapping("/post/delete/{topicID}")
-    public BaseResponse deletePost(@PathVariable int postID) {
-        return forumService.deletePost(postID);
+    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @DeleteMapping("/post/delete/{postID}")
+    public void deletePost(@PathVariable int postID) {
+        forumService.deletePost(postID);
     }
 
-
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/category/delete/allPost")
+    public void deleteAllPost(){
+        forumService.deleteAllPost();
+    }
 }
