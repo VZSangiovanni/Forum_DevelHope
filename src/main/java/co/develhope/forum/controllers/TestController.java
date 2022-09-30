@@ -21,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
@@ -70,5 +71,14 @@ public class TestController {
 
 		return (User) users;
 	}
+	public List<Map<String, Object>> findAllTopics() {
+		return userRepository.getUserTopics(toString());
+	}
 
+	public User readMyTopic(int userId) {
+		return userRepository.findById(userId);
+	}
+	public List<Map<String, Object>> findAllTopicsByCategory() {
+		return (List<Map<String, Object>>) userRepository.findByCategory();
+	}
 }

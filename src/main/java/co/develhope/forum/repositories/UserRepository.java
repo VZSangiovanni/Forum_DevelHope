@@ -82,4 +82,21 @@ public class UserRepository {
         List<User> usersList = jdbcTemplate.queryForList(query, User.class, userName);
         return usersList;
     }
-}
+    public List<Map<String, Object>> getUserTopics(String userId) {
+        String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
+        List<Map<String, Object>> userTopics= jdbcTemplate.queryForList(querySQL,new TopicRowMapper(),userId);
+        return userTopics;
+    }
+
+    public Topic findByCategory() {
+        try {
+            Topic topic = jdbcTemplate.queryForObject("SELECT * FROM forum_category f INNER JOIN forum_topic ft ON t.id_Forum_Category=fc.Forum_Category_id_Forum_Category WHERE t.forum_category_id_Forum_Category=?",
+                    new TopicRowMapper() );
+            int topicModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Category FROM `forum_category` WHERE id_Forum_Category =?",
+                    Integer.class, new Object[]{topic});
+            topic.setIdCategory(topicModelID);
+            return topic;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+
