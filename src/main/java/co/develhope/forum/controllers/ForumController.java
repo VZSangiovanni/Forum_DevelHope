@@ -83,19 +83,15 @@ public class ForumController {
         return forumService.createPost(forumPost, topicID);
     }
 
-    //Un utente può cancellare i suoi post
-    //Dall'Moderator in su possono essere cancellati i post degli utenti singolarmente
-    //Il Founder può cancellare tutti i post presenti in una categoria
-
     @RoleSecurity(value = {"ROLE_MODERATOR"})
     @DeleteMapping("/post/delete/{postID}")
-    public void deletePost(@PathVariable int postID) {
+    public void deleteSinglePost(@PathVariable int postID) {
         forumService.deletePost(postID);
     }
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/allPost")
     public void deleteAllPost(){
-        forumService.deleteAllPost();
+        forumService.deleteAllPosts();
     }
 }

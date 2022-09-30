@@ -47,11 +47,11 @@ public class ForumService {
     public void deleteAllCategory(){
         forumRepository.deleteAllCategory();
     }
-    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-    public void deleteAllPost(){
-        forumRepository.deleteAllPost();
+
+    public void deleteAllPosts(){
+        forumRepository.deleteAllPostsQuery();
     }
-    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+
     public void deleteAllTopics() {
         forumRepository.deleteAllTopics();
     }
@@ -69,7 +69,7 @@ public class ForumService {
 
         return forumTopic;
     }
-    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    //
     public void deleteTopic(int topicID) {
         forumRepository.deleteTopic(topicID);
     }
@@ -81,12 +81,9 @@ public class ForumService {
         System.out.println(forumPost.toString());
         return forumPost;
     }
-    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+
     public void deletePost(int postID) {
-        forumRepository.deletePost(postID);
+        forumRepository.deleteSinglePostQuery(postID);
     }
-    //QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-    public void deleteMyPost(int postID) {
-        forumRepository.deleteThisPost(postID);
-    }
+
 }

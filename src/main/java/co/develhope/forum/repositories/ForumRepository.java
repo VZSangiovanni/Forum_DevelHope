@@ -74,7 +74,7 @@ public class ForumRepository {
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
     }
-    //QQQQQQQQQQQQQQ
+
     public void deleteAllPost() {
         jdbcTemplate.update("DELETE FROM forum_post");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
@@ -140,10 +140,11 @@ public class ForumRepository {
     public void deleteTopic(int topicId) {
         jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
     }
-    //QQQQQQQQQQQQQQ
+
     public void deleteAllTopics() {
         jdbcTemplate.update("DELETE FROM forum_topic");
         jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     // Under this comment place the Post Repository
@@ -175,12 +176,14 @@ public class ForumRepository {
             return false;
         }
     }
-    //QQQQQQQQQQQQQQ
-    public void deletePost(int postId){
+
+    public void deleteSinglePostQuery(int postId){
         jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
     }
-    //QQQQQQQQQQQQQQ
-    public void deleteThisPost(int postID) {
-        jdbcTemplate.update("DELETE FROM forum_post WHERE id_Forum_Post = ?", postID);
+
+    public void deleteAllPostsQuery() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
+
 }
