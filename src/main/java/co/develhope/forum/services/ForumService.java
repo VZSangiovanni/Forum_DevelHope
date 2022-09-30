@@ -1,12 +1,15 @@
 package co.develhope.forum.services;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.PostDTO;
+import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.Map;
 @Service
 public class ForumService {
 
+
     @Autowired
     private ForumRepository forumRepository;
 
@@ -23,17 +27,17 @@ public class ForumService {
     private UserRepository userRepository;
 
     public BaseResponse checkedCategoryTitle(String categoryTitle) {
-        if (forumRepository.checkCategoryTitleExist(categoryTitle)){
+        if (forumRepository.checkCategoryTitleExist(categoryTitle)) {
             throw new ForumCategoryTitleAlreadyExistException(categoryTitle);
-        }else {
+        } else {
             return new BaseResponse(BaseResponse.StatusEnum.OK, "Category Title Available");
         }
     }
 
     public BaseResponse createCategory(ForumCategory forumCategory) {
-        if (forumRepository.checkCategoryTitleExist(forumCategory.getCategoryTitle())){
+        if (forumRepository.checkCategoryTitleExist(forumCategory.getCategoryTitle())) {
             throw new ForumCategoryTitleAlreadyExistException(forumCategory.getCategoryTitle());
-        }else {
+        } else {
             forumRepository.createCategory(forumCategory);
             System.out.println(forumCategory.toString());
             return forumCategory;
@@ -45,16 +49,16 @@ public class ForumService {
     }
 
 
-    public ForumCategory findCategoryByTitle(String categoryTitle){
+    public ForumCategory findCategoryByTitle(String categoryTitle) {
         return forumRepository.findCategoryByTitle(categoryTitle);
     }
 
 
-    public void deleteAllCategory(){
+    public void deleteAllCategory() {
         forumRepository.deleteAllCategory();
     }
 
-    public void deleteOneCategory(String categoryTitle){
+    public void deleteOneCategory(String categoryTitle) {
         forumRepository.deleteCategoryByName(categoryTitle);
     }
 
@@ -77,4 +81,56 @@ public class ForumService {
     }
 
 
+    public BaseResponse userUpdateTopicTitle(TopicDTO topicDTO) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+
+
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
+
+            String topicTitle = topicDTO.getTopicTitle();
+            forumRepository.userUpdateTopicTitle(topicTitle);
+
+
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "updated");
+
+        } else {
+            return new BaseResponse("not updated");
+        }
+    }
+
+
+    public BaseResponse userUpdateTopicText(TopicDTO topicDTO) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
+            String topicText = topicDTO.getTopicText();
+
+            forumRepository.userUpdateTopicText(topicText);
+
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "updated");
+
+        } else {
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "not updated");
+        }
+    }
+
+
+    public BaseResponse postUpdateText(PostDTO postDTO) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
+
+            String postText = postDTO.getPostText();
+
+            forumRepository.postUpdateText(postText);
+
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "text updated");
+
+        } else {
+
+            return new BaseResponse(BaseResponse.StatusEnum.OK, " text not updated");
+        }
+
+
+    }
 }

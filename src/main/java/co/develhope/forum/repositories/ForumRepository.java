@@ -2,6 +2,7 @@ package co.develhope.forum.repositories;
 
 import co.develhope.forum.dao.rowmapper.CategoryRowMapper;
 import co.develhope.forum.dao.rowmapper.TopicRowMapper;
+import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
@@ -164,4 +165,28 @@ public class ForumRepository {
         }
     }
 
+    public void   userUpdateTopicTitle(String topictitle) {
+
+        String SQLPost = "UPDATE forum_topic SET Topic_title = ? WHERE id_Forum_Topic = 1";
+
+         jdbcTemplate.update(SQLPost, topictitle);
+
+
+
+
+    }
+
+
+    public void userUpdateTopicText(String topictext) {
+        String SQLPost = "UPDATE forum_topic SET Topic_text = ? WHERE id_Forum_Topic = 1";
+        jdbcTemplate.update(SQLPost,topictext);
+
+    }
+
+
+    public void postUpdateText(String postText) {
+
+        String SQLPost = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post";
+        jdbcTemplate.update(SQLPost,postText);
+    }
 }

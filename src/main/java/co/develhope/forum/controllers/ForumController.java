@@ -1,6 +1,8 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.PostDTO;
+import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
@@ -35,7 +37,7 @@ public class ForumController {
 
     @ZeroSecurity
     @GetMapping("/category/read/{categoryTitle}")
-    public ForumCategory findCategoryByTitle(@PathVariable String categoryTitle){
+    public ForumCategory findCategoryByTitle(@PathVariable String categoryTitle) {
         return forumService.findCategoryByTitle(categoryTitle);
     }
 
@@ -48,7 +50,7 @@ public class ForumController {
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/{categoryTitle}")
-    public void deleteOneCategory(@PathVariable String categoryTitle){
+    public void deleteOneCategory(@PathVariable String categoryTitle) {
         forumService.deleteOneCategory(categoryTitle);
     }
 
@@ -65,6 +67,37 @@ public class ForumController {
     @PostMapping("/post/create/{topicID}")
     public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
         return forumService.createPost(forumPost, topicID);
+
+
     }
+
+     @ZeroSecurity
+    @PutMapping("/topic/update/title")
+    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO){
+
+
+        return forumService.userUpdateTopicTitle(topicDTO);
+
+    }
+
+    @ZeroSecurity
+    @PutMapping("/topic/update/text")
+    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO){
+
+
+        return forumService.userUpdateTopicText(topicDTO);
+
+    }
+
+    @ZeroSecurity
+    @PutMapping("/post/update/text")
+    public BaseResponse postUpdateText(@RequestBody PostDTO postDTO){
+
+        return forumService.postUpdateText(postDTO);
+    }
+
+
+
+
 
 }
