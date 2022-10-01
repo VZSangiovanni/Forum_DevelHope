@@ -76,5 +76,28 @@ public class ForumService {
         return forumPost;
     }
 
+    public List<Map<String, Object>> findAllTopics() {
+        return forumRepository.readAllTopics();
+    }
 
-}
+    public List<Map<String, Object>> findMyTopics() {
+        return forumRepository.getMyTopics();
+    }
+
+
+    public List<Map<String, Object>> findAllTopicsByCategory() {
+        return (List<Map<String, Object>>) forumRepository.findByCategory();
+    }
+    public List<Map<String, Object>> findAllPosts() {
+        return forumRepository.readAllPosts();
+    }
+
+    public List<Map<String, Object>> findMyPosts() {
+        return forumRepository.getMyTopics();
+    }
+
+    public List<Map<String, Object>> findAllPostsByTopic() {
+        return (List<Map<String, Object>>) forumRepository.findByTopic();
+    }
+    }
+

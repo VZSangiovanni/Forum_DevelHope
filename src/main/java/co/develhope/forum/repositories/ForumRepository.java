@@ -1,6 +1,7 @@
 package co.develhope.forum.repositories;
 
 import co.develhope.forum.dao.rowmapper.CategoryRowMapper;
+import co.develhope.forum.dao.rowmapper.PostRowMapper;
 import co.develhope.forum.dao.rowmapper.TopicRowMapper;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
@@ -163,5 +164,50 @@ public class ForumRepository {
             return false;
         }
     }
+    public List<Map<String, Object>>readAllTopics() {
+        List<Map<String, Object>> forumTopicList = jdbcTemplate.queryForList("SELECT * FROM forum_topic");
+        return forumTopicList;
+    }
+    public List<Map<String, Object>> getMyTopics() {
+        String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
+        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRowMapper());
+        return userTopics;
 
+    }
+
+    public ForumTopic findByCategory() {
+        try {
+            ForumTopic topic = jdbcTemplate.queryForObject("SELECT * FROM forum_category fc INNER JOIN forum_topic ft ON t.id_Forum_Category=fc.Forum_Category_id_Forum_Category WHERE t.forum_category_id_Forum_Category=?",
+                    new TopicRowMapper());
+            int topicModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Category FROM `forum_category` WHERE id_Forum_Category =?",
+                    Integer.class, new Object[]{topic});
+            topic.setTopicCategory(topic.getTopicCategory());
+            return topic;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+    public List<Map<String, Object>>readAllPosts() {
+        List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
+        return forumPostsList;
+    }
+    public List<Map<String, Object>> getMyPosts() {
+        String querySQL = "SELECT * FROM forum_post where User_id_User =?";
+        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRowMapper());
+        return userTopics;
+
+    }
+
+    public ForumPost findByTopic() {
+        try {
+            ForumPost post = jdbcTemplate.queryForObject("SELECT * FROM forum_topic ft INNER JOIN forum_post fp ON p.id_Forum_Topic=ft.Forum_Topic_id_Forum_Topic WHERE p.forum_Topic_id_Forum_Topic=?",
+                    new PostRowMapper());
+            int postModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Topic FROM `forum_Topic` WHERE id_Forum_Topic =?",
+                    Integer.class, new Object[]{post});
+            post.setPostTopic(post.getPostTopic());
+            return post;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
 }
