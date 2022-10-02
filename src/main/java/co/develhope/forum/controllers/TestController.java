@@ -46,6 +46,12 @@ public class TestController {
         System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
     }
 
+    @RoleSecurity(value = {"ROLE_USER", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @PutMapping("/ban-user/{username}")
+    public BaseResponse banUser(@RequestParam boolean banned, @PathVariable String username) {
+        return customUserService.banUser(banned, username);
+    }
+
 
     @ZeroSecurity
     @DeleteMapping("delete-self")

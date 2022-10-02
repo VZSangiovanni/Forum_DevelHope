@@ -71,6 +71,11 @@ public class UserRepository {
         }
     }
 
+    public void banUser(boolean banned, String username) {
+        String banSQL = "UPDATE user SET isActive = ? WHERE User_Name = ?";
+        jdbcTemplate.update(banSQL, banned, username);
+    }
+
     public List<String> getUserRoles(String userName) {
 
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";

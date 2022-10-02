@@ -74,6 +74,20 @@ public class CustomUserService implements UserService {
 
 // User CRUD
 
+    public BaseResponse banUser(boolean banned, String username) {
+        User user = userRepository.findByName(username);
+        if (user == null) return new BaseResponse("User Not Found");
+        if (banned){
+        user.setActive(false);
+        userRepository.banUser(user.getActive(), user.getUsername());
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Banned");
+        }else {
+            user.setActive(true);
+            userRepository.banUser(user.getActive(), user.getUsername());
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Unbanned");
+        }
+    }
+
     public boolean deleteUser(String username) {
 
         int deleteCount = userRepository.deleteUser(username);
