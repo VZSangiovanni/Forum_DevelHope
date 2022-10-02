@@ -91,7 +91,7 @@ public class ForumController {
 
      @ZeroSecurity
     @PutMapping("/topic/update/title/{topicID}")
-    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,PathVariable topicID){
+    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
 
 
         return forumService.userUpdateTopicTitle(topicDTO,topicID);
@@ -100,7 +100,7 @@ public class ForumController {
 
     @ZeroSecurity
     @PutMapping("/topic/update/text/{topicID}")
-    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO,PathVariable topicID){
+    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
 
 
         return forumService.userUpdateTopicText(topicDTO,topicID);
@@ -108,11 +108,28 @@ public class ForumController {
     }
 
     @ZeroSecurity
-    @PutMapping("/post/update/text")
-    public BaseResponse postUpdateText(@RequestBody PostDTO postDTO){
+    @PutMapping("/post/update-post-text/{postID}")
+    public BaseResponse postUpdateText(@RequestBody PostDTO postDTO,@PathVariable int postID){
 
-        return forumService.postUpdateText(postDTO);
+        return forumService.postUpdateText(postDTO,postID);
     }
+
+
+    @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
+    @PutMapping("/topic/change-topic-category/{topicID}")
+    public BaseResponse changeTopicCategory(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
+     return forumService.changeTopicCategory(topicDTO,topicID);
+
+    }
+
+    @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
+    @PutMapping("/post/change-post-topic/{postID}")
+    public BaseResponse changePostTopic(@RequestParam int topicID,@PathVariable int postID){
+       return  forumService.changePostTopic(topicID,postID);
+
+
+    }
+
 
 
 
