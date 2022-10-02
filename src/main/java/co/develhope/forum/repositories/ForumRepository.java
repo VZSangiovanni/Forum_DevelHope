@@ -33,28 +33,28 @@ public class ForumRepository {
         try {
             return jdbcTemplate.queryForObject("SELECT 1 FROM forum_category WHERE Category_Title = ?",
                     Integer.class, categoryTitle) != null;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
 
-    public boolean createCategory(ForumCategory forumCategory){
-            String SQL = "INSERT INTO forum_category (Category_Title) values (?)";
-            int count = 0;
-        try{
-            count+= jdbcTemplate.update(SQL, new Object[]{forumCategory.getCategoryTitle()});
+    public boolean createCategory(ForumCategory forumCategory) {
+        String SQL = "INSERT INTO forum_category (Category_Title) values (?)";
+        int count = 0;
+        try {
+            count += jdbcTemplate.update(SQL, new Object[]{forumCategory.getCategoryTitle()});
 
-           if (count == 1) {
-               Integer categoryID = jdbcTemplate.queryForObject
-                       ("SELECT id_Forum_Category FROM forum_category WHERE Category_Title = ?",
-                               Integer.class, new Object[]{forumCategory.getCategoryTitle()});
+            if (count == 1) {
+                Integer categoryID = jdbcTemplate.queryForObject
+                        ("SELECT id_Forum_Category FROM forum_category WHERE Category_Title = ?",
+                                Integer.class, new Object[]{forumCategory.getCategoryTitle()});
 
-               forumCategory.setId(categoryID);
-           }
+                forumCategory.setId(categoryID);
+            }
 
             return count == 1;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("ERROR", e);
             return false;
         }
@@ -66,7 +66,7 @@ public class ForumRepository {
     }
 
 
-    public ForumCategory findCategoryByTitle(String categoryTitle){
+    public ForumCategory findCategoryByTitle(String categoryTitle) {
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
                 new CategoryRowMapper(), categoryTitle.toLowerCase().trim());
         return forumCategory;
@@ -109,7 +109,7 @@ public class ForumRepository {
                 forumTopic.setId(topicID);
             }
             return count == 1;
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("ERROR", e);
             return false;
         }
@@ -120,7 +120,7 @@ public class ForumRepository {
             ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic,forum_category,user WHERE id_Forum_Topic = ?",
                     new TopicRowMapper(), id);
             return forumTopic;
-        }catch (IncorrectResultSizeDataAccessException e){
+        } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
     }
@@ -130,7 +130,7 @@ public class ForumRepository {
             String topicTitle = jdbcTemplate.queryForObject("SELECT Topic_Title FROM forum_topic WHERE id_Forum_Topic = ?",
                     String.class, id);
             return topicTitle;
-        }catch (IncorrectResultSizeDataAccessException e){
+        } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
     }
@@ -159,19 +159,17 @@ public class ForumRepository {
                 forumPost.setId(postID);
             }
             return count == 1;
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("ERROR", e);
             return false;
         }
     }
 
-    public void   userUpdateTopicTitle(String topictitle) {
+    public void userUpdateTopicTitle(String topictitle) {
 
         String SQLPost = "UPDATE forum_topic SET Topic_title = ? WHERE id_Forum_Topic = 1";
 
-         jdbcTemplate.update(SQLPost, topictitle);
-
-
+        jdbcTemplate.update(SQLPost, topictitle);
 
 
     }
@@ -179,7 +177,7 @@ public class ForumRepository {
 
     public void userUpdateTopicText(String topictext) {
         String SQLPost = "UPDATE forum_topic SET Topic_text = ? WHERE id_Forum_Topic = 1";
-        jdbcTemplate.update(SQLPost,topictext);
+        jdbcTemplate.update(SQLPost, topictext);
 
     }
 
@@ -187,6 +185,15 @@ public class ForumRepository {
     public void postUpdateText(String postText) {
 
         String SQLPost = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post";
-        jdbcTemplate.update(SQLPost,postText);
+        jdbcTemplate.update(SQLPost, postText);
     }
+
+    public void changeDirectoryTopic() {
+
+        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
+
+
+    }
+
+
 }
