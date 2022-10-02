@@ -135,23 +135,21 @@ public class ForumService {
 
     public BaseResponse postUpdateText(PostDTO postDTO,int postID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-        ForumPost forumPost = forumRepository.findPostByID(postID)
-
-        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
-
-            String postText = postDTO.getPostText();
-
-            forumRepository.postUpdateText(postText);
-
-            return new BaseResponse(BaseResponse.StatusEnum.OK, "text updated");
-
-        } else {
-
-            return new BaseResponse(BaseResponse.StatusEnum.OK, " text not updated");
+        ForumPost forumPost = forumRepository.findPostByID(postID);
+        if (forumPost == null) return new BaseResponse("Post not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
+                ||principal.getRoles().contains("ROLE_FOUNDER")
+                ||principal.getUsername().equals(forumPost.getUserName())){
+            forumPost.setPostText(PostDTO.getPostText());
+            forumRepository.postUpdateText(forumPost.getPostText(), forumPost.getId());
+            return new PostDTO(forumPost.getId(),forumPost.getPostText(), forumPost.getPostTopic());
+        }else {
+            return new BaseResponse("Not your Post");
         }
-
-
     }
+
+
+
 
     public List<Map<String, Object>> findAllPosts() {
         return forumRepository.readAllPosts();
