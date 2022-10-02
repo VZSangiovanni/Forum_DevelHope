@@ -71,6 +71,19 @@ public class UserRepository {
         }
     }
 
+    public User findByResetPasswordCode(String resetPasswordCode) {
+        try {
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user u INNER JOIN user_data ud ON u.id_User=ud.User_id_User WHERE u.ResetPasswordCode=?",
+                    new UserRowMapper(), resetPasswordCode);
+            int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
+                    Integer.class, new Object[]{user.getUsername()});
+            user.setId(userModelID);
+            return user;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
     public List<String> getUserRoles(String userName) {
 
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
