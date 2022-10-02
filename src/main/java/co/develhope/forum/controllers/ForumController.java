@@ -62,7 +62,6 @@ public class ForumController {
     @ZeroSecurity
     @GetMapping("/read-my-topics")
     public List<Map<String, Object>> readMyTopics() {
-        AuthenticationContext.Principal principal = AuthenticationContext.get();
         return forumService.findMyTopics();
     }
 
