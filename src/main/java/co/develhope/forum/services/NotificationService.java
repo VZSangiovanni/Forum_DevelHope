@@ -26,4 +26,14 @@ public class NotificationService {
         javaMailSender.send(sms);
 
     }
+
+    public void sendResetPasswordCodeEmail(User user) {
+        SimpleMailMessage sms = new SimpleMailMessage();
+        sms.setTo(user.getUserEmail());
+        sms.setFrom("develhopetest87@gmail.com");
+        sms.setReplyTo("develhopetest87@gmail.com");
+        sms.setSubject("Salve " + user.getUserFirstName());
+        sms.setText("Hai richiesto una nuova password, per impostarla inserisci questo codice: " + user.getResetPasswordCode());
+        javaMailSender.send(sms);
+    }
 }
