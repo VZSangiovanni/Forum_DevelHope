@@ -1,6 +1,8 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.PostDTO;
+import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
