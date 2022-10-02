@@ -93,42 +93,49 @@ public class ForumService {
         return forumRepository.findByCategory(categoryTitle);
     }
 
-    public BaseResponse userUpdateTopicTitle(TopicDTO topicDTO) {
+    public BaseResponse userUpdateTopicTitle(TopicDTO topicDTO,int topicID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if(forumTopic == null) return new BaseResponse("Topic not found");
+        if (principal.getRoles().contains("ROLE_MOD") ||
+                principal.getRoles().contains("ROLE_ADMIN") ||
+                principal.getRoles().contains("ROLE_FOUNDER") ||
+                principal.getUsername().equals(forumTopic.getUserName())) {
 
-
-        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
-
-            String topicTitle = topicDTO.getTopicTitle();
-            forumRepository.userUpdateTopicTitle(topicTitle);
-
-
-            return new BaseResponse(BaseResponse.StatusEnum.OK, "updated");
+           forumTopic.setTopicTitle(topicDTO.getTopicTitle());
+           forumRepository.userUpdateTopicTitle(forumTopic.getTopicTitle(),forumTopic.getId());
+           return new TopicDTO(forumTopic.getId(),forumTopic.getTopicTitle(),forumTopic.getTopicText(),
+                   forumTopic.getTopicCategory());
 
         } else {
-            return new BaseResponse("not updated");
+            return new BaseResponse("not your topic");
         }
     }
 
 
-    public BaseResponse userUpdateTopicText(TopicDTO topicDTO) {
+    public BaseResponse userUpdateTopicText(TopicDTO topicDTO,int topicID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        if(forumTopic == null) return new BaseResponse("Topic not Found");
+        if (principal.getRoles().contains("ROLE_MOD") ||
+                principal.getRoles().contains("ROLE_ADMIN") ||
+                principal.getRoles().contains("ROLE_FOUNDER") ||
+                principal.getUsername().equals(forumTopic.getUserName())) {
 
-        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
-            String topicText = topicDTO.getTopicText();
-
-            forumRepository.userUpdateTopicText(topicText);
-
-            return new BaseResponse(BaseResponse.StatusEnum.OK, "updated");
+            forumTopic.setTopicText(topicDTO.getTopicText());
+            forumRepository.userUpdateTopicText(forumTopic.getTopicText(),forumTopic.getId());
+            return new TopicDTO(forumTopic.getId(),forumTopic.getTopicTitle(),forumTopic.getTopicText(),
+                    forumTopic.getTopicCategory());
 
         } else {
-            return new BaseResponse(BaseResponse.StatusEnum.OK, "not updated");
+            return new BaseResponse("Not your Topic");
         }
     }
 
 
     public BaseResponse postUpdateText(PostDTO postDTO) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ForumPost forumPost = forumRepository.f
 
         if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
 
