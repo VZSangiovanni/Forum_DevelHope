@@ -1,9 +1,28 @@
 package co.develhope.forum.dto.response;
 
-public class PostDTO {
+public class PostDTO  extends BaseResponse {
 
-    String postText;
-    String Category;
+    private int id;
+    private String postText;
+    private String postTopic;
+
+    public PostDTO(){};
+
+
+
+    public PostDTO(int id, String postText, String postTopic) {
+        this.id = id;
+        this.postText = postText;
+        this.postTopic = postTopic;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPostText() {
         return postText;
@@ -13,11 +32,13 @@ public class PostDTO {
         this.postText = postText;
     }
 
-    public String getCategory() {
-        return Category;
+    public String getPostTopic() {
+        return postTopic;
     }
 
-    public void setCategory(String category) {
-        Category = category;
+    public void setPostTopic(String postTopic) {
+        this.postTopic = postTopic;
     }
 }
+
+

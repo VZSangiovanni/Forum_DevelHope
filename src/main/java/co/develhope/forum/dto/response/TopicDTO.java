@@ -3,9 +3,31 @@ package co.develhope.forum.dto.response;
 public class TopicDTO extends BaseResponse{
 
 
+    private int id;
     String topicTitle;
     String topicText;
-    String category;
+    String TopicCategory;
+
+
+
+    public TopicDTO(){}
+
+
+
+    public TopicDTO(int id, String topicTitle, String topicText, String topicCategory) {
+        this.id = id;
+        this.topicTitle = topicTitle;
+        this.topicText = topicText;
+        TopicCategory = topicCategory;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTopicTitle() {
         return topicTitle;
@@ -23,11 +45,11 @@ public class TopicDTO extends BaseResponse{
         this.topicText = topicText;
     }
 
-    public String getCategory() {
-        return category;
+    public String getTopicCategory() {
+        return TopicCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTopicCategory(String topicCategory) {
+        TopicCategory = topicCategory;
     }
 }
