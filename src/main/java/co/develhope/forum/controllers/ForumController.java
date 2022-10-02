@@ -1,8 +1,6 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
-import co.develhope.forum.dto.response.PostDTO;
-import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
@@ -61,6 +59,24 @@ public class ForumController {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
 
+    @ZeroSecurity
+    @GetMapping("/read-my-topics/{id}")
+    public List<Map<String, Object>> readMyTopics(@PathVariable int id) {
+        return forumService.findMyTopics();
+    }
+
+    @ZeroSecurity
+    @GetMapping("/read-all-topics")
+    public List<Map<String, Object>> readTopics() {
+        return forumService.findAllTopics();
+    }
+
+    @ZeroSecurity
+    @GetMapping("/read-topics_by_category/{categoryTitle}")
+    public List<Map<String, Object>> readTopicsByCategory(@PathVariable String categoryTitle) {
+        return forumService.findAllTopicsByCategory(categoryTitle);
+    }
+
     // Under this comment place the Post Controller
 
     @ZeroSecurity
@@ -100,4 +116,22 @@ public class ForumController {
 
 
 
+
+    @ZeroSecurity
+    @GetMapping("/read-my-posts")
+    public List<Map<String, Object>> readMyPosts() {
+        return forumService.findMyPosts();
+    }
+
+    @ZeroSecurity
+    @GetMapping("/read-all-posts")
+    public List<Map<String, Object>> readPost() {
+        return forumService.findAllPosts();
+    }
+
+    @ZeroSecurity
+    @GetMapping("/read-post-by-topic/{id}")
+    public List<Map<String, Object>> readPostsByTopic(@PathVariable int id) {
+        return forumService.findAllPostsByTopic(id);
+    }
 }

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 // inspired by https://www.devxperiences.com/pzwp1/2022/05/19/spring-boot-security-configuration-practically-explained-part2-jdbc-authentication/
 @Repository
@@ -83,7 +85,11 @@ public class UserRepository {
         int count = jdbcTemplate.update("DELETE FROM `user` WHERE User_Name = ? ",username);
 
         return count;
+    }
 
-
+    public List<Map<String, Object>> users() {
+        String query = "SELECT * FROM user";
+        List<Map<String,Object>> usersList = jdbcTemplate.queryForList(query);
+        return usersList;
     }
 }

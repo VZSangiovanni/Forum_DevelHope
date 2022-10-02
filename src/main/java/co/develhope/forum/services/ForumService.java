@@ -7,6 +7,7 @@ import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
+import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
@@ -80,6 +81,18 @@ public class ForumService {
         return forumPost;
     }
 
+    public List<Map<String, Object>> findAllTopics() {
+        return forumRepository.readAllTopics();
+    }
+
+    public List<Map<String, Object>> findMyTopics() {
+        return forumRepository.getMyTopics();
+    }
+
+
+    public List<Map<String, Object>> findAllTopicsByCategory(String categoryTitle) {
+        return  forumRepository.findByCategory(categoryTitle);
+    }
 
     public BaseResponse userUpdateTopicTitle(TopicDTO topicDTO) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -134,3 +147,15 @@ public class ForumService {
 
     }
 }
+    public List<Map<String, Object>> findAllPosts() {
+        return forumRepository.readAllPosts();
+    }
+
+    public List<Map<String, Object>> findMyPosts() {
+        return forumRepository.getMyPosts();
+    }
+    public List<Map<String, Object>> findAllPostsByTopic(int id){
+        return forumRepository.findByTopic(id);
+    }    }
+
+
