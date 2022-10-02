@@ -133,9 +133,6 @@ public class ForumRepository {
 
         }catch (IncorrectResultSizeDataAccessException e){
             log.error("ERROR", e);
-
-        } catch (IncorrectResultSizeDataAccessException e) {
-
             return null;
         }
     }

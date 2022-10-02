@@ -77,6 +77,7 @@ public class CustomUserService implements UserService {
 
     public User findByID (int userID) {
         return userRepository.findById(userID);
+    }
 
     public BaseResponse banUser(boolean banned, String username) {
         User user = userRepository.findByName(username);

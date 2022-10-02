@@ -7,7 +7,6 @@ import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.services.ForumService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,15 +105,17 @@ public class ForumController {
 
     @ZeroSecurity
     @DeleteMapping("/topic/delete/{topicID}")
-    public BaseResponse deleteTopicByID(@PathVariable int topicID){
+    public BaseResponse deleteTopicByID(@PathVariable int topicID) {
         return forumService.deleteTopicByID(topicID);
     }
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/topic/delete-all")
-    public BaseResponse deleteAllTopic(){
+    public BaseResponse deleteAllTopic() {
         return forumService.deleteAllTopic();
+    }
 
+    @ZeroSecurity
     @GetMapping("/read-my-topics/{id}")
     public List<Map<String, Object>> readMyTopics(@PathVariable int id) {
         return forumService.findMyTopics();
@@ -190,7 +191,7 @@ public class ForumController {
         return forumService.deleteAllPost();
     }
 
-}
+
 
 
     @ZeroSecurity

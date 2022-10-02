@@ -79,6 +79,7 @@ public class UserRepository {
     public void banUser(boolean banned, String username) {
         String banSQL = "UPDATE user SET isActive = ? WHERE User_Name = ?";
         jdbcTemplate.update(banSQL, banned, username);
+    }
 
     public User findByResetPasswordCode(String resetPasswordCode) {
         try {
@@ -88,18 +89,17 @@ public class UserRepository {
                     Integer.class, new Object[]{user.getUsername()});
             user.setId(userModelID);
             return user;
-        }catch (IncorrectResultSizeDataAccessException e){
+        } catch (IncorrectResultSizeDataAccessException e) {
             log.error("ERROR", e);
             return null;
         }
-
     }
 
-    public List<String> getUserRoles(String userName) {
 
+    public List<String> getUserRoles(String username) {
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.
-        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, userName);
+        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, username);
         return userRoles;
     }
 
