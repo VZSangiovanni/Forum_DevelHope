@@ -100,7 +100,7 @@ public class ForumController {
     }
 
     @ZeroSecurity
-    @GetMapping("/read-post_by_topic/{id}")
+    @GetMapping("/read-post-by-gittopic/{id}")
     public List<Map<String, Object>> readPostsByTopic(@PathVariable int id) {
         return forumService.findAllPostsByTopic(id);
     }
