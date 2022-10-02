@@ -1,6 +1,7 @@
 package co.develhope.forum.repositories;
 
 import co.develhope.forum.dao.rowmapper.CategoryRowMapper;
+import co.develhope.forum.dao.rowmapper.PostRowMapper;
 import co.develhope.forum.dao.rowmapper.TopicRowMapper;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
@@ -69,6 +70,18 @@ public class ForumRepository {
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
                 new CategoryRowMapper(), categoryTitle.toLowerCase().trim());
         return forumCategory;
+    }
+
+    public ForumPost findPostByID(int id){
+        try {
+            ForumPost forumPost = jdbcTemplate.queryForObject(
+                    "SELECT * FROM forum_post AS fp INNER JOIN forum_topic AS ft ON ft.id_Forum_Topic=fp.Forum_Topic_id_Forum_Topic INNER JOIN user AS u ON u.id_User=fp.User_id_User WHERE id_Forum_Post = ?",
+                    new PostRowMapper(), id);
+            return forumPost;
+        }catch (IncorrectResultSizeDataAccessException e){
+            log.error("ERROR", e);
+            return null;
+        }
     }
 
 

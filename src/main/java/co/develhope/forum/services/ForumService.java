@@ -133,9 +133,9 @@ public class ForumService {
     }
 
 
-    public BaseResponse postUpdateText(PostDTO postDTO) {
+    public BaseResponse postUpdateText(PostDTO postDTO,int postID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-        ForumPost forumPost = forumRepository.f
+        ForumPost forumPost = forumRepository.findPostByID(postID)
 
         if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN") || principal.getRoles().contains("ROLE_FOUNDER") || principal.getUsername().equals("username_5")) {
 
