@@ -7,6 +7,7 @@ import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
+import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
 import co.develhope.forum.repositories.UserRepository;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
@@ -26,17 +27,17 @@ public class ForumService {
     private UserRepository userRepository;
 
     public BaseResponse checkedCategoryTitle(String categoryTitle) {
-        if (forumRepository.checkCategoryTitleExist(categoryTitle)){
+        if (forumRepository.checkCategoryTitleExist(categoryTitle)) {
             throw new ForumCategoryTitleAlreadyExistException(categoryTitle);
-        }else {
+        } else {
             return new BaseResponse(BaseResponse.StatusEnum.OK, "Category Title Available");
         }
     }
 
     public BaseResponse createCategory(ForumCategory forumCategory) {
-        if (forumRepository.checkCategoryTitleExist(forumCategory.getCategoryTitle())){
+        if (forumRepository.checkCategoryTitleExist(forumCategory.getCategoryTitle())) {
             throw new ForumCategoryTitleAlreadyExistException(forumCategory.getCategoryTitle());
-        }else {
+        } else {
             forumRepository.createCategory(forumCategory);
             System.out.println(forumCategory.toString());
             return forumCategory;
@@ -48,16 +49,16 @@ public class ForumService {
     }
 
 
-    public ForumCategory findCategoryByTitle(String categoryTitle){
+    public ForumCategory findCategoryByTitle(String categoryTitle) {
         return forumRepository.findCategoryByTitle(categoryTitle);
     }
 
 
-    public void deleteAllCategory(){
+    public void deleteAllCategory() {
         forumRepository.deleteAllCategory();
     }
 
-    public void deleteOneCategory(String categoryTitle){
+    public void deleteOneCategory(String categoryTitle) {
         forumRepository.deleteCategoryByName(categoryTitle);
     }
 
@@ -158,6 +159,7 @@ public class ForumService {
         return forumPost;
     }
 
+
     public List<Map<String, Object>> findAllPost() {
         return forumRepository.findAllPost();
     }
@@ -220,5 +222,28 @@ public class ForumService {
         return new BaseResponse(BaseResponse.StatusEnum.OK, "All Post Deleted");
     }
 
+    public List<Map<String, Object>> findAllTopics() {
+        return forumRepository.readAllTopics();
+    }
 
-}
+    public List<Map<String, Object>> findMyTopics() {
+        return forumRepository.getMyTopics();
+    }
+
+
+    public List<Map<String, Object>> findAllTopicsByCategory(String categoryTitle) {
+        return  forumRepository.findByCategory(categoryTitle);
+    }
+
+    public List<Map<String, Object>> findAllPosts() {
+        return forumRepository.readAllPosts();
+    }
+
+    public List<Map<String, Object>> findMyPosts() {
+        return forumRepository.getMyPosts();
+    }
+    public List<Map<String, Object>> findAllPostsByTopic(int id){
+        return forumRepository.findByTopic(id);
+    }    }
+
+

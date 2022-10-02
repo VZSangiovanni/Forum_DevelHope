@@ -5,9 +5,6 @@ package co.develhope.forum.model;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
 
 
-import java.util.List;
-
-
 public class User extends UserDetails {
 
     private int id;
@@ -35,8 +32,9 @@ public class User extends UserDetails {
         return resetPasswordCode;
     }
 
-    public void setResetPasswordCode(String resetPasswordCode) {
+    public String setResetPasswordCode(String resetPasswordCode) {
         this.resetPasswordCode = resetPasswordCode;
+        return resetPasswordCode;
     }
 
     public Long getUserCreation() {

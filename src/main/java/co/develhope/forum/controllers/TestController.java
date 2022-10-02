@@ -12,6 +12,9 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.security.Zero
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -41,6 +44,12 @@ public class TestController {
     @GetMapping("/role-evaluated-endpoint")
     public void roleCheckEndpoint() {
         System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
+    }
+
+    @RoleSecurity(value = {"ROLE_USER", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @PutMapping("/ban-user/{username}")
+    public BaseResponse banUser(@RequestParam boolean banned, @PathVariable String username) {
+        return customUserService.banUser(banned, username);
     }
 
 
@@ -83,5 +92,18 @@ public class TestController {
 
     }
 
+    @ZeroSecurity
+    @GetMapping("/read-self")
+    public User readSelf() {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        return customUserService.readUser(principal.getUsername());
 
+    }
+
+    @RoleSecurity(value = {"ROLE_FOUNDER", "ROLE_ADMIN"})
+    @GetMapping("/read-users")
+    public List<Map<String, Object>> readUsers() {
+        return customUserService.findAll();
+
+    }
 }

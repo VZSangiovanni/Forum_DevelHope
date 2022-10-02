@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class CustomUserService implements UserService {
 
@@ -71,8 +74,27 @@ public class CustomUserService implements UserService {
 
 // User CRUD
 
+
     public User findByID (int userID) {
         return userRepository.findById(userID);
+
+    public BaseResponse banUser(boolean banned, String username) {
+        User user = userRepository.findByName(username);
+        if (user == null) return new BaseResponse("User Not Found");
+        if (user.getRoles().contains("ROLE_USER")) {
+            if (banned) {
+                user.setActive(false);
+                userRepository.banUser(user.getActive(), user.getUsername());
+                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Banned");
+            } else {
+                user.setActive(true);
+                userRepository.banUser(user.getActive(), user.getUsername());
+                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Unbanned");
+            }
+        }else {
+            return new BaseResponse("Only user can be banned");
+        }
+
     }
 
     public boolean deleteUser(String username) {
@@ -83,5 +105,14 @@ public class CustomUserService implements UserService {
 
     }
 
+
+    public User readUser(String userName) {
+        return userRepository.findByName((userName));
+    }
+
+    public List<Map<String, Object>> findAll() {
+
+        return userRepository.users();
+    }
 
 }
