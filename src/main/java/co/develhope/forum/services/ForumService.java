@@ -157,7 +157,7 @@ public class ForumService {
         String topicTitle = forumRepository.findTopicTitleByID(topicID);
         forumPost.setPostTopic(topicTitle);
         forumRepository.changePostTopic(topicID, postID);
-        return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
+        return new PostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
     }
 
     public BaseResponse changeTopicCategory(TopicDTO updateTopicDTO, int topicID){
