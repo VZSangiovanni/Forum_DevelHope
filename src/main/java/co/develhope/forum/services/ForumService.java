@@ -95,8 +95,8 @@ public class ForumService {
         return forumRepository.readAllPosts();
     }
 
-    public List<Map<String, Object>> findMyPosts(int id) {
-        return forumRepository.getMyPosts(id);
+    public List<Map<String, Object>> findMyPosts() {
+        return forumRepository.getMyPosts();
     }
     public List<Map<String, Object>> findAllPostsByTopic(int id){
         return forumRepository.findByTopic(id);

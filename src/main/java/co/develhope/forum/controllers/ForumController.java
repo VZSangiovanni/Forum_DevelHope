@@ -88,9 +88,9 @@ public class ForumController {
 
 
     @ZeroSecurity
-    @GetMapping("/read-my-posts/{id}")
-    public List<Map<String, Object>> readMyPosts(@PathVariable int id) {
-        return forumService.findMyPosts(id);
+    @GetMapping("/read-my-posts")
+    public List<Map<String, Object>> readMyPosts() {
+        return forumService.findMyPosts();
     }
 
     @ZeroSecurity

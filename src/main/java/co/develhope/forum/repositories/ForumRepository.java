@@ -197,7 +197,7 @@ public class ForumRepository {
         return forumPostsList;
     }
 
-    public List<Map<String, Object>> getMyPosts(int id) {
+    public List<Map<String, Object>> getMyPosts() {
         String querySQL = "SELECT * FROM forum_post where User_id_User =?";
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         User user = userRepository.findByName(principal.getUsername());
