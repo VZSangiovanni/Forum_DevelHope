@@ -90,20 +90,20 @@ public class ForumController {
     }
 
      @ZeroSecurity
-    @PutMapping("/topic/update/title")
-    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO){
+    @PutMapping("/topic/update/title/{topicID}")
+    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,PathVariable topicID){
 
 
-        return forumService.userUpdateTopicTitle(topicDTO);
+        return forumService.userUpdateTopicTitle(topicDTO,topicID);
 
     }
 
     @ZeroSecurity
-    @PutMapping("/topic/update/text")
-    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO){
+    @PutMapping("/topic/update/text/{topicID}")
+    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO,PathVariable topicID){
 
 
-        return forumService.userUpdateTopicText(topicDTO);
+        return forumService.userUpdateTopicText(topicDTO,topicID);
 
     }
 
