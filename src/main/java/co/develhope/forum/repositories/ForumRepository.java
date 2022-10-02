@@ -227,34 +227,19 @@ public class ForumRepository {
             return null;
         }
     }
-    public void userUpdateTopicTitle(String topictitle) {
-
-        String SQLPost = "UPDATE forum_topic SET Topic_title = ? WHERE id_Forum_Topic = 1";
-
-        jdbcTemplate.update(SQLPost, topictitle);
-
-
+    public void updateTopicTitle(String topicTitle, int topicID) {
+        String SQLUpdateTitle = "UPDATE forum_topic SET Topic_Title = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLUpdateTitle,topicTitle, topicID);
     }
 
-
-    public void userUpdateTopicText(String topictext) {
-        String SQLPost = "UPDATE forum_topic SET Topic_text = ? WHERE id_Forum_Topic = 1";
-        jdbcTemplate.update(SQLPost, topictext);
-
+    public void updateTopicText(String topicText, int topicID) {
+        String SQLUpdateText = "UPDATE forum_topic SET Topic_Text = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLUpdateText,topicText, topicID);
     }
 
-
-    public void postUpdateText(String postText) {
-
-        String SQLPost = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post";
-        jdbcTemplate.update(SQLPost, postText);
-    }
-
-    public void changeDirectoryTopic() {
-
-        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
-
-
+    public void changeTopicCategory(int categoryID, int topicID) {
+        String SQLChangeCategory = "UPDATE forum_topic SET Forum_Category_id_Forum_Category = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
     }
 
 
