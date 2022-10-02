@@ -85,8 +85,8 @@ public class ForumService {
     }
 
 
-    public List<Map<String, Object>> findAllTopicsByCategory() {
-        return (List<Map<String, Object>>) forumRepository.findByCategory();
+    public List<Map<String, Object>> findAllTopicsByCategory(String categoryTitle) {
+        return (List<Map<String, Object>>) forumRepository.findByCategory(categoryTitle);
     }
     public List<Map<String, Object>> findAllPosts() {
         return forumRepository.readAllPosts();
@@ -96,8 +96,8 @@ public class ForumService {
         return forumRepository.getMyTopics();
     }
 
-    public List<Map<String, Object>> findAllPostsByTopic() {
-        return (List<Map<String, Object>>) forumRepository.findByTopic();
+    public List<Map<String, Object>> findAllPostsByTopic(int id) {
+        return (List<Map<String, Object>>) forumRepository.findByTopic(id);
     }
     }
 

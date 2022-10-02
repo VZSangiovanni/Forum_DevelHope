@@ -134,6 +134,29 @@ public class ForumRepository {
             return null;
         }
     }
+    public List<Map<String, Object>>readAllTopics() {
+        List<Map<String, Object>> forumTopicList = jdbcTemplate.queryForList("SELECT * FROM forum_topic");
+        return forumTopicList;
+    }
+    public List<Map<String, Object>> getMyTopics() {
+        String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
+        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRowMapper());
+        return userTopics;
+
+    }
+
+    public ForumTopic findByCategory(String categoryTitle) {
+        try {
+            ForumTopic topic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic ft INNER JOIN forum_category fc ON ft.id.Forum_Topic=v=fc.Forum_Category_id_Forum_Category WHERE ft.forum_category_Category_Title=?",
+                    new TopicRowMapper(), categoryTitle);
+            int topicModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Category FROM `forum_category` WHERE Forum_Category_Title =?",
+                    Integer.class, new Object[]{findCategoryByTitle(categoryTitle)});
+            topic.setId(topicModelID);
+            return topic;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
 
     // Under this comment place the Post Repository
 
@@ -164,29 +187,7 @@ public class ForumRepository {
             return false;
         }
     }
-    public List<Map<String, Object>>readAllTopics() {
-        List<Map<String, Object>> forumTopicList = jdbcTemplate.queryForList("SELECT * FROM forum_topic");
-        return forumTopicList;
-    }
-    public List<Map<String, Object>> getMyTopics() {
-        String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
-        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRowMapper());
-        return userTopics;
 
-    }
-
-    public ForumTopic findByCategory() {
-        try {
-            ForumTopic topic = jdbcTemplate.queryForObject("SELECT * FROM forum_category fc INNER JOIN forum_topic ft ON t.id_Forum_Category=fc.Forum_Category_id_Forum_Category WHERE t.forum_category_id_Forum_Category=?",
-                    new TopicRowMapper());
-            int topicModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Category FROM `forum_category` WHERE id_Forum_Category =?",
-                    Integer.class, new Object[]{topic});
-            topic.setTopicCategory(topic.getTopicCategory());
-            return topic;
-        } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
-    }
     public List<Map<String, Object>>readAllPosts() {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
@@ -198,13 +199,13 @@ public class ForumRepository {
 
     }
 
-    public ForumPost findByTopic() {
+    public ForumPost findByTopic(int id) {
         try {
-            ForumPost post = jdbcTemplate.queryForObject("SELECT * FROM forum_topic ft INNER JOIN forum_post fp ON p.id_Forum_Topic=ft.Forum_Topic_id_Forum_Topic WHERE p.forum_Topic_id_Forum_Topic=?",
-                    new PostRowMapper());
+            ForumPost post = jdbcTemplate.queryForObject("SELECT * FROM forum_post fp INNER JOIN forum_topic ft ON fp.id_Forum_Post=ft.Forum_Topic_id_Forum_Topic WHERE fp.forum_Topic_id_Forum_Topic=?",
+                    new PostRowMapper(), id);
             int postModelID = jdbcTemplate.queryForObject("SELECT id_Forum_Topic FROM `forum_Topic` WHERE id_Forum_Topic =?",
-                    Integer.class, new Object[]{post});
-            post.setPostTopic(post.getPostTopic());
+                    Integer.class, new Object[]{post.getPostTopic()});
+            post.setId(postModelID);
             return post;
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;

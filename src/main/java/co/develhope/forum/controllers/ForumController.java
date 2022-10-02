@@ -59,15 +59,6 @@ public class ForumController {
     public BaseResponse createTopic(@RequestBody ForumTopic forumTopic, @PathVariable String categoryTitle) {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
-
-    // Under this comment place the Post Controller
-
-    @ZeroSecurity
-    @PostMapping("/post/create/{topicID}")
-    public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
-        return forumService.createPost(forumPost, topicID);
-    }
-
     @ZeroSecurity
     @GetMapping("/read-my-topics")
     public List<Map<String, Object>> readMyTopics() {
@@ -82,10 +73,20 @@ public class ForumController {
     }
 
     @ZeroSecurity
-    @GetMapping("/read-topics_by_category")
-    public List<Map<String, Object>> readTopicsByCategory() {
-        return forumService.findAllTopicsByCategory();
+    @GetMapping("/read-topics_by_category/{categoryTitle}")
+    public List<Map<String, Object>> readTopicsByCategory(@PathVariable String categoryTitle) {
+        return forumService.findAllTopicsByCategory(categoryTitle);
     }
+
+    // Under this comment place the Post Controller
+
+    @ZeroSecurity
+    @PostMapping("/post/create/{topicID}")
+    public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
+        return forumService.createPost(forumPost, topicID);
+    }
+
+
     @ZeroSecurity
     @GetMapping("/read-my-posts")
     public List<Map<String, Object>> readMyPosts() {
@@ -100,8 +101,8 @@ public class ForumController {
     }
 
     @ZeroSecurity
-    @GetMapping("/read-post_by_topic")
-    public List<Map<String, Object>> readPostsByTopic() {
-        return forumService.findAllPostsByTopic();
+    @GetMapping("/read-post_by_topic/{id}")
+    public List<Map<String, Object>> readPostsByTopic(@PathVariable int id) {
+        return forumService.findAllPostsByTopic(id);
     }
 }
