@@ -75,6 +75,11 @@ public class UserRepository {
         }
     }
 
+
+    public void banUser(boolean banned, String username) {
+        String banSQL = "UPDATE user SET isActive = ? WHERE User_Name = ?";
+        jdbcTemplate.update(banSQL, banned, username);
+
     public User findByResetPasswordCode(String resetPasswordCode) {
         try {
             User user = jdbcTemplate.queryForObject("SELECT * FROM user u INNER JOIN user_data ud ON u.id_User=ud.User_id_User WHERE u.ResetPasswordCode=?",
@@ -87,6 +92,7 @@ public class UserRepository {
             log.error("ERROR", e);
             return null;
         }
+
     }
 
     public List<String> getUserRoles(String userName) {
