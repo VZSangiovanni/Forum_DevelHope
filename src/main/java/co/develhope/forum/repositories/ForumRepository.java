@@ -242,5 +242,15 @@ public class ForumRepository {
         jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
     }
 
+    public void updatePostText(String postText, int postID) {
+        String SQLUpdateText = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLUpdateText,postText, postID);
+    }
+
+    public void changePostTopic(int topicID, int postID) {
+        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLChangeCategory,topicID,postID);
+    }
+
 
 }

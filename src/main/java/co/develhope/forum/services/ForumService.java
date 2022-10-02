@@ -103,7 +103,7 @@ public class ForumService {
                 principal.getUsername().equals(forumTopic.getUserName())) {
 
            forumTopic.setTopicTitle(topicDTO.getTopicTitle());
-           forumRepository.userUpdateTopicTitle(forumTopic.getTopicTitle(),forumTopic.getId());
+           forumRepository.updateTopicTitle(forumTopic.getTopicTitle(),forumTopic.getId());
            return new TopicDTO(forumTopic.getId(),forumTopic.getTopicTitle(),forumTopic.getTopicText(),
                    forumTopic.getTopicCategory());
 
@@ -123,7 +123,7 @@ public class ForumService {
                 principal.getUsername().equals(forumTopic.getUserName())) {
 
             forumTopic.setTopicText(topicDTO.getTopicText());
-            forumRepository.userUpdateTopicText(forumTopic.getTopicText(),forumTopic.getId());
+            forumRepository.updateTopicText(forumTopic.getTopicText(),forumTopic.getId());
             return new TopicDTO(forumTopic.getId(),forumTopic.getTopicTitle(),forumTopic.getTopicText(),
                     forumTopic.getTopicCategory());
 
@@ -140,8 +140,8 @@ public class ForumService {
         if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
                 ||principal.getRoles().contains("ROLE_FOUNDER")
                 ||principal.getUsername().equals(forumPost.getUserName())){
-            forumPost.setPostText(PostDTO.getPostText());
-            forumRepository.postUpdateText(forumPost.getPostText(), forumPost.getId());
+            forumPost.setPostText(postDTO.getPostText());
+            forumRepository.updatePostText(forumPost.getPostText(), forumPost.getId());
             return new PostDTO(forumPost.getId(),forumPost.getPostText(), forumPost.getPostTopic());
         }else {
             return new BaseResponse("Not your Post");
