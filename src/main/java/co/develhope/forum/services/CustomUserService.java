@@ -88,7 +88,7 @@ public class CustomUserService implements UserService {
                 return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Unbanned");
             }
         }else {
-            return new BaseResponse("Only user can banned");
+            return new BaseResponse("Only user can be banned");
         }
     }
 
