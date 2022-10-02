@@ -74,6 +74,10 @@ public class CustomUserService implements UserService {
 
 // User CRUD
 
+
+    public User findByID (int userID) {
+        return userRepository.findById(userID);
+
     public BaseResponse banUser(boolean banned, String username) {
         User user = userRepository.findByName(username);
         if (user == null) return new BaseResponse("User Not Found");
@@ -90,6 +94,7 @@ public class CustomUserService implements UserService {
         }else {
             return new BaseResponse("Only user can be banned");
         }
+
     }
 
     public boolean deleteUser(String username) {

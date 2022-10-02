@@ -54,6 +54,12 @@ public class TestController {
 
 
     @ZeroSecurity
+    @GetMapping("/find-user-by-id/{userID}")
+    public User findById (@PathVariable int userID){
+        return customUserService.findByID(userID);
+    }
+
+    @ZeroSecurity
     @DeleteMapping("delete-self")
     public BaseResponse deleteSelf() {
 
