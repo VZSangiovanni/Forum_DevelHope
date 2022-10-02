@@ -160,7 +160,17 @@ public class ForumService {
         return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
     }
 
-
+    public BaseResponse changeTopicCategory(TopicDTO updateTopicDTO, int topicID){
+        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
+        ForumCategory forumCategory = forumRepository.findCategoryByTitle(updateTopicDTO.getTopicCategory());
+        int categoryID = forumCategory.getId();
+        if (forumTopic == null) return new BaseResponse("Topic not Found");
+        if (forumCategory == null) return new BaseResponse("Category not Found");
+        forumTopic.setTopicCategory(updateTopicDTO.getTopicCategory());
+        forumRepository.changeTopicCategory(categoryID, topicID);
+        return new TopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(), forumTopic.getTopicText(),
+                forumTopic.getTopicCategory());
+    }
 
 
 
