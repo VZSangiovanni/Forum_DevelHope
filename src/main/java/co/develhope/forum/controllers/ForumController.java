@@ -59,9 +59,10 @@ public class ForumController {
     public BaseResponse createTopic(@RequestBody ForumTopic forumTopic, @PathVariable String categoryTitle) {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
+
     @ZeroSecurity
-    @GetMapping("/read-my-topics")
-    public List<Map<String, Object>> readMyTopics() {
+    @GetMapping("/read-my-topics/{id}")
+    public List<Map<String, Object>> readMyTopics(@PathVariable int id) {
         return forumService.findMyTopics();
     }
 
@@ -87,10 +88,9 @@ public class ForumController {
 
 
     @ZeroSecurity
-    @GetMapping("/read-my-posts")
-    public List<Map<String, Object>> readMyPosts() {
-        AuthenticationContext.Principal principal = AuthenticationContext.get();
-        return forumService.findMyPosts();
+    @GetMapping("/read-my-posts/{id}")
+    public List<Map<String, Object>> readMyPosts(@PathVariable int id) {
+        return forumService.findMyPosts(id);
     }
 
     @ZeroSecurity

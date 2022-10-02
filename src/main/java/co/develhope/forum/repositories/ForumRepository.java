@@ -192,24 +192,23 @@ public class ForumRepository {
             return false;
         }
     }
-
     public List<Map<String, Object>> readAllPosts() {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
     }
 
-    public List<Map<String, Object>> getMyPosts() {
+    public List<Map<String, Object>> getMyPosts(int id) {
         String querySQL = "SELECT * FROM forum_post where User_id_User =?";
-        List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, new TopicRowMapper());
-        return userTopics;
-
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        User user = userRepository.findByName(principal.getUsername());
+        int userID = user.getId();
+        List<Map<String, Object>> userPosts = jdbcTemplate.queryForList(querySQL, userID);
+        return userPosts;
     }
 
     public List<Map<String, Object>> findByTopic(int id) {
         try {
-            List<Map<String, Object>> post = jdbcTemplate.queryForList("SELECT * FROM forum_post WHERE Forum_Topic_id_Forum_Topic=?",
-                     id);
-
+            List<Map<String, Object>> post = jdbcTemplate.queryForList("SELECT * FROM forum_post WHERE Forum_Topic_id_Forum_Topic=?", id);
             return post;
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
