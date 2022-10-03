@@ -1,14 +1,10 @@
 package co.develhope.forum.model;
 
-
-
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
-
 
 public class User extends UserDetails {
 
     private int id;
-
     private String resetPasswordCode;
     private Long userCreation;
     private String userActivationCode;
@@ -16,9 +12,6 @@ public class User extends UserDetails {
     private String userEmail;
     private String userFirstName;
     private String userLastName;
-
-
-
 
     public int getId() {
         return id;
@@ -100,9 +93,4 @@ public class User extends UserDetails {
                 ", userRoles=" + super.getRoles() +
                 '}';
     }
-
-
-
-
-
 }

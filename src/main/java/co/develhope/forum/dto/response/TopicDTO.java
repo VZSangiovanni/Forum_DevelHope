@@ -2,16 +2,13 @@ package co.develhope.forum.dto.response;
 
 public class TopicDTO extends BaseResponse {
 
-
     private int id;
     private String topicTitle;
     private String topicText;
     private String topicCategory;
 
-
     public TopicDTO() {
     }
-
 
     public TopicDTO(int id, String topicTitle, String topicText, String topicCategory) {
         this.id = id;

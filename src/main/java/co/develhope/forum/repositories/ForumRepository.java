@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class ForumRepository {
+    @Repository
+    public class ForumRepository {
 
     private static final Logger log = LoggerFactory.getLogger(ForumRepository.class);
 
@@ -42,16 +42,15 @@ public class ForumRepository {
         String SQL = "INSERT INTO forum_category (Category_Title) values (?)";
         int count = 0;
         try {
-            count += jdbcTemplate.update(SQL, new Object[]{forumCategory.getCategoryTitle()});
+            count += jdbcTemplate.update(SQL, forumCategory.getCategoryTitle());
 
             if (count == 1) {
                 Integer categoryID = jdbcTemplate.queryForObject
                         ("SELECT id_Forum_Category FROM forum_category WHERE Category_Title = ?",
-                                Integer.class, new Object[]{forumCategory.getCategoryTitle()});
+                                Integer.class, forumCategory.getCategoryTitle());
 
                 forumCategory.setId(categoryID);
             }
-
             return count == 1;
         } catch (Exception e) {
             log.error("ERROR", e);
@@ -101,7 +100,9 @@ public class ForumRepository {
         jdbcTemplate.update("DELETE FROM forum_category WHERE Category_Title = ?", categoryTitle);
     }
 
-    // Under this comment place the Topic Repository
+    /**
+     * TOPIC REPOSITORY
+     */
 
     public boolean createTopic(ForumTopic forumTopic, String categoryTitle) {
         String SQLTopic = "INSERT INTO forum_topic (Topic_Title, Topic_Text, Topic_Creation, Forum_Category_id_Forum_Category, User_id_User) VALUES (?, ?, ?, ?, ?)";
@@ -115,8 +116,8 @@ public class ForumRepository {
         int count = 0;
         try {
             count += jdbcTemplate.update(SQLTopic,
-                    new Object[]{forumTopic.getTopicTitle(), forumTopic.getTopicText(),
-                            topicCreation, categoryID, userID});
+                    forumTopic.getTopicTitle(), forumTopic.getTopicText(),
+                    topicCreation, categoryID, userID);
             if (count == 1) {
                 String topicCategory = forumCategory.getCategoryTitle();
                 forumTopic.setTopicCategory(topicCategory);
@@ -136,11 +137,9 @@ public class ForumRepository {
 
     public ForumTopic findTopicByID(int id) {
         try {
-
             ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic INNER JOIN forum_category ON id_Forum_Category = Forum_Category_id_Forum_Category INNER JOIN user ON id_User = User_id_User WHERE id_Forum_Topic = ?",
                     new TopicRowMapper(), id);
             return forumTopic;
-
         }catch (IncorrectResultSizeDataAccessException e){
             log.error("ERROR", e);
             return null;
@@ -153,7 +152,6 @@ public class ForumRepository {
                     String.class, id);
             return topicTitle;
         } catch (IncorrectResultSizeDataAccessException e) {
-
             return null;
         }
     }
@@ -164,7 +162,7 @@ public class ForumRepository {
     }
 
     public List<Map<String, Object>> getMyTopics() {
-        String querySQL = "SELECT * FROM forum_topic where User_id_User =?";
+        String querySQL = "SELECT * FROM forum_topic where User_id_User = ?";
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         User user = userRepository.findByName(principal.getUsername());
         int userID = user.getId();
@@ -244,9 +242,9 @@ public class ForumRepository {
         }
     }
 
-
-
-    // Under this comment place the Post Repository
+    /**
+     * POST REPOSITORY
+     */
 
     public boolean createPost(ForumPost forumPost, int topicID) {
         String SQLPost = "INSERT INTO forum_post (Post_Text, Post_Creation, Forum_Topic_id_Forum_Topic, User_id_User) VALUES (?, ?, ?, ?)";
@@ -258,7 +256,7 @@ public class ForumRepository {
         int count = 0;
         try {
             count += jdbcTemplate.update(SQLPost,
-                    new Object[]{forumPost.getPostText(), postCreation, topicID, userID});
+                    forumPost.getPostText(), postCreation, topicID, userID);
             if (count == 1) {
                 String topicTitle = findTopicTitleByID(topicID);
                 forumPost.setPostTopic(topicTitle);
@@ -280,7 +278,6 @@ public class ForumRepository {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
     }
-
 
     public List<Map<String, Object>> findAllPost() {
         String SQL = "SELECT * From forum_post";
@@ -371,9 +368,6 @@ public class ForumRepository {
         jdbcTemplate.update(SQLChangeCategory,topicID,postID);
     }
 
-
-
-
     public void deletePostByID(int postId){
         jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
     }
@@ -382,5 +376,4 @@ public class ForumRepository {
         jdbcTemplate.update("DELETE FROM forum_post");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
-
 }

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class TopicRowMapper implements RowMapper<ForumTopic> {
 
-
     @Override
     public ForumTopic mapRow(ResultSet rs, int rowNum) throws SQLException {
         ForumTopic forumTopic = new ForumTopic();
@@ -20,6 +19,4 @@ public class TopicRowMapper implements RowMapper<ForumTopic> {
         forumTopic.setUserName(rs.getString("User_Name"));
         return forumTopic;
     }
-
-
 }

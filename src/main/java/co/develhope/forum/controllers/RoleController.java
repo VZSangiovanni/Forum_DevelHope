@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Classe che si occupa dei ROLES MANAGEMENT
+ */
+
 @RestController
 @RequestMapping("/role")
 public class RoleController {
 
-
     @Autowired
     private CustomUserService customUserService;
-
 
     @RoleSecurity(value = {"ROLE_ADMIN", "ROLE_FOUNDER"})
     @PutMapping("/promote/mod/{username}")
@@ -35,7 +37,4 @@ public class RoleController {
     public BaseResponse demoteToUser(@PathVariable String username) {
         return customUserService.updateUser(username);
     }
-
-
-
 }

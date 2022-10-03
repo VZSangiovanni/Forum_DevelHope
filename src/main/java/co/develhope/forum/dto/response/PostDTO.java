@@ -6,9 +6,7 @@ public class PostDTO  extends BaseResponse {
     private String postText;
     private String postTopic;
 
-    public PostDTO(){};
-
-
+    public PostDTO(){}
 
     public PostDTO(int id, String postText, String postTopic) {
         this.id = id;
@@ -40,5 +38,3 @@ public class PostDTO  extends BaseResponse {
         this.postTopic = postTopic;
     }
 }
-
-

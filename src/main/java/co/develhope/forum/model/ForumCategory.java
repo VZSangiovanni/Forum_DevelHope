@@ -5,10 +5,7 @@ import co.develhope.forum.dto.response.BaseResponse;
 public class ForumCategory extends BaseResponse {
     
     private int id;
-    
     private String categoryTitle;
-
-
 
     public int getId() {
         return id;
@@ -22,10 +19,8 @@ public class ForumCategory extends BaseResponse {
         return categoryTitle;
     }
 
-
     public void setCategoryTitle(String categoryTitle) {
         this.categoryTitle = categoryTitle;
-
     }
 
     @Override

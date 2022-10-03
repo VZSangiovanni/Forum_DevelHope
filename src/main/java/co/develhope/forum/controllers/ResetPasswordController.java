@@ -18,7 +18,6 @@ public class ResetPasswordController {
     @Autowired
     private RestorePasswordService restorePasswordService;
 
-
     @PublicEndpoint
     @PostMapping("/request-password-code")
     public BaseResponse requestPasswordCode(@RequestBody RequestPasswordDTO requestPasswordDTO) {
@@ -30,6 +29,4 @@ public class ResetPasswordController {
     public BaseResponse restorePassword(@RequestBody RestorePasswordDTO restorePasswordDTO) {
         return restorePasswordService.restorePassword(restorePasswordDTO);
     }
-
-
 }

@@ -2,7 +2,6 @@ package co.develhope.forum.dto.response;
 
 public class DeleteUserDTO {
 
-
     String username;
 
     public String getUsername() {

@@ -15,42 +15,17 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/test")
-public class TestController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
     CustomUserService customUserService;
-
-
-    @GetMapping("/default-deny")
-    public void defaultDenyEndpoint() {
-        System.out.println("Default deny. This endpoint cannot be reached");
-    }
-
-    @PublicEndpoint
-    @GetMapping("/public-endpoint")
-    public void publicEndpoint() {
-        System.out.println("This endpoint can be reached without authentication header");
-    }
-
-    @ZeroSecurity
-    @GetMapping("/no-role-endpoint")
-    public void noRoleEndpoint() {
-        System.out.println("This endpoint can be reached with any role, but require authentication. Authenticated user is " + AuthenticationContext.get().getUsername());
-    }
-
-    @RoleSecurity(value = {"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("/role-evaluated-endpoint")
-    public void roleCheckEndpoint() {
-        System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
-    }
 
     @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
     @PutMapping("/ban-user/{username}")
     public BaseResponse banUser(@RequestParam boolean banned, @PathVariable String username) {
         return customUserService.banUser(banned, username);
     }
-
 
     @ZeroSecurity
     @GetMapping("/find-user-by-id/{userID}")
@@ -59,31 +34,22 @@ public class TestController {
     }
 
     @ZeroSecurity
-    @DeleteMapping("delete-self")
+    @DeleteMapping("/delete-self")
     public BaseResponse deleteSelf() {
-
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-
         if (customUserService.deleteUser(principal.getUsername())) {
-
             return new BaseResponse();
-
         } else {
-
             return new BaseResponse("Delete failed");
         }
     }
 
-
     @RoleSecurity(value = {"ROLE_FOUNDER"})
-    @DeleteMapping("delete-user")
+    @DeleteMapping("/delete-user")
     public BaseResponse deleteUser(@RequestBody DeleteUserDTO deleteUserDTO) {
         if (customUserService.deleteUser(deleteUserDTO.getUsername())) {
-
             return new BaseResponse();
-
         } else {
-
             return new BaseResponse("Delete failed");
         }
     }
@@ -95,7 +61,7 @@ public class TestController {
         return customUserService.readUser(principal.getUsername());
     }
 
-    @RoleSecurity(value = {"ROLE_FOUNDER", "ROLE_ADMIN"})
+    @RoleSecurity(value = {"ROLE_FOUNDER", "ROLE_ADMIN", "ROLE_MOD"})
     @GetMapping("/read-users")
     public List<Map<String, Object>> readUsers() {
         return customUserService.findAll();

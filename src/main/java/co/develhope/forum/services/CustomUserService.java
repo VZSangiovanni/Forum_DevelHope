@@ -30,7 +30,6 @@ public class CustomUserService implements UserService {
     @Autowired
     private JwtUtils jwtUtils;
 
-
     public UserDetails checkUserCredentials(String username, String password) {
         if (userRepository == null) {
             Assert.notNull(userRepository, "userRepository is null. Define a UserRepository implementation as a Spring Bean");
@@ -44,8 +43,9 @@ public class CustomUserService implements UserService {
         return null;
     }
 
- //Role Management
- 
+    /**
+     * ROLE MANAGEMENT
+     */
     public BaseResponse updateModerator(String username) {
         User user = userRepository.findByName(username);
         if (user == null) return new BaseResponse("User Not Found");
@@ -70,9 +70,9 @@ public class CustomUserService implements UserService {
         return new BaseResponse(BaseResponse.StatusEnum.OK,"User " + user.getUsername() + " is now a User");
     }
 
-
-// User CRUD
-
+    /**
+     * USER CRUD
+     */
 
     public User findByID (int userID) {
         return userRepository.findById(userID);
@@ -85,22 +85,19 @@ public class CustomUserService implements UserService {
             if (banned) {
                 user.setActive(false);
                 userRepository.banUser(user.getActive(), user.getUsername());
-                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Banned");
+                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " has been Banned");
             } else {
                 user.setActive(true);
                 userRepository.banUser(user.getActive(), user.getUsername());
-                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " as Unbanned");
+                return new BaseResponse(BaseResponse.StatusEnum.OK, "User " + user.getUsername() + " has been Unbanned");
             }
-        }else {
-            return new BaseResponse("Only user can be banned");
+        } else {
+            return new BaseResponse("Only users can be banned");
         }
-
     }
 
     public boolean deleteUser(String username) {
-
         int deleteCount = userRepository.deleteUser(username);
-
         return deleteCount == 1;
     }
 
@@ -109,8 +106,6 @@ public class CustomUserService implements UserService {
     }
 
     public List<Map<String, Object>> findAll() {
-
         return userRepository.users();
     }
-
 }

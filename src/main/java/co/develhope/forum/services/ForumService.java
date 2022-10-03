@@ -39,7 +39,7 @@ public class ForumService {
             throw new ForumCategoryTitleAlreadyExistException(forumCategory.getCategoryTitle());
         } else {
             forumRepository.createCategory(forumCategory);
-            System.out.println(forumCategory.toString());
+            System.out.println(forumCategory);
             return forumCategory;
         }
     }

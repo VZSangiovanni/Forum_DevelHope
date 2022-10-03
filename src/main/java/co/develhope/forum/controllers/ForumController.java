@@ -3,7 +3,6 @@ package co.develhope.forum.controllers;
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dto.response.PostDTO;
 import co.develhope.forum.dto.response.TopicDTO;
-import co.develhope.forum.dto.response.UpdatePostDTO;
 import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
@@ -28,7 +27,7 @@ public class ForumController {
     @Autowired
     private CustomUserService customUserService;
 
-    @RoleSecurity(value = {"ROLE_USER"})
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
     @PostMapping("/category/create")
     public BaseResponse createCategory(@RequestBody ForumCategory forumCategory) {
         return forumService.createCategory(forumCategory);
@@ -114,7 +113,6 @@ public class ForumController {
         return forumService.updateTopicText(updateTopicDTO, topicID);
     }
 
-
     @ZeroSecurity
     @GetMapping("/read-my-topics/{id}")
     public List<Map<String, Object>> readMyTopics(@PathVariable int id) {
@@ -133,7 +131,9 @@ public class ForumController {
         return forumService.findAllTopicsByCategory(categoryTitle);
     }
 
-    // Under this comment place the Post Controller
+    /**
+     * CRUD POST
+     */
 
     @ZeroSecurity
     @PostMapping("/post/create/{topicID}")
@@ -141,20 +141,16 @@ public class ForumController {
         return forumService.createPost(forumPost, topicID);
     }
 
-     @ZeroSecurity
+    @ZeroSecurity
     @PutMapping("/topic/update/title/{topicID}")
     public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
         return forumService.userUpdateTopicTitle(topicDTO,topicID);
     }
 
-
     @ZeroSecurity
     @PutMapping("/topic/update/text/{topicID}")
     public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
-
-
         return forumService.userUpdateTopicText(topicDTO,topicID);
-
     }
 
     @ZeroSecurity
@@ -163,20 +159,17 @@ public class ForumController {
         return forumService.postUpdateText(postDTO,postID);
     }
 
-
     @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
     @PutMapping("/topic/change-topic-category/{topicID}")
     public BaseResponse changeTopicCategory(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
      return forumService.changeTopicCategory(topicDTO,topicID);
-
     }
 
     @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
     @PutMapping("/post/change-post-topic/{postID}")
     public BaseResponse changePostTopic(@RequestParam int topicID,@PathVariable int postID){
-       return  forumService.changePostTopic(topicID,postID);
+       return forumService.changePostTopic(topicID,postID);
     }
-
 
     @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
     @DeleteMapping("/post/delete/{postID}")
@@ -189,6 +182,8 @@ public class ForumController {
     public void deleteAllPost(){
         forumService.deleteAllPosts();
     } //TODO INTEGRATE
+
+    //TODO INTEGRATE (CREARE DELETEMYPOST PER USER CHE IMPLEMENTI L'AUTHENTICATION CONTEXT)
 
     @ZeroSecurity
     @GetMapping("/post/read-all")
@@ -213,7 +208,6 @@ public class ForumController {
     public List<Map<String, Object>> readAllPostByTopicID(@PathVariable int topicID) {
         return forumService.findAllPostByTopicID(topicID);
     }
-
 
     @ZeroSecurity
     @GetMapping("/read-my-posts")

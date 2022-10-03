@@ -37,5 +37,4 @@ public class RoleRepository {
         String SQL = "UPDATE user SET User_Roles_id_User_Roles = 1 WHERE User_Name = ?";
         jdbcTemplate.update(SQL, username);
     }
-
 }

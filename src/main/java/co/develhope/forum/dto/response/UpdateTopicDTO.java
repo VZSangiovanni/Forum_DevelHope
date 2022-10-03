@@ -1,7 +1,4 @@
 package co.develhope.forum.dto.response;
-
-import co.develhope.forum.model.ForumTopic;
-
 public class UpdateTopicDTO extends BaseResponse {
 
     private int id;
@@ -21,41 +18,33 @@ public class UpdateTopicDTO extends BaseResponse {
         this.topicCategory = topicCategory;
     }
 
-
     public int getId() {
         return id;
     }
-
 
     public void setId(int id) {
         this.id = id;
     }
 
-
     public String getTopicTitle() {
         return topicTitle;
     }
-
 
     public void setTopicTitle(String topicTitle) {
         this.topicTitle = topicTitle;
     }
 
-
     public String getTopicText() {
         return topicText;
     }
-
 
     public void setTopicText(String topicText) {
         this.topicText = topicText;
     }
 
-
     public String getTopicCategory() {
         return topicCategory;
     }
-
 
     public void setTopicCategory(String topicCategory) {
         this.topicCategory = topicCategory;

@@ -8,6 +8,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * DISABLED FOR TESTING PURPOSES
+ */
 
 @Service
 public class NotificationService {
@@ -24,7 +27,6 @@ public class NotificationService {
         sms.setSubject("Benvenuto " + user.getUserFirstName());
         sms.setText("Benvenuto nel Forum DevelHope, il tuo codice di attivazione è: " + user.getUserActivationCode());
         javaMailSender.send(sms);
-
     }
 
     public void sendResetPasswordCodeEmail(User user) {

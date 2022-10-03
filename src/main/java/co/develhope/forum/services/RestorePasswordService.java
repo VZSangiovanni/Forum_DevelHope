@@ -1,7 +1,6 @@
 package co.develhope.forum.services;
 
 import co.develhope.forum.dto.response.BaseResponse;
-import co.develhope.forum.dto.response.RequestPasswordDTO;
 import co.develhope.forum.dto.response.RestorePasswordDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
@@ -34,7 +33,6 @@ public class RestorePasswordService {
 
     public BaseResponse requestPasswordCode(String username) {
         try {
-
             User user = userRepository.findByName(username);
             if (user == null) return new BaseResponse("User Not Found");
             String passwordCode = user.setResetPasswordCode(UUID.randomUUID().toString());
@@ -56,5 +54,4 @@ public class RestorePasswordService {
         userRepository.setPasswordCode(nullPasswordCode, user.getUsername());
         return new BaseResponse(BaseResponse.StatusEnum.OK, "Password changed successfully");
     }
-
 }

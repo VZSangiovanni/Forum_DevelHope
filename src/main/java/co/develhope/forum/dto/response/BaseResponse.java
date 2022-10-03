@@ -1,7 +1,6 @@
 package co.develhope.forum.dto.response;
 
 public class BaseResponse {
-
     private StatusEnum status = StatusEnum.OK;
     private String errorMessage;
 
@@ -12,9 +11,8 @@ public class BaseResponse {
         this.errorMessage = errorMessage;
     }
 
-
     public enum StatusEnum{
-        OK, KO;
+        OK, KO
     }
 
     public BaseResponse() {

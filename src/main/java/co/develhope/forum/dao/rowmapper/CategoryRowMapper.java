@@ -6,8 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CategoryRowMapper  implements RowMapper<ForumCategory> {
-
+public class CategoryRowMapper implements RowMapper<ForumCategory> {
 
     @Override
     public ForumCategory mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -1,6 +1,5 @@
 package co.develhope.forum.services;
 
-
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dao.SignUpDAO;
 import co.develhope.forum.dto.response.SignUpActivationDTO;
@@ -14,11 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-
 @Service
 public class SignUpService {
-
-    //Logica Applicativa
 
     @Autowired
     private SignUpDAO signUpDAO;
@@ -35,7 +31,6 @@ public class SignUpService {
         }else {
             return new BaseResponse("User Name available");
         }
-
     }
 
     public BaseResponse checkedUserEmail(String userEmail){
@@ -44,7 +39,6 @@ public class SignUpService {
         }else {
             return new BaseResponse("User Email available");
         }
-
     }
 
     public BaseResponse createUser(User user){
@@ -57,10 +51,9 @@ public class SignUpService {
             user.setActive(false);
             user.setUserActivationCode(UUID.randomUUID().toString());
             signUpDAO.createUser(user);
-            System.out.println(user.toString());
+            System.out.println(user);
             return new UserDTO(user.getId(), user.getUsername());
         }
-
     }
 
     public BaseResponse activeUser(SignUpActivationDTO signUpActivationDTO) {
@@ -72,6 +65,5 @@ public class SignUpService {
         signUpDAO.getRole(user.getId());
         return new UserDTO(user.getId(), user.getUsername());
     }
-
 
 }

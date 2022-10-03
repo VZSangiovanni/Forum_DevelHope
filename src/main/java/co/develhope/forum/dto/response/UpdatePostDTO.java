@@ -3,11 +3,8 @@ package co.develhope.forum.dto.response;
 public class UpdatePostDTO extends BaseResponse{
 
     private int id;
-
     private String postText;
-
     private String postTopic;
-
     public UpdatePostDTO() {}
 
     public UpdatePostDTO(int id, String postText, String postTopic) {
@@ -15,8 +12,6 @@ public class UpdatePostDTO extends BaseResponse{
         this.postText = postText;
         this.postTopic = postTopic;
     }
-
-
 
     public int getId() {
         return id;

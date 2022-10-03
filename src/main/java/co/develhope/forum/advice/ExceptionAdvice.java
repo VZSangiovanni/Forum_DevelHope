@@ -1,6 +1,5 @@
 package co.develhope.forum.advice;
 
-
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.exception.UserEmailAlreadyExistException;
@@ -9,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+/**
+ * Questa classe cattura e gestisce le eccezioni personalizzate
+ */
 
 @RestControllerAdvice
 public class ExceptionAdvice {
@@ -30,7 +33,4 @@ public class ExceptionAdvice {
     public BaseResponse categoryTitleError(ForumCategoryTitleAlreadyExistException e){
         return new BaseResponse(e.getMessage());
     }
-
-
-
 }

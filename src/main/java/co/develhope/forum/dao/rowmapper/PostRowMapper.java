@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class PostRowMapper implements RowMapper<ForumPost> {
 
-
     @Override
     public ForumPost mapRow(ResultSet rs, int rowNum) throws SQLException {
         ForumPost forumPost = new ForumPost();
