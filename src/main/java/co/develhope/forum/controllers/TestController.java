@@ -1,6 +1,5 @@
 package co.develhope.forum.controllers;
 
-
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dto.response.DeleteUserDTO;
 import co.develhope.forum.model.User;
@@ -73,8 +72,6 @@ public class TestController {
 
             return new BaseResponse("Delete failed");
         }
-
-
     }
 
 
@@ -89,7 +86,6 @@ public class TestController {
 
             return new BaseResponse("Delete failed");
         }
-
     }
 
     @ZeroSecurity
@@ -97,13 +93,11 @@ public class TestController {
     public User readSelf() {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         return customUserService.readUser(principal.getUsername());
-
     }
 
     @RoleSecurity(value = {"ROLE_FOUNDER", "ROLE_ADMIN"})
     @GetMapping("/read-users")
     public List<Map<String, Object>> readUsers() {
         return customUserService.findAll();
-
     }
 }

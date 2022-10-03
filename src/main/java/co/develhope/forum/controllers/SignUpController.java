@@ -21,11 +21,11 @@ public class SignUpController {
     SignUpService signUpService;
 
     @PublicEndpoint
-   @GetMapping("/getUserName")
+    @GetMapping("/getUserName")
     public BaseResponse getUserName(@RequestParam String userName){
       return signUpService.checkedUserName(userName);
    }
-@PublicEndpoint
+    @PublicEndpoint
     @GetMapping("/getUserEmail")
     public BaseResponse getUserEmail(@RequestParam String userEmail){
         return signUpService.checkedUserEmail(userEmail);

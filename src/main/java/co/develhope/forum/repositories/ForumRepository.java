@@ -38,7 +38,6 @@ public class ForumRepository {
         }
     }
 
-
     public boolean createCategory(ForumCategory forumCategory) {
         String SQL = "INSERT INTO forum_category (Category_Title) values (?)";
         int count = 0;
@@ -65,7 +64,9 @@ public class ForumRepository {
         return forumCategoryList;
     }
 
-//TODO implementare il search
+    public ForumCategory findCategoryByTitle(String categoryTitle){
+
+    //TODO implementare il search
     public ForumCategory searchCategoryByTitle(String categoryTitle){
         String title = "%" + categoryTitle.trim() + "%";
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title LIKE ?",
@@ -79,13 +80,17 @@ public class ForumRepository {
         return forumCategory;
     }
 
-
     public void deleteAllCategory() {
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
         jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
+
+    public void deleteAllPost() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    } //TODO INTEGRATE
 
     public void deleteCategoryByName(String categoryTitle) {
         jdbcTemplate.update("DELETE FROM forum_category WHERE Category_Title = ?", categoryTitle);
@@ -211,6 +216,16 @@ public class ForumRepository {
         }
     }
 
+    public void deleteTopic(int topicId) {
+        jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
+    } //TODO INTEGRATE
+
+    public void deleteAllTopics() {
+        jdbcTemplate.update("DELETE FROM forum_topic");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    } //TODO INTEGRATE
+
     public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
         String SQL = "SELECT * FROM forum_topic WHERE Forum_Category_id_Forum_Category = ?";
         ForumCategory forumCategory = findCategoryByTitle(categoryTitle);
@@ -283,7 +298,6 @@ public class ForumRepository {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
     }
-
 
     public ForumPost findPostByID(int id){
         try {
@@ -363,7 +377,6 @@ public class ForumRepository {
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
-
     public List<Map<String, Object>> getMyPosts() {
         String querySQL = "SELECT * FROM forum_post where User_id_User =?";
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -382,4 +395,12 @@ public class ForumRepository {
         }
     }
 
+    public void deleteSinglePostQuery(int postId){
+        jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
+    } //TODO INTEGRATE
+
+    public void deleteAllPostsQuery() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    } //TODO INTEGRATE
 }

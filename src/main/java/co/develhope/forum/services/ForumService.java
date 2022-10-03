@@ -9,8 +9,10 @@ import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
+
 import co.develhope.forum.repositories.UserRepository;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,6 @@ public class ForumService {
 
     @Autowired
     private ForumRepository forumRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public BaseResponse checkedCategoryTitle(String categoryTitle) {
         if (forumRepository.checkCategoryTitleExist(categoryTitle)) {
@@ -48,6 +47,25 @@ public class ForumService {
         return forumRepository.readAllCategory();
     }
 
+    public ForumCategory findCategoryByTitle(String categoryTitle){
+        return forumRepository.findCategoryByTitle(categoryTitle);
+    }
+
+    public void deleteAllCategory(){
+        forumRepository.deleteAllCategory();
+    }
+
+    public void deleteAllPosts(){
+        forumRepository.deleteAllPostsQuery();
+    }
+    //TODO INTEGRATE
+
+    public void deleteAllTopics() {
+        forumRepository.deleteAllTopics();
+    }
+    //TODO INTEGRATE
+
+    public void deleteOneCategory(String categoryTitle){
 
     public ForumCategory findCategoryByTitle(String categoryTitle) {
         return forumRepository.findCategoryByTitle(categoryTitle);
@@ -59,8 +77,10 @@ public class ForumService {
     }
 
     public void deleteOneCategory(String categoryTitle) {
+
         forumRepository.deleteCategoryByName(categoryTitle);
     }
+    //TODO INTEGRATE
 
     // Under this comment place the Topic Services
     public BaseResponse createTopic(ForumTopic forumTopic, String categoryTitle) {
@@ -71,6 +91,11 @@ public class ForumService {
 
         return forumTopic;
     }
+    //
+    public void deleteTopic(int topicID) {
+        forumRepository.deleteTopic(topicID);
+    }
+    //TODO INTEGRATE
 
     public List<Map<String, Object>> findAllTopic() {
         return forumRepository.findAllTopic();
@@ -159,6 +184,10 @@ public class ForumService {
         return forumPost;
     }
 
+    public void deletePost(int postID) {
+        forumRepository.deleteSinglePostQuery(postID);
+    }
+    //TODO INTEGRATE
 
     public List<Map<String, Object>> findAllPost() {
         return forumRepository.findAllPost();

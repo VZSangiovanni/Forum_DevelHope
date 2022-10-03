@@ -6,10 +6,13 @@ import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
+import co.develhope.forum.services.CustomUserService;
 import co.develhope.forum.services.ForumService;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +25,10 @@ public class ForumController {
     @Autowired
     private ForumService forumService;
 
-    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @Autowired
+    private CustomUserService customUserService;
+
+    @RoleSecurity(value = {"ROLE_USER"})
     @PostMapping("/category/create")
     public BaseResponse createCategory(@RequestBody ForumCategory forumCategory) {
         return forumService.createCategory(forumCategory);
@@ -34,13 +40,11 @@ public class ForumController {
         return forumService.readAllCategory();
     }
 
-
     @ZeroSecurity
     @GetMapping("/category/read/{categoryTitle}")
     public ForumCategory findCategoryByTitle(@PathVariable String categoryTitle) {
         return forumService.findCategoryByTitle(categoryTitle);
     }
-
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/all")
@@ -55,11 +59,27 @@ public class ForumController {
     }
 
     // Under this comment place the Topic Controller
+
     @ZeroSecurity
     @PostMapping("/topic/create/{categoryTitle}")
     public BaseResponse createTopic(@RequestBody ForumTopic forumTopic, @PathVariable String categoryTitle) {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
+
+
+    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @DeleteMapping("/topic/delete/{topicID}")
+    public void deleteTopic (@PathVariable int topicID) {
+        forumService.deleteTopic(topicID);
+    }
+    //TODO INTEGRATE
+
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/topic/delete/allTopic")
+    public void deleteAllTopics(){
+        forumService.deleteAllTopics();
+    }
+    //TODO INTEGRATE
 
     @ZeroSecurity
     @GetMapping("/topic/read-all-by-user/{userName}")
@@ -142,6 +162,18 @@ public class ForumController {
         return forumService.createPost(forumPost, topicID);
     }
 
+    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @DeleteMapping("/post/delete/{postID}")
+    public void deleteSinglePost(@PathVariable int postID) {
+        forumService.deletePost(postID);
+    }
+    //TODO INTEGRATE
+    @RoleSecurity(value = {"ROLE_FOUNDER"})
+    @DeleteMapping("/category/delete/allPost")
+    public void deleteAllPost(){
+        forumService.deleteAllPosts();
+    }
+    //TODO INTEGRATE
 
     @ZeroSecurity
     @GetMapping("/post/read-all")
@@ -190,9 +222,6 @@ public class ForumController {
     public BaseResponse deleteAllPost(){
         return forumService.deleteAllPost();
     }
-
-
-
 
     @ZeroSecurity
     @GetMapping("/read-my-posts")

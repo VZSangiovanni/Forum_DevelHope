@@ -75,7 +75,6 @@ public class UserRepository {
         }
     }
 
-
     public void banUser(boolean banned, String username) {
         String banSQL = "UPDATE user SET isActive = ? WHERE User_Name = ?";
         jdbcTemplate.update(banSQL, banned, username);
@@ -95,7 +94,6 @@ public class UserRepository {
         }
     }
 
-
     public List<String> getUserRoles(String username) {
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.
@@ -111,7 +109,6 @@ public class UserRepository {
         String passwordSQL = "UPDATE user SET User_Password = ? WHERE ResetPasswordCode = ?";
         jdbcTemplate.update(passwordSQL, password, resetPasswordCode);
     }
-
 
     public int deleteUser(String username) {
 
