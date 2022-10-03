@@ -244,20 +244,7 @@ public class ForumRepository {
         }
     }
 
-    public void updateTopicTitle(String topicTitle, int topicID) {
-        String SQLUpdateTitle = "UPDATE forum_topic SET Topic_Title = ? WHERE id_Forum_Topic = ?";
-        jdbcTemplate.update(SQLUpdateTitle,topicTitle, topicID);
-    }
 
-    public void updateTopicText(String topicText, int topicID) {
-        String SQLUpdateText = "UPDATE forum_topic SET Topic_Text = ? WHERE id_Forum_Topic = ?";
-        jdbcTemplate.update(SQLUpdateText,topicText, topicID);
-    }
-
-    public void changeTopicCategory(int categoryID, int topicID) {
-        String SQLChangeCategory = "UPDATE forum_topic SET Forum_Category_id_Forum_Category = ? WHERE id_Forum_Topic = ?";
-        jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
-    }
 
     // Under this comment place the Post Repository
 
@@ -294,17 +281,6 @@ public class ForumRepository {
         return forumPostsList;
     }
 
-    public ForumPost findPostByID(int id){
-        try {
-            ForumPost forumPost = jdbcTemplate.queryForObject(
-                    "SELECT * FROM forum_post AS fp INNER JOIN forum_topic AS ft ON ft.id_Forum_Topic=fp.Forum_Topic_id_Forum_Topic INNER JOIN user AS u ON u.id_User=fp.User_id_User WHERE id_Forum_Post = ?",
-                    new PostRowMapper(), id);
-            return forumPost;
-        }catch (IncorrectResultSizeDataAccessException e){
-            log.error("ERROR", e);
-            return null;
-        }
-    }
 
     public List<Map<String, Object>> findAllPost() {
         String SQL = "SELECT * From forum_post";
@@ -350,16 +326,6 @@ public class ForumRepository {
         }catch (IncorrectResultSizeDataAccessException e){
             return null;
         }
-    }
-
-    public void updatePostText(String postText, int postID) {
-        String SQLUpdateText = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post = ?";
-        jdbcTemplate.update(SQLUpdateText,postText, postID);
-    }
-
-    public void changePostTopic(int topicID, int postID) {
-        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
-        jdbcTemplate.update(SQLChangeCategory,topicID,postID);
     }
 
     public List<Map<String, Object>> getMyPosts() {

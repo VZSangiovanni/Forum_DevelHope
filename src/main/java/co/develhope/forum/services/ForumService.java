@@ -203,17 +203,7 @@ public class ForumService {
         }
     }
 
-    public BaseResponse changePostTopic(int topicID, int postID) {
-        ForumPost forumPost = forumRepository.findPostByID(postID);
-        ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
-        if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (forumPost == null) return new BaseResponse("Post not Found");
-        forumRepository.findTopicTitleByID(topicID);
-        String topicTitle = forumRepository.findTopicTitleByID(topicID);
-        forumPost.setPostTopic(topicTitle);
-        forumRepository.changePostTopic(topicID, postID);
-        return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
-    }
+
 
     public BaseResponse deletePostByID(int postID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();

@@ -114,11 +114,6 @@ public class ForumController {
         return forumService.updateTopicText(updateTopicDTO, topicID);
     }
 
-    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
-    @PutMapping("/topic/change-topic-category/{topicID}")
-    public BaseResponse changeTopicCategory(@RequestBody UpdateTopicDTO updateTopicDTO, @PathVariable int topicID){
-        return forumService.changeTopicCategory(updateTopicDTO, topicID);
-    }
 
     @ZeroSecurity
     @GetMapping("/read-my-topics/{id}")
@@ -144,17 +139,12 @@ public class ForumController {
     @PostMapping("/post/create/{topicID}")
     public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
         return forumService.createPost(forumPost, topicID);
-
-
     }
 
      @ZeroSecurity
     @PutMapping("/topic/update/title/{topicID}")
     public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
-
-
         return forumService.userUpdateTopicTitle(topicDTO,topicID);
-
     }
 
 
@@ -170,7 +160,6 @@ public class ForumController {
     @ZeroSecurity
     @PutMapping("/post/update-post-text/{postID}")
     public BaseResponse postUpdateText(@RequestBody PostDTO postDTO,@PathVariable int postID){
-
         return forumService.postUpdateText(postDTO,postID);
     }
 
@@ -186,13 +175,7 @@ public class ForumController {
     @PutMapping("/post/change-post-topic/{postID}")
     public BaseResponse changePostTopic(@RequestParam int topicID,@PathVariable int postID){
        return  forumService.changePostTopic(topicID,postID);
-
-
     }
-
-
-
-
 
 
     @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
@@ -229,18 +212,6 @@ public class ForumController {
     @GetMapping("/post/read-by-topic/{topicID}")
     public List<Map<String, Object>> readAllPostByTopicID(@PathVariable int topicID) {
         return forumService.findAllPostByTopicID(topicID);
-    }
-
-    @ZeroSecurity
-    @PutMapping("/post/update-post-text/{postID}")
-    public BaseResponse updatePostText(@RequestBody UpdatePostDTO updatePostDTO, @PathVariable int postID) {
-        return forumService.updatePostText(updatePostDTO, postID);
-    }
-
-    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
-    @PutMapping("/post/change-post-topic/{postID}")
-    public BaseResponse changePostTopic(@RequestParam int topicID, @PathVariable int postID) {
-        return forumService.changePostTopic(topicID, postID);
     }
 
 
