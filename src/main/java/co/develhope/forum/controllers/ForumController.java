@@ -69,11 +69,14 @@ public class ForumController {
     public void deleteTopic (@PathVariable int topicID) {
         forumService.deleteTopic(topicID);
     }
+    //TODO INTEGRATE
+
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/topic/delete/allTopic")
     public void deleteAllTopics(){
         forumService.deleteAllTopics();
     }
+    //TODO INTEGRATE
 
     // Under this comment place the Post Controller
 
@@ -88,10 +91,11 @@ public class ForumController {
     public void deleteSinglePost(@PathVariable int postID) {
         forumService.deletePost(postID);
     }
-
+    //TODO INTEGRATE
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/category/delete/allPost")
     public void deleteAllPost(){
         forumService.deleteAllPosts();
     }
+    //TODO INTEGRATE
 }

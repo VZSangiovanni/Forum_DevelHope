@@ -78,7 +78,7 @@ public class ForumRepository {
     public void deleteAllPost() {
         jdbcTemplate.update("DELETE FROM forum_post");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    }
+    } //TODO INTEGRATE
 
     public void deleteCategoryByName(String categoryTitle) {
         jdbcTemplate.update("DELETE FROM forum_category WHERE Category_Title = ?", categoryTitle);
@@ -139,13 +139,13 @@ public class ForumRepository {
 
     public void deleteTopic(int topicId) {
         jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
-    }
+    } //TODO INTEGRATE
 
     public void deleteAllTopics() {
         jdbcTemplate.update("DELETE FROM forum_topic");
         jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    }
+    } //TODO INTEGRATE
 
     // Under this comment place the Post Repository
 
@@ -179,11 +179,11 @@ public class ForumRepository {
 
     public void deleteSinglePostQuery(int postId){
         jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
-    }
+    } //TODO INTEGRATE
 
     public void deleteAllPostsQuery() {
         jdbcTemplate.update("DELETE FROM forum_post");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    }
+    } //TODO INTEGRATE
 
 }

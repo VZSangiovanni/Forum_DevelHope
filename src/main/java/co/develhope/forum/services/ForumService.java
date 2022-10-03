@@ -51,14 +51,17 @@ public class ForumService {
     public void deleteAllPosts(){
         forumRepository.deleteAllPostsQuery();
     }
+    //TODO INTEGRATE
 
     public void deleteAllTopics() {
         forumRepository.deleteAllTopics();
     }
+    //TODO INTEGRATE
 
     public void deleteOneCategory(String categoryTitle){
         forumRepository.deleteCategoryByName(categoryTitle);
     }
+    //TODO INTEGRATE
 
     // Under this comment place the Topic Services
     public BaseResponse createTopic(ForumTopic forumTopic, String categoryTitle) {
@@ -73,6 +76,7 @@ public class ForumService {
     public void deleteTopic(int topicID) {
         forumRepository.deleteTopic(topicID);
     }
+    //TODO INTEGRATE
 
     // Under this comment place the Post Services
 
@@ -85,5 +89,6 @@ public class ForumService {
     public void deletePost(int postID) {
         forumRepository.deleteSinglePostQuery(postID);
     }
+    //TODO INTEGRATE
 
 }
