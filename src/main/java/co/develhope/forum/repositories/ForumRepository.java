@@ -64,8 +64,6 @@ public class ForumRepository {
         return forumCategoryList;
     }
 
-    public ForumCategory findCategoryByTitle(String categoryTitle){
-
     //TODO implementare il search
     public ForumCategory searchCategoryByTitle(String categoryTitle){
         String title = "%" + categoryTitle.trim() + "%";
@@ -86,11 +84,6 @@ public class ForumRepository {
         jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
-
-    public void deleteAllPost() {
-        jdbcTemplate.update("DELETE FROM forum_post");
-        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    } //TODO INTEGRATE
 
     public void deleteCategoryByName(String categoryTitle) {
         jdbcTemplate.update("DELETE FROM forum_category WHERE Category_Title = ?", categoryTitle);
@@ -164,7 +157,6 @@ public class ForumRepository {
         int userID = user.getId();
         List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, userID);
         return userTopics;
-
     }
 
     public List<Map<String, Object>> findByCategory(String categoryTitle) {
@@ -216,15 +208,15 @@ public class ForumRepository {
         }
     }
 
-    public void deleteTopic(int topicId) {
+    public void deleteTopicByID(int topicId) {
         jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
-    } //TODO INTEGRATE
+    }
 
     public void deleteAllTopics() {
         jdbcTemplate.update("DELETE FROM forum_topic");
         jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    } //TODO INTEGRATE
+    }
 
     public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
         String SQL = "SELECT * FROM forum_topic WHERE Forum_Category_id_Forum_Category = ?";
@@ -252,17 +244,6 @@ public class ForumRepository {
     public void changeTopicCategory(int categoryID, int topicID) {
         String SQLChangeCategory = "UPDATE forum_topic SET Forum_Category_id_Forum_Category = ? WHERE id_Forum_Topic = ?";
         jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
-    }
-
-    public void deleteTopicByID (int topicID) {
-        String SQLDelete = "DELETE FROM forum_topic WHERE id_Forum_Topic = ?";
-        jdbcTemplate.update(SQLDelete, topicID);
-    }
-
-    public void deleteAllTopic() {
-        jdbcTemplate.update("DELETE FROM forum_topic");
-        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
-        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     // Under this comment place the Post Repository
@@ -294,6 +275,7 @@ public class ForumRepository {
             return false;
         }
     }
+
     public List<Map<String, Object>> readAllPosts() {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
@@ -367,16 +349,6 @@ public class ForumRepository {
         jdbcTemplate.update(SQLChangeCategory,topicID,postID);
     }
 
-    public void deletePostByID (int postID) {
-        String SQLDelete = "DELETE FROM forum_post WHERE id_Forum_Post = ?";
-        jdbcTemplate.update(SQLDelete, postID);
-    }
-
-    public void deleteAllPost() {
-        jdbcTemplate.update("DELETE FROM forum_post");
-        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    }
-
     public List<Map<String, Object>> getMyPosts() {
         String querySQL = "SELECT * FROM forum_post where User_id_User =?";
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -395,12 +367,12 @@ public class ForumRepository {
         }
     }
 
-    public void deleteSinglePostQuery(int postId){
+    public void deletePostByID(int postId){
         jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
-    } //TODO INTEGRATE
+    }
 
-    public void deleteAllPostsQuery() {
+    public void deleteAllPosts() {
         jdbcTemplate.update("DELETE FROM forum_post");
         jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
-    } //TODO INTEGRATE
+    }
 }

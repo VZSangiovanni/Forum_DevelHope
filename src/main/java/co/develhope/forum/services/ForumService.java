@@ -7,10 +7,8 @@ import co.develhope.forum.exception.ForumCategoryTitleAlreadyExistException;
 import co.develhope.forum.model.ForumCategory;
 import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
-import co.develhope.forum.model.User;
 import co.develhope.forum.repositories.ForumRepository;
 
-import co.develhope.forum.repositories.UserRepository;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,37 +45,20 @@ public class ForumService {
         return forumRepository.readAllCategory();
     }
 
-    public ForumCategory findCategoryByTitle(String categoryTitle){
-        return forumRepository.findCategoryByTitle(categoryTitle);
-    }
-
-    public void deleteAllCategory(){
-        forumRepository.deleteAllCategory();
-    }
-
-    public void deleteAllPosts(){
-        forumRepository.deleteAllPostsQuery();
-    }
-    //TODO INTEGRATE
-
-    public void deleteAllTopics() {
-        forumRepository.deleteAllTopics();
-    }
-    //TODO INTEGRATE
-
-    public void deleteOneCategory(String categoryTitle){
-
     public ForumCategory findCategoryByTitle(String categoryTitle) {
         return forumRepository.findCategoryByTitle(categoryTitle);
     }
 
+    public void deleteAllPosts() {
+        forumRepository.deleteAllPosts();
+    }
+    //TODO INTEGRATE
 
     public void deleteAllCategory() {
         forumRepository.deleteAllCategory();
     }
 
     public void deleteOneCategory(String categoryTitle) {
-
         forumRepository.deleteCategoryByName(categoryTitle);
     }
     //TODO INTEGRATE
@@ -91,9 +72,14 @@ public class ForumService {
 
         return forumTopic;
     }
-    //
+
     public void deleteTopic(int topicID) {
-        forumRepository.deleteTopic(topicID);
+        forumRepository.deleteTopicByID(topicID);
+    }
+    //TODO INTEGRATE
+
+    public void deleteAllTopics() {
+        forumRepository.deleteAllTopics();
     }
     //TODO INTEGRATE
 
@@ -102,10 +88,10 @@ public class ForumService {
     }
 
     public List<Map<String, Object>> findAllTopicByUser(String userName) {
-       return forumRepository.findAllTopicByUser(userName);
+        return forumRepository.findAllTopicByUser(userName);
     }
 
-    public List<Map<String, Object>> readAllMyTopic(){
+    public List<Map<String, Object>> readAllMyTopic() {
         return forumRepository.readAllMyTopic();
     }
 
@@ -117,14 +103,14 @@ public class ForumService {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
-                ||principal.getRoles().contains("ROLE_FOUNDER")
-                ||principal.getUsername().equals(forumTopic.getUserName())) {
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN")
+                || principal.getRoles().contains("ROLE_FOUNDER")
+                || principal.getUsername().equals(forumTopic.getUserName())) {
             forumTopic.setTopicTitle(updateTopicDTO.getTopicTitle());
             forumRepository.updateTopicTitle(forumTopic.getTopicTitle(), forumTopic.getId());
             return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(),
                     forumTopic.getTopicText(), forumTopic.getTopicCategory());
-        }else {
+        } else {
             return new BaseResponse("Not your Topic");
         }
     }
@@ -133,19 +119,19 @@ public class ForumService {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
-                ||principal.getRoles().contains("ROLE_FOUNDER")
-                ||principal.getUsername().equals(forumTopic.getUserName())) {
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN")
+                || principal.getRoles().contains("ROLE_FOUNDER")
+                || principal.getUsername().equals(forumTopic.getUserName())) {
             forumTopic.setTopicText(updateTopicDTO.getTopicText());
             forumRepository.updateTopicText(forumTopic.getTopicText(), forumTopic.getId());
             return new UpdateTopicDTO(forumTopic.getId(), forumTopic.getTopicTitle(),
                     forumTopic.getTopicText(), forumTopic.getTopicCategory());
-        }else {
+        } else {
             return new BaseResponse("Not your Topic");
         }
     }
 
-    public BaseResponse changeTopicCategory(UpdateTopicDTO updateTopicDTO, int topicID){
+    public BaseResponse changeTopicCategory(UpdateTopicDTO updateTopicDTO, int topicID) {
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         ForumCategory forumCategory = forumRepository.findCategoryByTitle(updateTopicDTO.getTopicCategory());
         int categoryID = forumCategory.getId();
@@ -157,23 +143,18 @@ public class ForumService {
                 forumTopic.getTopicCategory());
     }
 
-    public BaseResponse deleteTopicByID (int topicID) {
+    public BaseResponse deleteTopicByID(int topicID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumTopic forumTopic = forumRepository.findTopicByID(topicID);
         if (forumTopic == null) return new BaseResponse("Topic not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
-                ||principal.getRoles().contains("ROLE_FOUNDER")
-                ||principal.getUsername().equals(forumTopic.getUserName())){
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN")
+                || principal.getRoles().contains("ROLE_FOUNDER")
+                || principal.getUsername().equals(forumTopic.getUserName())) {
             forumRepository.deleteTopicByID(topicID);
-            return new BaseResponse(BaseResponse.StatusEnum.OK,"Topic Deleted");
-        }else {
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "Topic Deleted");
+        } else {
             return new BaseResponse("You cannot delete this Topic");
         }
-    }
-
-    public BaseResponse deleteAllTopic() {
-        forumRepository.deleteAllTopic();
-        return new BaseResponse(BaseResponse.StatusEnum.OK, "All topic Deleted");
     }
 
     // Under this comment place the Post Services
@@ -185,23 +166,22 @@ public class ForumService {
     }
 
     public void deletePost(int postID) {
-        forumRepository.deleteSinglePostQuery(postID);
+        forumRepository.deletePostByID(postID);
     }
-    //TODO INTEGRATE
 
     public List<Map<String, Object>> findAllPost() {
         return forumRepository.findAllPost();
     }
 
-    public List<Map<String, Object>> readAllMyPost(){
+    public List<Map<String, Object>> readAllMyPost() {
         return forumRepository.readAllMyPost();
     }
 
-    public List<Map<String, Object>> findAllPostByUser(String userName){
+    public List<Map<String, Object>> findAllPostByUser(String userName) {
         return forumRepository.findAllPostByUser(userName);
     }
 
-    public List<Map<String, Object>> findAllPosyByTopicID(int topicID) {
+    public List<Map<String, Object>> findAllPostByTopicID(int topicID) {
         return forumRepository.findAllPostByTopicID(topicID);
     }
 
@@ -209,13 +189,13 @@ public class ForumService {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumPost forumPost = forumRepository.findPostByID(postID);
         if (forumPost == null) return new BaseResponse("Post not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
-                ||principal.getRoles().contains("ROLE_FOUNDER")
-                ||principal.getUsername().equals(forumPost.getUserName())){
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN")
+                || principal.getRoles().contains("ROLE_FOUNDER")
+                || principal.getUsername().equals(forumPost.getUserName())) {
             forumPost.setPostText(updatePostDTO.getPostText());
             forumRepository.updatePostText(forumPost.getPostText(), forumPost.getId());
-            return new UpdatePostDTO(forumPost.getId(),forumPost.getPostText(), forumPost.getPostTopic());
-        }else {
+            return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
+        } else {
             return new BaseResponse("Not your Post");
         }
     }
@@ -232,23 +212,18 @@ public class ForumService {
         return new UpdatePostDTO(forumPost.getId(), forumPost.getPostText(), forumPost.getPostTopic());
     }
 
-    public BaseResponse deletePostByID (int postID) {
+    public BaseResponse deletePostByID(int postID) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ForumPost forumPost = forumRepository.findPostByID(postID);
         if (forumPost == null) return new BaseResponse("Post not Found");
-        if (principal.getRoles().contains("ROLE_MOD") ||principal.getRoles().contains("ROLE_ADMIN")
-                ||principal.getRoles().contains("ROLE_FOUNDER")
-                ||principal.getUsername().equals(forumPost.getUserName())){
+        if (principal.getRoles().contains("ROLE_MOD") || principal.getRoles().contains("ROLE_ADMIN")
+                || principal.getRoles().contains("ROLE_FOUNDER")
+                || principal.getUsername().equals(forumPost.getUserName())) {
             forumRepository.deletePostByID(postID);
-            return new BaseResponse(BaseResponse.StatusEnum.OK,"Post Deleted");
-        }else {
+            return new BaseResponse(BaseResponse.StatusEnum.OK, "Post Deleted");
+        } else {
             return new BaseResponse("You cannot delete this Post");
         }
-    }
-
-    public BaseResponse deleteAllPost(){
-        forumRepository.deleteAllPost();
-        return new BaseResponse(BaseResponse.StatusEnum.OK, "All Post Deleted");
     }
 
     public List<Map<String, Object>> findAllTopics() {
@@ -259,9 +234,8 @@ public class ForumService {
         return forumRepository.getMyTopics();
     }
 
-
     public List<Map<String, Object>> findAllTopicsByCategory(String categoryTitle) {
-        return  forumRepository.findByCategory(categoryTitle);
+        return forumRepository.findByCategory(categoryTitle);
     }
 
     public List<Map<String, Object>> findAllPosts() {
@@ -271,8 +245,10 @@ public class ForumService {
     public List<Map<String, Object>> findMyPosts() {
         return forumRepository.getMyPosts();
     }
-    public List<Map<String, Object>> findAllPostsByTopic(int id){
+
+    public List<Map<String, Object>> findAllPostsByTopic(int id) {
         return forumRepository.findByTopic(id);
-    }    }
+    }
+}
 
 

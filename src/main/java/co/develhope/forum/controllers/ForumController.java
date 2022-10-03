@@ -8,11 +8,9 @@ import co.develhope.forum.model.ForumPost;
 import co.develhope.forum.model.ForumTopic;
 import co.develhope.forum.services.CustomUserService;
 import co.develhope.forum.services.ForumService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,20 +64,17 @@ public class ForumController {
         return forumService.createTopic(forumTopic, categoryTitle);
     }
 
-
-    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
     @DeleteMapping("/topic/delete/{topicID}")
     public void deleteTopic (@PathVariable int topicID) {
         forumService.deleteTopic(topicID);
-    }
-    //TODO INTEGRATE
+    }//TODO INTEGRATE
 
     @RoleSecurity(value = {"ROLE_FOUNDER"})
     @DeleteMapping("/topic/delete/allTopic")
     public void deleteAllTopics(){
         forumService.deleteAllTopics();
-    }
-    //TODO INTEGRATE
+    }//TODO INTEGRATE
 
     @ZeroSecurity
     @GetMapping("/topic/read-all-by-user/{userName}")
@@ -124,18 +119,6 @@ public class ForumController {
     }
 
     @ZeroSecurity
-    @DeleteMapping("/topic/delete/{topicID}")
-    public BaseResponse deleteTopicByID(@PathVariable int topicID) {
-        return forumService.deleteTopicByID(topicID);
-    }
-
-    @RoleSecurity(value = {"ROLE_FOUNDER"})
-    @DeleteMapping("/topic/delete-all")
-    public BaseResponse deleteAllTopic() {
-        return forumService.deleteAllTopic();
-    }
-
-    @ZeroSecurity
     @GetMapping("/read-my-topics/{id}")
     public List<Map<String, Object>> readMyTopics(@PathVariable int id) {
         return forumService.findMyTopics();
@@ -151,7 +134,6 @@ public class ForumController {
     @GetMapping("/read-topics_by_category/{categoryTitle}")
     public List<Map<String, Object>> readTopicsByCategory(@PathVariable String categoryTitle) {
         return forumService.findAllTopicsByCategory(categoryTitle);
-
     }
 
     // Under this comment place the Post Controller
@@ -162,18 +144,17 @@ public class ForumController {
         return forumService.createPost(forumPost, topicID);
     }
 
-    @RoleSecurity(value = {"ROLE_MODERATOR"})
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
     @DeleteMapping("/post/delete/{postID}")
     public void deleteSinglePost(@PathVariable int postID) {
         forumService.deletePost(postID);
-    }
-    //TODO INTEGRATE
+    } //TODO INTEGRATE
+
     @RoleSecurity(value = {"ROLE_FOUNDER"})
-    @DeleteMapping("/category/delete/allPost")
+    @DeleteMapping("/post/delete/allPost")
     public void deleteAllPost(){
         forumService.deleteAllPosts();
-    }
-    //TODO INTEGRATE
+    } //TODO INTEGRATE
 
     @ZeroSecurity
     @GetMapping("/post/read-all")
@@ -196,7 +177,7 @@ public class ForumController {
     @ZeroSecurity
     @GetMapping("/post/read-by-topic/{topicID}")
     public List<Map<String, Object>> readAllPostByTopicID(@PathVariable int topicID) {
-        return forumService.findAllPosyByTopicID(topicID);
+        return forumService.findAllPostByTopicID(topicID);
     }
 
     @ZeroSecurity
@@ -209,18 +190,6 @@ public class ForumController {
     @PutMapping("/post/change-post-topic/{postID}")
     public BaseResponse changePostTopic(@RequestParam int topicID, @PathVariable int postID) {
         return forumService.changePostTopic(topicID, postID);
-    }
-
-    @ZeroSecurity
-    @DeleteMapping("/post/delete/{postID}")
-    public BaseResponse deletePostByID(@PathVariable int postID){
-        return forumService.deletePostByID(postID);
-    }
-
-    @RoleSecurity(value = {"ROLE_FOUNDER"})
-    @DeleteMapping("/post/delete-all")
-    public BaseResponse deleteAllPost(){
-        return forumService.deleteAllPost();
     }
 
     @ZeroSecurity
