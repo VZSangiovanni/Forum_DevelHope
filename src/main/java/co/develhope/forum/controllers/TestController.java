@@ -1,6 +1,5 @@
 package co.develhope.forum.controllers;
 
-
 import co.develhope.forum.dto.response.BaseResponse;
 import co.develhope.forum.dto.response.DeleteUserDTO;
 import co.develhope.forum.model.User;
@@ -46,6 +45,18 @@ public class TestController {
         System.out.println("This endpoint can be reached only by authenticated users with ROLE_USER or ROLE_ADMIN. Authenticated user is " + AuthenticationContext.get().getUsername());
     }
 
+    @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
+    @PutMapping("/ban-user/{username}")
+    public BaseResponse banUser(@RequestParam boolean banned, @PathVariable String username) {
+        return customUserService.banUser(banned, username);
+    }
+
+
+    @ZeroSecurity
+    @GetMapping("/find-user-by-id/{userID}")
+    public User findById (@PathVariable int userID){
+        return customUserService.findByID(userID);
+    }
 
     @ZeroSecurity
     @DeleteMapping("delete-self")
@@ -61,8 +72,6 @@ public class TestController {
 
             return new BaseResponse("Delete failed");
         }
-
-
     }
 
 
@@ -77,7 +86,6 @@ public class TestController {
 
             return new BaseResponse("Delete failed");
         }
-
     }
 
     @ZeroSecurity
@@ -85,13 +93,11 @@ public class TestController {
     public User readSelf() {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         return customUserService.readUser(principal.getUsername());
-
     }
 
     @RoleSecurity(value = {"ROLE_FOUNDER", "ROLE_ADMIN"})
     @GetMapping("/read-users")
     public List<Map<String, Object>> readUsers() {
         return customUserService.findAll();
-
     }
 }

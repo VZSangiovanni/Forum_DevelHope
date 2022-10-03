@@ -1,7 +1,5 @@
 package co.develhope.forum.utils;
 
-
-
 public class Roles {
 
     public final static String USER="ROLE_USER";

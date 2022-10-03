@@ -5,6 +5,8 @@ import co.develhope.forum.dto.response.UserDTO;
 import co.develhope.forum.model.User;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.dao.UserDao;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,13 +25,15 @@ import java.util.Map;
 @Repository
 public class UserRepository {
 
+    private static final Logger log = LoggerFactory.getLogger(ForumRepository.class);
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private User findById(int id){
+    public User findById(int userID){
         try {
-            User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE id_user = ?",
-                    BeanPropertyRowMapper.newInstance(User.class), id);
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user u INNER JOIN user_data ud ON u.id_User=ud.User_id_User WHERE id_User=?",
+                    new UserRowMapper(), userID);
             return user;
         }catch (IncorrectResultSizeDataAccessException e){
             return null;
@@ -71,14 +75,40 @@ public class UserRepository {
         }
     }
 
-    public List<String> getUserRoles(String userName) {
+    public void banUser(boolean banned, String username) {
+        String banSQL = "UPDATE user SET isActive = ? WHERE User_Name = ?";
+        jdbcTemplate.update(banSQL, banned, username);
+    }
 
+    public User findByResetPasswordCode(String resetPasswordCode) {
+        try {
+            User user = jdbcTemplate.queryForObject("SELECT * FROM user u INNER JOIN user_data ud ON u.id_User=ud.User_id_User WHERE u.ResetPasswordCode=?",
+                    new UserRowMapper(), resetPasswordCode);
+            int userModelID = jdbcTemplate.queryForObject("SELECT id_User FROM `user` WHERE User_Name = ?",
+                    Integer.class, new Object[]{user.getUsername()});
+            user.setId(userModelID);
+            return user;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            log.error("ERROR", e);
+            return null;
+        }
+    }
+
+    public List<String> getUserRoles(String username) {
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";
         //dataSource.
-        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, userName);
+        List<String> userRoles = jdbcTemplate.queryForList(querySQL, String.class, username);
         return userRoles;
     }
 
+    public void setPasswordCode(String resetPasswordCode, String username){
+        jdbcTemplate.update("UPDATE user SET ResetPasswordCode = ? WHERE User_Name = ?", resetPasswordCode, username);
+    }
+
+    public void resetPassword(String password, String resetPasswordCode) {
+        String passwordSQL = "UPDATE user SET User_Password = ? WHERE ResetPasswordCode = ?";
+        jdbcTemplate.update(passwordSQL, password, resetPasswordCode);
+    }
 
     public int deleteUser(String username) {
 

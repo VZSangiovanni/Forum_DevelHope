@@ -38,7 +38,6 @@ public class ForumRepository {
         }
     }
 
-
     public boolean createCategory(ForumCategory forumCategory) {
         String SQL = "INSERT INTO forum_category (Category_Title) values (?)";
         int count = 0;
@@ -65,6 +64,13 @@ public class ForumRepository {
         return forumCategoryList;
     }
 
+    //TODO implementare il search
+    public ForumCategory searchCategoryByTitle(String categoryTitle){
+        String title = "%" + categoryTitle.trim() + "%";
+        ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title LIKE ?",
+                new CategoryRowMapper(), title.toLowerCase());
+        return forumCategory;
+    }
 
     public ForumCategory findCategoryByTitle(String categoryTitle) {
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
@@ -84,10 +90,11 @@ public class ForumRepository {
         }
     }
 
-
     public void deleteAllCategory() {
         jdbcTemplate.update("DELETE FROM forum_category");
         jdbcTemplate.update("ALTER TABLE forum_category AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
     }
 
     public void deleteCategoryByName(String categoryTitle) {
@@ -129,10 +136,13 @@ public class ForumRepository {
 
     public ForumTopic findTopicByID(int id) {
         try {
+
             ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic INNER JOIN forum_category ON id_Forum_Category = Forum_Category_id_Forum_Category INNER JOIN user ON id_User = User_id_User WHERE id_Forum_Topic = ?",
                     new TopicRowMapper(), id);
             return forumTopic;
-        } catch (IncorrectResultSizeDataAccessException e) {
+
+        }catch (IncorrectResultSizeDataAccessException e){
+            log.error("ERROR", e);
             return null;
         }
     }
@@ -160,7 +170,6 @@ public class ForumRepository {
         int userID = user.getId();
         List<Map<String, Object>> userTopics = jdbcTemplate.queryForList(querySQL, userID);
         return userTopics;
-
     }
 
     public List<Map<String, Object>> findByCategory(String categoryTitle) {
@@ -174,6 +183,80 @@ public class ForumRepository {
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
+    }
+
+    public List<Map<String, Object>> findAllTopic() {
+        String SQL = "SELECT * From forum_topic";
+        try {
+            List<Map<String, Object>> topicList = jdbcTemplate.queryForList(SQL);
+            return topicList;
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> readAllMyTopic(){
+        String SQL = "SELECT * FROM forum_topic WHERE User_id_User = ?";
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        User user = userRepository.findByName(principal.getUsername());
+        int userID = user.getId();
+        try {
+            List<Map<String, Object>> myTopic = jdbcTemplate.queryForList(SQL, userID);
+            return myTopic;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllTopicByUser(String userName) {
+        String SQL = "SELECT * FROM forum_topic WHERE User_id_User = ?";
+        User user = userRepository.findByName(userName);
+        int userID = user.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, userID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public void deleteTopicByID(int topicId) {
+        jdbcTemplate.update("DELETE FROM `forum_topic` WHERE id_Forum_Topic = ? ",topicId);
+    }
+
+    public void deleteAllTopics() {
+        jdbcTemplate.update("DELETE FROM forum_topic");
+        jdbcTemplate.update("ALTER TABLE forum_topic AUTO_INCREMENT = 1");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    }
+
+    public List<Map<String, Object>> findAllTopicByCategoryTitle(String categoryTitle) {
+        String SQL = "SELECT * FROM forum_topic WHERE Forum_Category_id_Forum_Category = ?";
+        ForumCategory forumCategory = findCategoryByTitle(categoryTitle);
+        int categoryID = forumCategory.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, categoryID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public void updateTopicTitle(String topicTitle, int topicID) {
+        String SQLUpdateTitle = "UPDATE forum_topic SET Topic_Title = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLUpdateTitle,topicTitle, topicID);
+    }
+
+    public void updateTopicText(String topicText, int topicID) {
+        String SQLUpdateText = "UPDATE forum_topic SET Topic_Text = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLUpdateText,topicText, topicID);
+    }
+
+    public void changeTopicCategory(int categoryID, int topicID) {
+        String SQLChangeCategory = "UPDATE forum_topic SET Forum_Category_id_Forum_Category = ? WHERE id_Forum_Topic = ?";
+        jdbcTemplate.update(SQLChangeCategory,categoryID,topicID);
     }
 
     // Under this comment place the Post Repository
@@ -205,9 +288,78 @@ public class ForumRepository {
             return false;
         }
     }
+
     public List<Map<String, Object>> readAllPosts() {
         List<Map<String, Object>> forumPostsList = jdbcTemplate.queryForList("SELECT * FROM forum_post");
         return forumPostsList;
+    }
+
+    public ForumPost findPostByID(int id){
+        try {
+            ForumPost forumPost = jdbcTemplate.queryForObject(
+                    "SELECT * FROM forum_post AS fp INNER JOIN forum_topic AS ft ON ft.id_Forum_Topic=fp.Forum_Topic_id_Forum_Topic INNER JOIN user AS u ON u.id_User=fp.User_id_User WHERE id_Forum_Post = ?",
+                    new PostRowMapper(), id);
+            return forumPost;
+        }catch (IncorrectResultSizeDataAccessException e){
+            log.error("ERROR", e);
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllPost() {
+        String SQL = "SELECT * From forum_post";
+        try {
+            List<Map<String, Object>> topicList = jdbcTemplate.queryForList(SQL);
+            return topicList;
+        }catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> readAllMyPost(){
+        String SQL = "SELECT * FROM forum_post WHERE User_id_User = ?";
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        User user = userRepository.findByName(principal.getUsername());
+        int userID = user.getId();
+        try {
+            List<Map<String, Object>> myTopic = jdbcTemplate.queryForList(SQL, userID);
+            return myTopic;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllPostByUser(String userName) {
+        String SQL = "SELECT * FROM forum_post WHERE User_id_User = ?";
+        User user = userRepository.findByName(userName);
+        int userID = user.getId();
+
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, userID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> findAllPostByTopicID(int topicID) {
+        String SQL = "SELECT * FROM forum_post WHERE Forum_Topic_id_Forum_Topic = ?";
+        try {
+            List<Map<String, Object>> userTopicList = jdbcTemplate.queryForList(SQL, topicID);
+            return userTopicList;
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
+    }
+
+    public void updatePostText(String postText, int postID) {
+        String SQLUpdateText = "UPDATE forum_post SET Post_Text = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLUpdateText,postText, postID);
+    }
+
+    public void changePostTopic(int topicID, int postID) {
+        String SQLChangeCategory = "UPDATE forum_post SET Forum_Topic_id_Forum_Topic = ? WHERE id_Forum_Post = ?";
+        jdbcTemplate.update(SQLChangeCategory,topicID,postID);
     }
 
     public List<Map<String, Object>> getMyPosts() {
@@ -227,6 +379,7 @@ public class ForumRepository {
             return null;
         }
     }
+
     public void updateTopicTitle(String topicTitle, int topicID) {
         String SQLUpdateTitle = "UPDATE forum_topic SET Topic_Title = ? WHERE id_Forum_Topic = ?";
         jdbcTemplate.update(SQLUpdateTitle,topicTitle, topicID);
@@ -252,5 +405,16 @@ public class ForumRepository {
         jdbcTemplate.update(SQLChangeCategory,topicID,postID);
     }
 
+
+
+
+    public void deletePostByID(int postId){
+        jdbcTemplate.update("DELETE FROM `forum_post` WHERE id_Forum_Post = ? ",postId);
+    }
+
+    public void deleteAllPosts() {
+        jdbcTemplate.update("DELETE FROM forum_post");
+        jdbcTemplate.update("ALTER TABLE forum_post AUTO_INCREMENT = 1");
+    }
 
 }
