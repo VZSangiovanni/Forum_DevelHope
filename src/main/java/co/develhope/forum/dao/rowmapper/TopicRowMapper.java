@@ -20,4 +20,6 @@ public class TopicRowMapper implements RowMapper<ForumTopic> {
         forumTopic.setUserName(rs.getString("User_Name"));
         return forumTopic;
     }
+
+
 }
