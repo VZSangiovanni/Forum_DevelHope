@@ -1,6 +1,8 @@
 package co.develhope.forum.controllers;
 
 import co.develhope.forum.dto.response.BaseResponse;
+import co.develhope.forum.dto.response.PostDTO;
+import co.develhope.forum.dto.response.TopicDTO;
 import co.develhope.forum.dto.response.UpdatePostDTO;
 import co.develhope.forum.dto.response.UpdateTopicDTO;
 import co.develhope.forum.model.ForumCategory;
@@ -142,7 +144,56 @@ public class ForumController {
     @PostMapping("/post/create/{topicID}")
     public BaseResponse createPost(@RequestBody ForumPost forumPost, @PathVariable int topicID) {
         return forumService.createPost(forumPost, topicID);
+
+
     }
+
+     @ZeroSecurity
+    @PutMapping("/topic/update/title/{topicID}")
+    public BaseResponse userUpdateTopicTitle(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
+
+
+        return forumService.userUpdateTopicTitle(topicDTO,topicID);
+
+    }
+
+
+    @ZeroSecurity
+    @PutMapping("/topic/update/text/{topicID}")
+    public BaseResponse userUpdateTopicText(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
+
+
+        return forumService.userUpdateTopicText(topicDTO,topicID);
+
+    }
+
+    @ZeroSecurity
+    @PutMapping("/post/update-post-text/{postID}")
+    public BaseResponse postUpdateText(@RequestBody PostDTO postDTO,@PathVariable int postID){
+
+        return forumService.postUpdateText(postDTO,postID);
+    }
+
+
+    @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
+    @PutMapping("/topic/change-topic-category/{topicID}")
+    public BaseResponse changeTopicCategory(@RequestBody TopicDTO topicDTO,@PathVariable int topicID){
+     return forumService.changeTopicCategory(topicDTO,topicID);
+
+    }
+
+    @RoleSecurity(value = {"ROLE_FOUNDER","ROLE_MOD","ROLE_ADMIN"})
+    @PutMapping("/post/change-post-topic/{postID}")
+    public BaseResponse changePostTopic(@RequestParam int topicID,@PathVariable int postID){
+       return  forumService.changePostTopic(topicID,postID);
+
+
+    }
+
+
+
+
+
 
     @RoleSecurity(value = {"ROLE_MOD", "ROLE_ADMIN", "ROLE_FOUNDER"})
     @DeleteMapping("/post/delete/{postID}")
@@ -191,6 +242,7 @@ public class ForumController {
     public BaseResponse changePostTopic(@RequestParam int topicID, @PathVariable int postID) {
         return forumService.changePostTopic(topicID, postID);
     }
+
 
     @ZeroSecurity
     @GetMapping("/read-my-posts")
