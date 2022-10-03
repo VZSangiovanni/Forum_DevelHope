@@ -68,7 +68,7 @@ public class ForumRepository {
 
     public ForumCategory findCategoryByTitle(String categoryTitle) {
         ForumCategory forumCategory = jdbcTemplate.queryForObject("SELECT * FROM forum_category WHERE Category_Title = ?",
-                new CategoryRowMapper(), categoryTitle.toLowerCase().trim());
+                new CategoryRowMapper(), categoryTitle);
         return forumCategory;
     }
 
@@ -129,7 +129,7 @@ public class ForumRepository {
 
     public ForumTopic findTopicByID(int id) {
         try {
-            ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic,forum_category,user WHERE id_Forum_Topic = ?",
+            ForumTopic forumTopic = jdbcTemplate.queryForObject("SELECT * FROM forum_topic INNER JOIN forum_category ON id_Forum_Category = Forum_Category_id_Forum_Category INNER JOIN user ON id_User = User_id_User WHERE id_Forum_Topic = ?",
                     new TopicRowMapper(), id);
             return forumTopic;
         } catch (IncorrectResultSizeDataAccessException e) {

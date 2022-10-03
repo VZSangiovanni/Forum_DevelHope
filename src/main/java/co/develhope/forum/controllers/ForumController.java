@@ -135,7 +135,6 @@ public class ForumController {
 
 
 
-
     @ZeroSecurity
     @GetMapping("/read-my-posts")
     public List<Map<String, Object>> readMyPosts() {
