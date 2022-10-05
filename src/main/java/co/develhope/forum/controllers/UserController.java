@@ -5,7 +5,6 @@ import co.develhope.forum.dto.response.DeleteUserDTO;
 import co.develhope.forum.model.User;
 import co.develhope.forum.services.CustomUserService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
