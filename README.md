@@ -20,5 +20,5 @@ JDBC library with the handwritten query SQL
 ###
 NB.
 for the login we used a customized library made by our Tutor: Pasquale Cavallo.
-the library can be founded on GitHub at the link:
+the library can be found on GitHub at the link:
 https://github.com/pasqualecvl/definitely-basic-authorization-framework/tree/lib_version
