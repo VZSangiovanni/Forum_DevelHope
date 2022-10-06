@@ -79,6 +79,7 @@ public class UserRepository {
             return null;
         }
     }
+
     @Deprecated
     public List<String> getUserRoles(String username) {
         String querySQL = "SELECT User_Roles_id_User_Roles FROM user WHERE User_Name = ?";

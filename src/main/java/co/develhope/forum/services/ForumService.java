@@ -177,12 +177,10 @@ public class ForumService {
     public void deleteAllPosts() {
         forumRepository.deleteAllPosts();
     }
-    //TODO INTEGRATE
 
     public void deletePost(int postID) {
         forumRepository.deletePostByID(postID);
     }
-    //TODO INTEGRATE
 
     public BaseResponse deleteThisPost(int postID) {
         return forumRepository.deleteMyOwnSinglePost(postID);
@@ -306,5 +304,5 @@ public class ForumService {
 
     public List<Map<String, Object>> findMyPosts() {
         return forumRepository.getMyPosts();
-    }g
+    }
 }
